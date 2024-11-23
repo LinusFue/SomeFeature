@@ -1,0 +1,43 @@
+name: SomeFeature
+version: 'V1.4'
+main: at.leineees.someFeature.SomeFeature
+api-version: '1.21'
+authors: [ LiveLeineees ]
+
+commands:
+  fly:
+    description: Allows players to fly regardless of their gamemode.
+    usage: /fly
+  givecustomitem:
+    description: Gives the player a custom item.
+    usage: /givecustomitem [item]
+    aliases: 
+      - gci
+  coins:
+    description: Shows the player's coins.
+    usage: /coins [player] [add|remove] [amount]
+  shop:
+    description: Creates a shop NPC. 
+    usage: /shop
+  spawncustommob:
+    description: Spawns a custom mob.
+    usage: /spawncustommob [minecraft:entity] [nametag] [command] [x] [y] [z]
+    aliases: 
+      - scm
+      - spawncm
+  removecustommob:
+    description: Removes a custom mob.
+    usage: /removecustommob [nametag|id|@m]
+    aliases:
+      - rcm
+      - removecm
+      - rmcm
+  cenchant:
+    description: Fügt ein Custom Enchantment hinzu
+    usage: /cenchant <enchantment> <level>
+  vanish:
+    description: Makes the player completly invisible.
+    usage: /vanish
+  invsee:
+    description: Opens the inventory of another player.
+    usage: /invsee <player>
