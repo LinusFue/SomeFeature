@@ -48,13 +48,6 @@ public final class SomeFeature extends JavaPlugin {
         
         CUSTOM_ITEM_KEY = new NamespacedKey(this, "custom_item");
 
-        // Custom LootTables
-        NamespacedKey skeletonHorseLootKey = new NamespacedKey(this, "skeletonHorseLootTable");
-        LootTable skeletonHorseLootTable = Bukkit.getLootTable(skeletonHorseLootKey);
-
-        // Listener LootTable
-        getServer().getPluginManager().registerEvents(new MobListener(skeletonHorseLootTable), this);
-
 
         //Definitions
         customScoreboardManager = new CustomScoreboardManager(this);
