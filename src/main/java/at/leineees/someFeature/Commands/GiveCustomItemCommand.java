@@ -29,19 +29,25 @@ public class GiveCustomItemCommand implements CommandExecutor {
                         return true;
                     }
                     //Items
-                    if (args[0].equalsIgnoreCase("fly_feather") || args[0].equalsIgnoreCase(SomeFeature.CUSTOM_ITEM_KEY + ":fly_feather")) {
-                        player.getInventory().addItem(customItems.createFlyFeather());
-                        player.sendMessage(ChatColor.GREEN + "You have been given a Flight Feather!");
-                    } else if (args[0].equalsIgnoreCase("aspect_of_the_void")) {
-                        player.getInventory().addItem(customItems.createAOTV());
-                    } else if (args[0].equalsIgnoreCase("grappling_hook")) {
-                        player.getInventory().addItem(customItems.createGrapplingHook());
-                    } else if (args[0].equalsIgnoreCase("tree_fella")) {
-                        player.getInventory().addItem(customItems.createTreeFella());
-                    } else if (args[0].equalsIgnoreCase("super_pickaxe")) {
-                        player.getInventory().addItem(customItems.createSuperPickaxe());
-                    } else {
-                        sender.sendMessage(ChatColor.RED + "This command can only be used by a player.");
+                    switch (args[0].toLowerCase()) {
+                        case "fly_feather":
+                            player.getInventory().addItem(customItems.createFlyFeather());
+                            break;
+                        case "aspect_of_the_void":
+                            player.getInventory().addItem(customItems.createAOTV());
+                            break;
+                        case "grappling_hook":
+                            player.getInventory().addItem(customItems.createGrapplingHook());
+                            break;
+                        case "tree_fella":
+                            player.getInventory().addItem(customItems.createTreeFella());
+                            break;
+                        case "super_pickaxe":
+                            player.getInventory().addItem(customItems.createSuperPickaxe());
+                            break;
+                        default:
+                            sender.sendMessage(ChatColor.RED + "This command can only be used by a player.");
+                            break;
                     }
                     return true;
                 } else {

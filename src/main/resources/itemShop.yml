@@ -1,0 +1,16 @@
+﻿items:
+  - itemType: "somefeature:fly_feather"
+    cost: 1200
+    meta:
+      lore:
+        - "&7Allows you to fly for a short period."
+  - itemType: "minecraft:diamond_sword"
+    cost: 500
+    meta:
+      lore:
+        - "&7A powerful sword."
+  - itemType: "minecraft:diamond_sword"
+    cost: 500
+    meta:
+      lore:
+        - "&7A powerful weapon."

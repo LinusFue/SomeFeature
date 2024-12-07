@@ -16,7 +16,6 @@ import at.leineees.someFeature.TabCompleter.CustomMobTabCompleter;
 import at.leineees.someFeature.Task.TablistTask;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
-import org.bukkit.loot.LootTable;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -47,13 +46,6 @@ public final class SomeFeature extends JavaPlugin {
         SomeFeatureSettings.getInstance().load();
         
         CUSTOM_ITEM_KEY = new NamespacedKey(this, "custom_item");
-
-        // Custom LootTables
-        NamespacedKey skeletonHorseLootKey = new NamespacedKey(this, "skeletonHorseLootTable");
-        LootTable skeletonHorseLootTable = Bukkit.getLootTable(skeletonHorseLootKey);
-
-        // Listener LootTable
-        getServer().getPluginManager().registerEvents(new MobListener(skeletonHorseLootTable), this);
 
 
         //Definitions

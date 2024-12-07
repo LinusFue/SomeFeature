@@ -10,8 +10,32 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CustomItems {
+
+    private static final Map<String, ItemStack> customItems = new HashMap<>();
+
+
+    // Register custom items
+    static {
+        registerCustomItem("somefeature:fly_feather", createFlyFeather());
+        registerCustomItem("somefeature:aspect_of_the_void", createAOTV());
+        registerCustomItem("somefeature:grappling_hook", createGrapplingHook());
+        registerCustomItem("somefeature:tree_fella", createTreeFella());
+        registerCustomItem("somefeature:super_pickaxe", createSuperPickaxe());
+        registerCustomItem("somefeature:flying_fish", createFlyingFish());
+    }
+
+    private static void registerCustomItem(String key, ItemStack item) {
+        customItems.put(key, item);
+    }
+
+    public static ItemStack getCustomItem(String key) {
+        return customItems.get(key);
+    }
+    
     //customItemLayout
     public ItemStack createCustomItem(Material material, String displayName, String... lore) {
         ItemStack item = new ItemStack(material);
