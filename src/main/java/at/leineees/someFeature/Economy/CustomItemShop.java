@@ -1,66 +1,136 @@
 package at.leineees.someFeature.Economy;
 
-import at.leineees.someFeature.CustomItems.CustomEnchantmentShard;
-import at.leineees.someFeature.CustomItems.CustomItems;
 import at.leineees.someFeature.Data.Coins.CoinManager;
-import at.leineees.someFeature.Enchantments.EnchantmentManager;
+import at.leineees.someFeature.CustomItems.CustomItems;
+import at.leineees.someFeature.SomeFeature;
+import at.leineees.someFeature.SomeFeatureSettings;
+import at.leineees.someFeature.Tools.CustomItemChecker;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+
+import java.io.*;
+import java.lang.reflect.Type;
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class CustomItemShop implements Listener {
     private final CoinManager coinManager;
     private final CustomItems customItems;
+    private final List<ShopItem> shopItems = new ArrayList<>();
+    private final String shopItemsYml = """
+            items:
+              - itemType: "somefeature:fly_feather"
+                cost: 1200
+                meta:
+                  lore:
+                    - "&7Allows you to fly."
+              - itemType: "minecraft:diamond_sword"
+                cost: 500
+                meta:
+                  lore:
+                    - "&7A powerful sword."
+              - itemType: "somefeature:grappling_hook"
+                cost: 1000
+                meta:
+                  lore:
+                    - "&7Allows you to grapple to blocks."
+            """;
 
     public CustomItemShop(CoinManager coinManager, CustomItems customItems) {
         this.coinManager = coinManager;
         this.customItems = customItems;
+        loadShopItems();
     }
 
-    public void openShop(Player player) {
+    private void loadShopItems() {
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(new StringReader(shopItemsYml));
+        List<?> items = config.getList("items");
+
+        if (items != null) {
+            for (Object item : items) {
+                if (item instanceof Map) {
+                    Map<String, Object> itemConfig = (Map<String, Object>) item;
+                    String itemType = (String) itemConfig.get("itemType");
+                    int cost = (int) itemConfig.get("cost");
+                    int amount = itemConfig.containsKey("amount") ? (int) itemConfig.get("amount") : 1;
+
+                    ShopItem shopItem = new ShopItem(cost, itemType, SomeFeature.getInstance().toString(), amount);
+
+                    Map<String, Object> metaConfig = (Map<String, Object>) itemConfig.get("meta");
+                    if (metaConfig != null) {
+                        List<String> lore = (List<String>) metaConfig.get("lore");
+                        if (lore != null) {
+                            shopItem.setMeta(new ShopItem.Meta(lore));
+                        }
+                    }
+
+                    shopItems.add(shopItem);
+                }
+            }
+        }
+    }
+    
+    
+
+        public void openShop(Player player) {
         Inventory shop = Bukkit.createInventory(null, 36, "Item Shop");
 
-        ItemStack flyFeather = customItems.createFlyFeather();
-        ItemStack aotv = customItems.createAOTV();
-        ItemStack grapplingHook = customItems.createGrapplingHook();
-        ItemStack treeFella = customItems.createTreeFella();
-        ItemStack superPickaxe = customItems.createSuperPickaxe();
-        ItemStack enchantmentShards = new ItemStack(Material.PRISMARINE_SHARD);
-        ItemMeta meta = enchantmentShards.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(ChatColor.AQUA + "Enchantment Shards");
-            enchantmentShards.setItemMeta(meta);
+        for (ShopItem shopItem : shopItems) {
+            String itemType = shopItem.getItemType();
+            ItemStack itemStack;
+
+            if (itemType.startsWith("somefeature:")) {
+                itemStack = CustomItems.getCustomItem(itemType);
+                ItemMeta meta = itemStack.getItemMeta();
+                List<String> lore = new ArrayList<>();
+                for (String line : shopItem.getMeta().getLore()) {
+                    lore.add(ChatColor.translateAlternateColorCodes('&', line));
+                }
+                lore.add(ChatColor.GOLD + "Cost: " + shopItem.getCost() + " coins");
+                meta.setLore(lore);
+                itemStack.setItemMeta(meta);
+            } else {
+                Material material = Material.matchMaterial(itemType);
+                if (itemType == null || material == null) {
+                    Bukkit.getLogger().warning("Invalid item type: " + itemType);
+                    continue;
+                }
+                itemStack = new ItemStack(material);
+                ItemMeta meta = itemStack.getItemMeta();
+                if (meta != null) {
+                    List<String> lore = new ArrayList<>();
+                    for (String line : shopItem.getMeta().getLore()) {
+                        lore.add(ChatColor.translateAlternateColorCodes('&', line));
+                        lore.add(ChatColor.GOLD + "Cost: " + shopItem.getCost() + " coins");
+                    }
+                    meta.setLore(lore);
+                    itemStack.setItemMeta(meta);
+                }
+            }
+            shop.addItem(itemStack);
         }
 
-        shop.setItem(10, flyFeather);
-        shop.setItem(11, aotv);
-        shop.setItem(12, grapplingHook);
-        shop.setItem(13, treeFella);
-        shop.setItem(14, superPickaxe);
-        shop.setItem(15, enchantmentShards);
-
         player.openInventory(shop);
-    }
-
-    public void openEnchantmentShardShop(Player player) {
-        Inventory shardShop = Bukkit.createInventory(null, 27, ChatColor.AQUA + "Enchantment Shards");
-        
-        ItemStack shardLevel1 = new CustomEnchantmentShard(EnchantmentManager.getEnchantment("log_fortune"), 1).createEnchantedPrismarineShard();
-        ItemStack shardLevel2 = new CustomEnchantmentShard(EnchantmentManager.getEnchantment("log_fortune"), 2).createEnchantedPrismarineShard();
-        ItemStack shardLevel3 = new CustomEnchantmentShard(EnchantmentManager.getEnchantment("log_fortune"), 3).createEnchantedPrismarineShard();
-
-        shardShop.setItem(10, shardLevel1);
-        shardShop.setItem(11, shardLevel2);
-        shardShop.setItem(12, shardLevel3);
-
-        player.openInventory(shardShop);
     }
 
     @EventHandler
@@ -72,61 +142,39 @@ public class CustomItemShop implements Listener {
             event.setCancelled(true);
             if (clickedItem != null && clickedItem.getType() != Material.AIR) {
                 ItemMeta meta = clickedItem.getItemMeta();
-                if (meta != null && meta.getDisplayName().equals(ChatColor.AQUA + "Enchantment Shards")) {
-                    Bukkit.broadcastMessage("Opening Enchantment Shard Shop");
-                    openEnchantmentShardShop(player);
-                } else {
-                    int cost = getItemCost(clickedItem);
-                    if (coinManager.getCoins(player) >= cost) {
-                        coinManager.removeCoins(player, cost);
-                        player.getInventory().addItem(clickedItem);
-                        player.sendMessage(ChatColor.GREEN + "You have purchased " + meta.getDisplayName() + " for " + cost + " coins.");
-                    } else {
-                        player.sendMessage(ChatColor.RED + "You do not have enough coins to purchase this item.");
+                PersistentDataContainer container = meta.getPersistentDataContainer();
+                if (meta != null) {
+                    String itemKey = null;
+                    if(container.has(SomeFeature.getInstance().CUSTOM_ITEM_KEY, PersistentDataType.STRING)){
+                        itemKey = "somefeature:" + container.get(SomeFeature.getInstance().CUSTOM_ITEM_KEY, PersistentDataType.STRING);
+                    }else{
+                        itemKey = "minecraft:" + clickedItem.getType().toString().toLowerCase();
+                    }
+                    for (ShopItem shopItem : shopItems) {
+                        if(shopItem.getItemType().equals(itemKey)) {
+                            int cost = shopItem.getCost();
+                            if (coinManager.getCoins(player) >= cost) {
+                                ItemStack itemToAdd = null;
+                                if (shopItem.getNamespace().equals("somefeature")) {
+                                    itemToAdd = customItems.getCustomItem(shopItem.getItemType());
+                                } else if (shopItem.getNamespace().equals("minecraft")) {
+                                    itemToAdd = clickedItem.clone();
+                                }
+                                if (itemToAdd != null) {
+                                    player.getInventory().addItem(itemToAdd);
+                                    player.sendMessage(ChatColor.GREEN + "You have purchased " + meta.getDisplayName() + " for " + cost + " coins.");
+                                    coinManager.removeCoins(player, cost);
+                                } else {
+                                    player.sendMessage(ChatColor.RED + "Failed to add item to inventory.");
+                                }
+                            } else {
+                                player.sendMessage(ChatColor.RED + "You do not have enough coins to purchase this item.");
+                            }
+                            break;
+                        }
                     }
                 }
             }
-        } else if (event.getView().getTitle().equals(ChatColor.AQUA + "Enchantment Shards")) {
-            Bukkit.broadcastMessage("You are in the Enchantment Shard Shop");
-            event.setCancelled(true);
-            if (clickedItem != null && clickedItem.getType() != Material.AIR) {
-                int cost = getShardCost(clickedItem);
-                if (coinManager.getCoins(player) >= cost) {
-                    coinManager.removeCoins(player, cost);
-                    player.getInventory().addItem(clickedItem);
-                    player.sendMessage(ChatColor.GREEN + "You have purchased " + clickedItem.getItemMeta().getDisplayName() + " for " + cost + " coins.");
-                } else {
-                    player.sendMessage(ChatColor.RED + "You do not have enough coins to purchase this item.");
-                }
-            }
         }
-    }
-
-    private int getItemCost(ItemStack item) {
-        String displayName = item.getItemMeta().getDisplayName();
-        if (displayName.equals(ChatColor.GOLD + "Flight Feather")) {
-            return 1200;
-        } else if (displayName.equals(ChatColor.DARK_PURPLE + "Aspect of the Void")) {
-            return 69696969;
-        } else if (displayName.equals(ChatColor.GRAY + "Grappling Hook")) {
-            return 800;
-        } else if (displayName.equals(ChatColor.GOLD + "Tree Fella")) {
-            return 1000;
-        } else if (displayName.equals(ChatColor.DARK_PURPLE + "Super Pickaxe")) {
-            return 2000;
-        }
-        return 987654321;
-    }
-
-    private int getShardCost(ItemStack item) {
-        String displayName = item.getItemMeta().getDisplayName();
-        if (displayName.equals(ChatColor.LIGHT_PURPLE + "Enchanted Shard") && item.getItemMeta().getLore().get(0).contains("log_fortune_1")) {
-            return 500;
-        } else if (displayName.equals(ChatColor.LIGHT_PURPLE + "Enchanted Shard") && item.getItemMeta().getLore().get(0).contains("log_fortune_2")) {
-            return 1000;
-        } else if (displayName.equals(ChatColor.LIGHT_PURPLE + "Enchanted Prismarine Shard Level 3") && item.getItemMeta().getLore().get(0).contains("log_fortune_3")) {
-            return 1500;
-        }
-        return 987654321;
     }
 }
