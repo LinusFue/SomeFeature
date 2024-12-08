@@ -1,11 +1,8 @@
 package at.leineees.someFeature.Task;
 
 import at.leineees.someFeature.SomeFeatureSettings;
-import com.earth2me.essentials.libs.kyori.adventure.text.minimessage.MiniMessage;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

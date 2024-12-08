@@ -1,7 +1,6 @@
 package at.leineees.someFeature.CustomItems;
 
 import at.leineees.someFeature.SomeFeature;
-import io.lumine.mythic.bukkit.utils.lib.jooq.Meta;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

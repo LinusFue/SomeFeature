@@ -10,6 +10,7 @@ import at.leineees.someFeature.Enchantments.EnchantmentListener;
 import at.leineees.someFeature.Enchantments.EnchantmentManager;
 import at.leineees.someFeature.Feature.CustomScoreboardManager;
 import at.leineees.someFeature.Listener.*;
+import at.leineees.someFeature.TabCompleter.CoinTabCompleter;
 import at.leineees.someFeature.TabCompleter.CustomEnchantmentTabCompleter;
 import at.leineees.someFeature.TabCompleter.CustomItemTabCompleter;
 import at.leineees.someFeature.TabCompleter.CustomMobTabCompleter;
@@ -20,15 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 
 public final class SomeFeature extends JavaPlugin {
-
-    private CustomItems customItems;
-    private CustomRecipies customRecipies;
-    private CoinManager coinManager;
-    private CustomItemShop customItemShop;
     private CustomMobManager customMobManager;
-    private CustomMob customMob;
-    private CustomScoreboardManager customScoreboardManager;
-    private EnchantmentManager manager;
     
     public static NamespacedKey CUSTOM_ITEM_KEY;
 
@@ -42,22 +35,23 @@ public final class SomeFeature extends JavaPlugin {
     }
     @Override
     public void onEnable() {
-        Bukkit.broadcastMessage(ChatColor.GREEN + "SomeFeature enabled");
+        Bukkit.broadcastMessage("SomeFeature enabled");
         SomeFeatureSettings.getInstance().load();
         
         CUSTOM_ITEM_KEY = new NamespacedKey(this, "custom_item");
 
 
         //Definitions
-        customScoreboardManager = new CustomScoreboardManager(this);
-        
-        customItems = new CustomItems();
-        customRecipies = new CustomRecipies(this);
-        coinManager = new CoinManager(this, customScoreboardManager);
-        customItemShop = new CustomItemShop(coinManager, customItems);
         customMobManager = new CustomMobManager(this);
-        customMob = new CustomMob(this, customMobManager);
-        manager = new EnchantmentManager(this);
+
+        CustomScoreboardManager customScoreboardManager = new CustomScoreboardManager(this);
+
+        CustomItems customItems = new CustomItems();
+        CustomRecipies customRecipies = new CustomRecipies(this);
+        CoinManager coinManager = new CoinManager(this, customScoreboardManager);
+        CustomItemShop customItemShop = new CustomItemShop(coinManager, customItems);
+        CustomMob customMob = new CustomMob(this, customMobManager);
+        EnchantmentManager enchantmentManager = new EnchantmentManager(this);
         
         customRecipies.register();
         customMobManager.loadCustomMobs();
@@ -70,8 +64,8 @@ public final class SomeFeature extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ItemListener(), this);
         getServer().getPluginManager().registerEvents(customItemShop, this);
         getServer().getPluginManager().registerEvents(customMob, this);
-        getServer().getPluginManager().registerEvents(new EnchantmentListener(manager), this);
-        getServer().getPluginManager().registerEvents(new AnvilListener(manager, this), this);
+        getServer().getPluginManager().registerEvents(new EnchantmentListener(enchantmentManager), this);
+        getServer().getPluginManager().registerEvents(new AnvilListener(enchantmentManager, this), this);
         
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
         
@@ -88,9 +82,10 @@ public final class SomeFeature extends JavaPlugin {
                 
                 
         //TabCompleter
-        this.getCommand("givecustomitem").setTabCompleter(new CustomItemTabCompleter());
-        this.getCommand("spawncustommob").setTabCompleter(new CustomMobTabCompleter());
-        this.getCommand("cenchant").setTabCompleter(new CustomEnchantmentTabCompleter(manager));
+        getCommand("givecustomitem").setTabCompleter(new CustomItemTabCompleter());
+        getCommand("spawncustommob").setTabCompleter(new CustomMobTabCompleter());
+        getCommand("cenchant").setTabCompleter(new CustomEnchantmentTabCompleter(enchantmentManager));
+        getCommand("coins").setTabCompleter(new CoinTabCompleter());
         
         
         //Schedulers
