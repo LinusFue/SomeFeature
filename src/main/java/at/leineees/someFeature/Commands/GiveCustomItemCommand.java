@@ -1,14 +1,10 @@
 package at.leineees.someFeature.Commands;
 
 import at.leineees.someFeature.CustomItems.CustomItems;
-import at.leineees.someFeature.SomeFeature;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 public class GiveCustomItemCommand implements CommandExecutor {
@@ -25,7 +21,7 @@ public class GiveCustomItemCommand implements CommandExecutor {
                 Player player = (Player) sender;
                 if (player.hasPermission("minecraft.give")) {
                     if (args.length == 0) {
-                        sender.sendMessage(ChatColor.RED + "Usage: /givecustomitem <item>");
+                        sender.sendMessage("§cUsage: /givecustomitem <item>");
                         return true;
                     }
                     //Items
@@ -46,15 +42,15 @@ public class GiveCustomItemCommand implements CommandExecutor {
                             player.getInventory().addItem(customItems.createSuperPickaxe());
                             break;
                         default:
-                            sender.sendMessage(ChatColor.RED + "This command can only be used by a player.");
+                            sender.sendMessage("§cThis command can only be used by a player.");
                             break;
                     }
                     return true;
                 } else {
-                    sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+                    sender.sendMessage("§cYou do not have permission to use this command.");
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "This command can only be used by a player.");
+                sender.sendMessage("§cThis command can only be used by a player.");
             }
             return true;
         }

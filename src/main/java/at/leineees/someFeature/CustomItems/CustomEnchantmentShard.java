@@ -3,8 +3,6 @@ package at.leineees.someFeature.CustomItems;
 import at.leineees.someFeature.Enchantments.CustomEnchantment;
 import at.leineees.someFeature.Enchantments.EnchantmentManager;
 import at.leineees.someFeature.SomeFeature;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -33,8 +31,8 @@ public class CustomEnchantmentShard {
             container.set(keyEnch, PersistentDataType.STRING, enchantment.getKey().getKey());
             container.set(keyLevel, PersistentDataType.INTEGER, level);
 
-            meta.setDisplayName(ChatColor.LIGHT_PURPLE + "Enchanted Shard");
-            meta.setLore(List.of(ChatColor.BLUE + enchantment.getKey().getKey() + "_" + level));
+            meta.setDisplayName("§dEnchanted Shard");
+            meta.setLore(List.of("§9" + enchantment.getKey().getKey() + "_" + level));
             meta.setEnchantmentGlintOverride(true);
             item.setItemMeta(meta);
         }

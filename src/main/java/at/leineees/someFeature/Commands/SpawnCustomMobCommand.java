@@ -2,7 +2,6 @@ package at.leineees.someFeature.Commands;
 
 import at.leineees.someFeature.Data.CustomMob.CustomMobData;
 import at.leineees.someFeature.Data.CustomMob.CustomMobManager;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -39,12 +38,12 @@ public class SpawnCustomMobCommand implements CommandExecutor {
                         Location location = new Location(player.getWorld(), x, y, z);
                         CustomMobData customMobData = new CustomMobData(customMobManager.getLastId(), entityType, nameTag, cmd, location, ai, silent, invulnerable);
                         customMobManager.spawnCustomMob(customMobData);
-                        player.sendMessage(ChatColor.GREEN + "Custom mob spawned successfully!");
+                        player.sendMessage("§aCustom mob spawned successfully!");
                     } catch (IllegalArgumentException e) {
-                        player.sendMessage(ChatColor.RED + "Invalid entity type, coordinates, or boolean values.");
+                        player.sendMessage("§cInvalid entity type, coordinates, or boolean values.");
                     }
                 } else {
-                    player.sendMessage(ChatColor.RED + "Usage: /spawncustommob [minecraft:entity] [nametag] [x] [y] [z] [ai] [silent] [invulnerable] [command]");
+                    player.sendMessage("§cUsage: /spawncustommob [minecraft:entity] [nametag] [x] [y] [z] [ai] [silent] [invulnerable] [command]");
                 }
                 return true;
             }

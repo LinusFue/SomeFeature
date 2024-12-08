@@ -1,6 +1,5 @@
 package at.leineees.someFeature.Listener;
 
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,18 +34,18 @@ public class ItemListener implements Listener {
 
         if (!player.getGameMode().equals(GameMode.CREATIVE)) {
             if (newItem != null && newItem.hasItemMeta() && newItem.getItemMeta().hasDisplayName() &&
-                    newItem.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Flight Feather")) {
+                    newItem.getItemMeta().getDisplayName().equals("§6Flight Feather")) {
                 player.setAllowFlight(true);
-                player.sendMessage(ChatColor.GREEN + "Flight enabled!");
+                player.sendMessage("§aFlight enabled!");
             } else if (previousItem != null && previousItem.hasItemMeta() && previousItem.getItemMeta().hasDisplayName() &&
-                    previousItem.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Flight Feather")) {
+                    previousItem.getItemMeta().getDisplayName().equals("§6Flight Feather")) {
                 player.setAllowFlight(false);
-                player.sendMessage(ChatColor.RED + "Flight disabled!");
+                player.sendMessage("§cFlight disabled!");
             }
         } else {
             if (newItem != null && newItem.hasItemMeta() && newItem.getItemMeta().hasDisplayName() &&
-                    newItem.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Flight Feather")) {
-                player.sendMessage(ChatColor.GRAY + "You already can fly!");
+                    newItem.getItemMeta().getDisplayName().equals("§6Flight Feather")) {
+                player.sendMessage("§7You already can fly!");
             }
         }
     }
@@ -59,13 +58,13 @@ public class ItemListener implements Listener {
         long currentTime = System.currentTimeMillis();
 
         if (cooldowns.containsKey(playerId) && (currentTime - cooldowns.get(playerId)) < 3000) {
-            player.sendMessage(ChatColor.RED + "You must wait before using the grappling hook again!");
+            player.sendMessage("§cYou must wait before using the grappling hook again!");
             return;
         }
 
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item != null && item.getType() == Material.FISHING_ROD && item.getItemMeta() != null &&
-                (ChatColor.GRAY + "Grappling Hook").equals(item.getItemMeta().getDisplayName())) {
+                ("§7Grappling Hook").equals(item.getItemMeta().getDisplayName())) {
             if (event.getState() == PlayerFishEvent.State.REEL_IN || event.getState() == PlayerFishEvent.State.IN_GROUND) {
                 Location hookLocation = event.getHook().getLocation();
                 Vector direction = hookLocation.toVector().subtract(player.getLocation().toVector()).normalize();
@@ -82,14 +81,14 @@ public class ItemListener implements Listener {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (item != null && item.getType() == Material.NETHERITE_AXE && item.getItemMeta() != null &&
-                (ChatColor.GOLD + "Tree Fella").equals(item.getItemMeta().getDisplayName())) {
+                ("§6Tree Fella").equals(item.getItemMeta().getDisplayName())) {
             Block block = event.getBlock();
             if (isLog(block.getType())) {
                 breakTree(block);
             }
         }
         if (item != null && item.getType() == Material.NETHERITE_PICKAXE && item.getItemMeta() != null &&
-                (ChatColor.DARK_PURPLE + "Super Pickaxe").equals(item.getItemMeta().getDisplayName())) {
+                ("§5Super Pickaxe").equals(item.getItemMeta().getDisplayName())) {
             Block block = event.getBlock();
             break3x3Area(block, player, item);
         }
@@ -192,7 +191,7 @@ public class ItemListener implements Listener {
         Player player = event.getPlayer();
         if (player.isGliding() && player.isOnGround()) {
             player.setGliding(false);
-            player.sendMessage(ChatColor.RED + "You have landed and stopped gliding.");
+            player.sendMessage("§cYou have landed and stopped gliding.");
         }
     }
 
@@ -203,9 +202,9 @@ public class ItemListener implements Listener {
             if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
                 ItemStack item = player.getInventory().getItemInMainHand();
                 if (item != null && item.getType() == Material.FISHING_ROD && item.getItemMeta() != null &&
-                        (ChatColor.GRAY + "Grappling Hook").equals(item.getItemMeta().getDisplayName()) ||
+                        ("§7Grappling Hook").equals(item.getItemMeta().getDisplayName()) ||
                         item != null && item.getType() == Material.DIAMOND_SHOVEL && item.getItemMeta() != null &&
-                                (ChatColor.DARK_PURPLE + "Aspect of the Void").equals(item.getItemMeta().getDisplayName())) {
+                                ("§5Aspect of the Void").equals(item.getItemMeta().getDisplayName())) {
                     event.setCancelled(true); // Cancel fall damage
                 }
             }

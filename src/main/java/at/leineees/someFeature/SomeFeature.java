@@ -35,7 +35,7 @@ public final class SomeFeature extends JavaPlugin {
     }
     @Override
     public void onEnable() {
-        Bukkit.broadcastMessage("SomeFeature enabled");
+        Bukkit.broadcastMessage("§aSomeFeature enabled");
         SomeFeatureSettings.getInstance().load();
         
         CUSTOM_ITEM_KEY = new NamespacedKey(this, "custom_item");
@@ -77,7 +77,7 @@ public final class SomeFeature extends JavaPlugin {
         getCommand("givecustomitem").setExecutor(new GiveCustomItemCommand(customItems));
         getCommand("spawncustommob").setExecutor(new SpawnCustomMobCommand(customMobManager));
         getCommand("removecustommob").setExecutor(new RemoveCustomMobCommand(customMobManager));
-        getCommand("cenchant").setExecutor(new CEnchantCommand(manager));
+        getCommand("cenchant").setExecutor(new CEnchantCommand(enchantmentManager));
         getCommand("invsee").setExecutor(new InvseeCommand());
                 
                 
@@ -101,7 +101,7 @@ public final class SomeFeature extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Bukkit.broadcastMessage(ChatColor.RED + "SomeFeature disabled");
+        Bukkit.broadcastMessage("§4SomeFeature disabled");
         SomeFeatureSettings.getInstance().save();
         customMobManager.saveCustomMobs();
     }

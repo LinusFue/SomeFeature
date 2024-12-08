@@ -1,7 +1,6 @@
 package at.leineees.someFeature.Commands;
 
 import at.leineees.someFeature.Economy.CustomItemShop;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,7 +20,7 @@ public class ShopCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 customItemShop.openShop((Player) sender);
             } else {
-                sender.sendMessage(ChatColor.RED + "This command can only be used by a player.");
+                sender.sendMessage("§cThis command can only be used by a player.");
             }
             return true;
         }

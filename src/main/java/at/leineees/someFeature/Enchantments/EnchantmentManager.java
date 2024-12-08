@@ -1,7 +1,6 @@
 package at.leineees.someFeature.Enchantments;
 
 import at.leineees.someFeature.Enchantments.Enchants.LogFortuneEnchantment;
-import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -37,7 +36,7 @@ public class EnchantmentManager {
         container.set(enchantment.getKey(), PersistentDataType.INTEGER, level);
 
         List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
-        lore.add(ChatColor.BLUE + enchantment.getKey().getKey() + "_" + level);
+        lore.add("§9" + enchantment.getKey().getKey() + "_" + level);
         meta.setLore(lore);
         item.setItemMeta(meta);
     }

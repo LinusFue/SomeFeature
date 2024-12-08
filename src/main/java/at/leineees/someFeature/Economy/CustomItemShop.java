@@ -3,13 +3,7 @@ package at.leineees.someFeature.Economy;
 import at.leineees.someFeature.Data.Coins.CoinManager;
 import at.leineees.someFeature.CustomItems.CustomItems;
 import at.leineees.someFeature.SomeFeature;
-import at.leineees.someFeature.SomeFeatureSettings;
-import at.leineees.someFeature.Tools.CustomItemChecker;
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -18,17 +12,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.io.*;
-import java.lang.reflect.Type;
-import java.net.URI;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,12 +31,12 @@ public class CustomItemShop implements Listener {
                 cost: 1200
                 meta:
                   lore:
-                    - "&7Allows you to fly."
+                    - "§7Allows you to fly."
               - itemType: "minecraft:diamond_sword"
                 cost: 500
                 meta:
                   lore:
-                    - "&7A powerful sword."
+                    - "§7A powerful sword."
               - itemType: "somefeature:grappling_hook"
                 cost: 1000
                 meta:
@@ -104,9 +92,9 @@ public class CustomItemShop implements Listener {
                 ItemMeta meta = itemStack.getItemMeta();
                 List<String> lore = new ArrayList<>();
                 for (String line : shopItem.getMeta().getLore()) {
-                    lore.add(ChatColor.translateAlternateColorCodes('&', line));
+                    lore.add(line);
                 }
-                lore.add(ChatColor.GOLD + "Cost: " + shopItem.getCost() + " coins");
+                lore.add("§6Cost: " + shopItem.getCost() + " coins");
                 meta.setLore(lore);
                 itemStack.setItemMeta(meta);
             } else {
@@ -120,8 +108,8 @@ public class CustomItemShop implements Listener {
                 if (meta != null) {
                     List<String> lore = new ArrayList<>();
                     for (String line : shopItem.getMeta().getLore()) {
-                        lore.add(ChatColor.translateAlternateColorCodes('&', line));
-                        lore.add(ChatColor.GOLD + "Cost: " + shopItem.getCost() + " coins");
+                        lore.add(line);
+                        lore.add("§6Cost: " + shopItem.getCost() + " coins");
                     }
                     meta.setLore(lore);
                     itemStack.setItemMeta(meta);
@@ -162,13 +150,13 @@ public class CustomItemShop implements Listener {
                                 }
                                 if (itemToAdd != null) {
                                     player.getInventory().addItem(itemToAdd);
-                                    player.sendMessage(ChatColor.GREEN + "You have purchased " + meta.getDisplayName() + " for " + cost + " coins.");
+                                    player.sendMessage("§aYou have purchased " + meta.getDisplayName() + " for " + cost + " coins.");
                                     coinManager.removeCoins(player, cost);
                                 } else {
-                                    player.sendMessage(ChatColor.RED + "Failed to add item to inventory.");
+                                    player.sendMessage("§cFailed to add item to inventory.");
                                 }
                             } else {
-                                player.sendMessage(ChatColor.RED + "You do not have enough coins to purchase this item.");
+                                player.sendMessage("§cYou do not have enough coins to purchase this item.");
                             }
                             break;
                         }
