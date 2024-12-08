@@ -2,7 +2,6 @@ package at.leineees.someFeature.Commands;
 
 import at.leineees.someFeature.Enchantments.CustomEnchantment;
 import at.leineees.someFeature.Enchantments.EnchantmentManager;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,38 +24,38 @@ public class CEnchantCommand implements CommandExecutor {
                 Player player = (Player) sender;
                 if (player.hasPermission("somefeature.enchant")) {
                     if (args.length != 2) {
-                        player.sendMessage(ChatColor.RED + "Usage: /cenchant <enchantment> <level>");
+                        player.sendMessage("§cUsage: /cenchant <enchantment> <level>");
                         return true;
                     }
 
                     ItemStack item = player.getInventory().getItemInMainHand();
                     if (item.getType() == Material.AIR) {
-                        player.sendMessage(ChatColor.RED + "You must be holding an item!");
+                        player.sendMessage("§cYou must be holding an item!");
                         return true;
                     }
 
                     CustomEnchantment enchant = manager.getEnchantment(args[0]);
                     if (enchant == null) {
-                        player.sendMessage(ChatColor.RED + "Unknown enchantment!");
+                        player.sendMessage("§cUnknown enchantment!");
                         return true;
                     }
 
                     try {
                         int level = Integer.parseInt(args[1]);
                         if (level < 1 || level > enchant.getMaxLevel()) {
-                            player.sendMessage(ChatColor.RED + "Invalid level!");
+                            player.sendMessage("§cInvalid level!");
                             return true;
                         }
 
                         manager.applyEnchantment(item, enchant, level);
-                        player.sendMessage(ChatColor.GREEN + "Enchantment applied!");
+                        player.sendMessage("§aEnchantment applied!");
 
                     } catch (NumberFormatException e) {
-                        player.sendMessage(ChatColor.RED + "Invalid level!");
+                        player.sendMessage("§cInvalid level!");
                     }
                     return true;
                 } else {
-                    player.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+                    player.sendMessage("§cYou do not have permission to use this command.");
                 }
             }
         }

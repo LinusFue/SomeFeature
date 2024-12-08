@@ -2,7 +2,6 @@ package at.leineees.someFeature.Listener;
 
 import at.leineees.someFeature.Data.CustomMob.CustomMobData;
 import at.leineees.someFeature.Data.CustomMob.CustomMobManager;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -60,7 +59,7 @@ public class CustomMob implements Listener {
             String customName = livingEntity.getCustomName();
             if (customName != null) {
                 for (CustomMobData mobData : customMobManager.getCustomMobs()) {
-                    if (customName.equals(ChatColor.translateAlternateColorCodes('&', mobData.getNameTag()))) {
+                    if (customName.equals(mobData.getNameTag())) {
                         player.performCommand(mobData.getCommand());
                         break;
                     }

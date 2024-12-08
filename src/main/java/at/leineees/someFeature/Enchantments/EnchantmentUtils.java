@@ -1,8 +1,6 @@
 package at.leineees.someFeature.Enchantments;
 
 import at.leineees.someFeature.CustomItems.CustomEnchantmentShard;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -46,11 +44,11 @@ public class EnchantmentUtils {
                 int shardLevel = shardEnchantment.getLevel();
 
                 if (toolLevel != null && toolLevel.equals(shardLevel)) {
-                    lore.add(ChatColor.BLUE + "" + shardEnchantment.getEnchantment().getKey().getKey() + "_" + shardLevel);
+                    lore.add("§9" + shardEnchantment.getEnchantment().getKey().getKey() + "_" + shardLevel);
                     toolMeta.setLore(lore);
                     toolContainer.set(shardKey, PersistentDataType.INTEGER, toolLevel + 1);
                 } else {
-                    lore.add(ChatColor.BLUE + "" + shardEnchantment.getEnchantment().getKey().getKey() + "_" + shardLevel);
+                    lore.add("§9" + shardEnchantment.getEnchantment().getKey().getKey() + "_" + shardLevel);
                     toolMeta.setLore(lore);
                     toolContainer.set(shardKey, PersistentDataType.INTEGER, shardLevel);
                 }

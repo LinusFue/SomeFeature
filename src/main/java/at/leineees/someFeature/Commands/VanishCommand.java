@@ -1,7 +1,6 @@
 package at.leineees.someFeature.Commands;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,14 +29,14 @@ public class VanishCommand implements Listener, CommandExecutor {
         if (player.hasPermission("somefeature.vanish")) {
             if (vanishedPlayers.contains(player.getUniqueId())) {
                 showPlayer(player);
-                player.sendMessage(ChatColor.GREEN + "You are now visible.");
+                player.sendMessage("§aYou are now visible.");
             } else {
                 hidePlayer(player);
-                player.sendMessage(ChatColor.GREEN + "You are now invisible.");
+                player.sendMessage("§aYou are now invisible.");
             }
             return true;
         } else {
-            player.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+            player.sendMessage("§cYou do not have permission to use this command.");
             return true;
         }
     }

@@ -1,7 +1,6 @@
 package at.leineees.someFeature.Data.CustomMob;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -41,7 +40,7 @@ public class CustomMobManager {
     public void spawnCustomMob(CustomMobData customMobData) {
         int id = idCounter.incrementAndGet();
         LivingEntity entity = (LivingEntity) customMobData.getLocation().getWorld().spawnEntity(customMobData.getLocation(), customMobData.getEntityType());
-        entity.setCustomName(ChatColor.translateAlternateColorCodes('&', customMobData.getNameTag()));
+        entity.setCustomName(customMobData.getNameTag());
         entity.setCustomNameVisible(true);
         entity.setAI(customMobData.hasAI());
         entity.setInvulnerable(customMobData.isInvulnerable());
