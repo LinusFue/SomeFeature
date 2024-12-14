@@ -14,6 +14,7 @@ import at.leineees.someFeature.TabCompleter.CoinTabCompleter;
 import at.leineees.someFeature.TabCompleter.CustomEnchantmentTabCompleter;
 import at.leineees.someFeature.TabCompleter.CustomItemTabCompleter;
 import at.leineees.someFeature.TabCompleter.CustomMobTabCompleter;
+import at.leineees.someFeature.TabCompleter.ShopTabCompleter;
 import at.leineees.someFeature.Task.TablistTask;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -22,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class SomeFeature extends JavaPlugin {
     private CustomMobManager customMobManager;
+    private CustomItemShop customItemShop;
     
     public static NamespacedKey CUSTOM_ITEM_KEY;
 
@@ -43,13 +45,13 @@ public final class SomeFeature extends JavaPlugin {
 
         //Definitions
         customMobManager = new CustomMobManager(this);
-
-        CustomScoreboardManager customScoreboardManager = new CustomScoreboardManager(this);
-
         CustomItems customItems = new CustomItems();
-        CustomRecipies customRecipies = new CustomRecipies(this);
+        CustomScoreboardManager customScoreboardManager = new CustomScoreboardManager(this);
         CoinManager coinManager = new CoinManager(this, customScoreboardManager);
-        CustomItemShop customItemShop = new CustomItemShop(coinManager, customItems);
+        customItemShop = new CustomItemShop(coinManager, customItems);
+
+
+        CustomRecipies customRecipies = new CustomRecipies(this);
         CustomMob customMob = new CustomMob(this, customMobManager);
         EnchantmentManager enchantmentManager = new EnchantmentManager(this);
         
@@ -82,6 +84,7 @@ public final class SomeFeature extends JavaPlugin {
                 
                 
         //TabCompleter
+        getCommand("shop").setTabCompleter(new ShopTabCompleter(customItemShop));
         getCommand("givecustomitem").setTabCompleter(new CustomItemTabCompleter());
         getCommand("spawncustommob").setTabCompleter(new CustomMobTabCompleter());
         getCommand("cenchant").setTabCompleter(new CustomEnchantmentTabCompleter(enchantmentManager));
@@ -104,6 +107,7 @@ public final class SomeFeature extends JavaPlugin {
         Bukkit.broadcastMessage("§4SomeFeature disabled");
         SomeFeatureSettings.getInstance().save();
         customMobManager.saveCustomMobs();
+        customItemShop.saveShops();
     }
     
     public static SomeFeature getInstance(){

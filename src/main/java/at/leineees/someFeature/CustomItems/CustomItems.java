@@ -1,6 +1,7 @@
 package at.leineees.someFeature.CustomItems;
 
 import at.leineees.someFeature.SomeFeature;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -32,6 +33,10 @@ public class CustomItems {
 
     public static ItemStack getCustomItem(String key) {
         return customItems.get(key);
+    }
+
+    public static Map<String, ItemStack> getAllCustomItems() {
+        return new HashMap<>(customItems);
     }
     
     //customItemLayout
