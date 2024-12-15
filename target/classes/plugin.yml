@@ -25,7 +25,7 @@ commands:
       - /shop <shopName> removeitem <namespace:item>
   spawncustommob:
     description: Spawns a custom mob.
-    usage: /spawncustommob [minecraft:entity] [nametag] [command] [x] [y] [z]
+    usage: /spawncustommob [minecraft:entity] [nametag] [x] [y] [z] [command]
     aliases: 
       - scm
       - spawncm
@@ -42,3 +42,12 @@ commands:
   invsee:
     description: Opens the inventory of another player.
     usage: /invsee <player>
+  sell:
+    description: Opens the sell inventory
+    usage: /sell
+  price:
+    description: Manages item prices
+    usage:
+      - /price list
+      - /price set <item> <price>
+      - /price remove <item>

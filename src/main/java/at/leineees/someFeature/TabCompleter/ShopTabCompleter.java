@@ -1,6 +1,7 @@
 package at.leineees.someFeature.TabCompleter;
 
 import at.leineees.someFeature.Economy.CustomItemShop;
+import at.leineees.someFeature.Tools.TabCompleteHelper;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -23,13 +24,7 @@ public class ShopTabCompleter implements TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if (command.getName().equalsIgnoreCase("shop")) {
-            List<String> items = new ArrayList<>();
-            for (String customItem : CustomItems.getAllCustomItems().keySet()) {
-                items.add(customItem);
-            }
-            for (Material material : Material.values()) {
-                items.add("minecraft:" +  material.name().toLowerCase());
-            }
+            List<String> items = TabCompleteHelper.getAllItems();
             if (args.length == 1) {
                 List<String> suggestions = new ArrayList<>(customItemShop.getShopNames());
                 suggestions.add("create");
@@ -39,31 +34,21 @@ public class ShopTabCompleter implements TabCompleter {
             } else if (args.length == 2 && args[0].equalsIgnoreCase("create")) {
                 return new ArrayList<>(Arrays.asList("<ShopName>"));
             }else if (args.length == 2 && args[0].equalsIgnoreCase("remove")) {
-                return filterSuggestions(args[1], new ArrayList<>(customItemShop.getShopNames()));
+                return TabCompleteHelper.filterSuggestions(args[1], new ArrayList<>(customItemShop.getShopNames()));
             }else if (args.length == 2 && !args[0].equalsIgnoreCase("create") && !args[0].equalsIgnoreCase("remove") && !args[0].equalsIgnoreCase("list")) {
-                return filterSuggestions(args[1], new ArrayList<>(Arrays.asList("additem", "removeitem")));
+                return TabCompleteHelper.filterSuggestions(args[1], new ArrayList<>(Arrays.asList("additem", "removeitem")));
             } else if (args.length == 3 && args[1].equalsIgnoreCase("additem")) {
-                return filterSuggestions(args[2], items);
+                return TabCompleteHelper.filterSuggestions(args[2], items);
             } else if (args.length == 4 && args[1].equalsIgnoreCase("additem")) {
-                return filterSuggestions(args[3], Arrays.asList("100", "200", "300"));
+                return TabCompleteHelper.filterSuggestions(args[3], Arrays.asList("100", "200", "300"));
             } else if (args.length == 5 && args[1].equalsIgnoreCase("additem")) {
-                return filterSuggestions(args[4], Arrays.asList("1", "32", "64"));
+                return TabCompleteHelper.filterSuggestions(args[4], Arrays.asList("1", "32", "64"));
             } else if (args.length == 3 && args[1].equalsIgnoreCase("removeitem")) {
                 if(customItemShop.getShopItems(args[0]) != null) {
-                    return filterSuggestions(args[2], customItemShop.getShopItemTypes(args[0]));
+                    return TabCompleteHelper.filterSuggestions(args[2], customItemShop.getShopItemTypes(args[0]));
                 }
             }
         }
         return null;
-    }
-
-    private List<String> filterSuggestions(String input, List<String> suggestions) {
-        List<String> filtered = new ArrayList<>();
-        for (String suggestion : suggestions) {
-            if (suggestion.toLowerCase().contains(input.toLowerCase())) {
-                filtered.add(suggestion);
-            }
-        }
-        return filtered;
     }
 }
