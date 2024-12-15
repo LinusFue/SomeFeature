@@ -3,13 +3,7 @@ package at.leineees.someFeature.Economy;
 import at.leineees.someFeature.Data.Coins.CoinManager;
 import at.leineees.someFeature.CustomItems.CustomItems;
 import at.leineees.someFeature.SomeFeature;
-import at.leineees.someFeature.SomeFeatureSettings;
-import at.leineees.someFeature.Tools.CustomItemChecker;
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -18,14 +12,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.*;
 
 public class CustomItemShop implements Listener {
@@ -137,7 +129,7 @@ public class CustomItemShop implements Listener {
     public void openShop(Player player, String shopName) {
         List<ShopItem> shopItems = shops.get(shopName);
         if (shopItems == null) {
-            player.sendMessage(ChatColor.RED + "Shop not found!");
+            player.sendMessage("§cShop not found!");
             return;
         }
 
@@ -151,7 +143,7 @@ public class CustomItemShop implements Listener {
                 itemStack = CustomItems.getCustomItem(itemType);
                 ItemMeta meta = itemStack.getItemMeta();
                 List<String> lore = new ArrayList<>();
-                lore.add(ChatColor.GOLD + "Cost: " + shopItem.getCost() + " coins");
+                lore.add("§6Cost: " + shopItem.getCost() + " coins");
                 meta.setLore(lore);
                 itemStack.setItemMeta(meta);
                 itemStack.setAmount(shopItem.getAmount());
@@ -165,7 +157,7 @@ public class CustomItemShop implements Listener {
                 ItemMeta meta = itemStack.getItemMeta();
                 if (meta != null) {
                     List<String> lore = new ArrayList<>();
-                    lore.add(ChatColor.GOLD + "Cost: " + shopItem.getCost() + " coins");
+                    lore.add("§6Cost: " + shopItem.getCost() + " coins");
                     meta.setLore(lore);
                     itemStack.setItemMeta(meta);
                     itemStack.setAmount(shopItem.getAmount());
@@ -208,13 +200,13 @@ public class CustomItemShop implements Listener {
                                     }
                                     if (itemToAdd != null) {
                                         player.getInventory().addItem(itemToAdd);
-                                        player.sendMessage(ChatColor.GREEN + "You have purchased " + meta.getDisplayName() + " for " + cost + " coins.");
+                                        player.sendMessage("§aYou have purchased " + meta.getDisplayName() + " for " + cost + " coins.");
                                         coinManager.removeCoins(player, cost);
                                     } else {
-                                        player.sendMessage(ChatColor.RED + "Failed to add item to inventory.");
+                                        player.sendMessage("§cFailed to add item to inventory.");
                                     }
                                 } else {
-                                    player.sendMessage(ChatColor.RED + "You do not have enough coins to purchase this item.");
+                                    player.sendMessage("§cYou do not have enough coins to purchase this item.");
                                 }
                                 return;
                             }
