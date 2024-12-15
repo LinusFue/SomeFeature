@@ -25,7 +25,7 @@ public class ShopTabCompleter implements TabCompleter {
         if (command.getName().equalsIgnoreCase("shop")) {
             List<String> items = new ArrayList<>();
             for (String customItem : CustomItems.getAllCustomItems().keySet()) {
-                items.add("somefeature:" + customItem);
+                items.add(customItem);
             }
             for (Material material : Material.values()) {
                 items.add("minecraft:" +  material.name().toLowerCase());
@@ -49,7 +49,9 @@ public class ShopTabCompleter implements TabCompleter {
             } else if (args.length == 5 && args[1].equalsIgnoreCase("additem")) {
                 return filterSuggestions(args[4], Arrays.asList("1", "32", "64"));
             } else if (args.length == 3 && args[1].equalsIgnoreCase("removeitem")) {
-                return filterSuggestions(args[2], Arrays.asList(customItemShop.getShopItems(args[0]).get(0).getItemType()));
+                if(customItemShop.getShopItems(args[0]) != null) {
+                    return filterSuggestions(args[2], customItemShop.getShopItemTypes(args[0]));
+                }
             }
         }
         return null;
@@ -58,7 +60,7 @@ public class ShopTabCompleter implements TabCompleter {
     private List<String> filterSuggestions(String input, List<String> suggestions) {
         List<String> filtered = new ArrayList<>();
         for (String suggestion : suggestions) {
-            if (suggestion.toLowerCase().startsWith(input.toLowerCase())) {
+            if (suggestion.toLowerCase().contains(input.toLowerCase())) {
                 filtered.add(suggestion);
             }
         }

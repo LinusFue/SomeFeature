@@ -26,7 +26,7 @@ public class ShopCommand implements CommandExecutor {
         if (command.getName().equalsIgnoreCase("shop")) {
             List<String> items = new ArrayList<>();
             for (String customItem : CustomItems.getAllCustomItems().keySet()) {
-                items.add("somefeature:" + customItem);
+                items.add(customItem);
             }
             for (Material material : Material.values()) {
                 items.add("minecraft:" +  material.name().toLowerCase());
