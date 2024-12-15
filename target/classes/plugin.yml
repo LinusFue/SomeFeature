@@ -36,9 +36,6 @@ commands:
       - rcm
       - removecm
       - rmcm
-  cenchant:
-    description: Fügt ein Custom Enchantment hinzu
-    usage: /cenchant <enchantment> <level>
   vanish:
     description: Makes the player completly invisible.
     usage: /vanish
