@@ -6,12 +6,9 @@ import at.leineees.someFeature.CustomItems.CustomRecipies;
 import at.leineees.someFeature.Data.CustomMob.CustomMobManager;
 import at.leineees.someFeature.Data.Coins.CoinManager;
 import at.leineees.someFeature.Economy.CustomItemShop;
-import at.leineees.someFeature.Enchantments.EnchantmentListener;
-import at.leineees.someFeature.Enchantments.EnchantmentManager;
 import at.leineees.someFeature.Feature.CustomScoreboardManager;
 import at.leineees.someFeature.Listener.*;
 import at.leineees.someFeature.TabCompleter.CoinTabCompleter;
-import at.leineees.someFeature.TabCompleter.CustomEnchantmentTabCompleter;
 import at.leineees.someFeature.TabCompleter.CustomItemTabCompleter;
 import at.leineees.someFeature.TabCompleter.CustomMobTabCompleter;
 import at.leineees.someFeature.TabCompleter.ShopTabCompleter;
@@ -53,7 +50,6 @@ public final class SomeFeature extends JavaPlugin {
 
         CustomRecipies customRecipies = new CustomRecipies(this);
         CustomMob customMob = new CustomMob(this, customMobManager);
-        EnchantmentManager enchantmentManager = new EnchantmentManager(this);
         
         customRecipies.register();
         customMobManager.loadCustomMobs();
@@ -66,8 +62,6 @@ public final class SomeFeature extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ItemListener(), this);
         getServer().getPluginManager().registerEvents(customItemShop, this);
         getServer().getPluginManager().registerEvents(customMob, this);
-        getServer().getPluginManager().registerEvents(new EnchantmentListener(enchantmentManager), this);
-        getServer().getPluginManager().registerEvents(new AnvilListener(enchantmentManager, this), this);
         
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
         
@@ -79,7 +73,6 @@ public final class SomeFeature extends JavaPlugin {
         getCommand("givecustomitem").setExecutor(new GiveCustomItemCommand(customItems));
         getCommand("spawncustommob").setExecutor(new SpawnCustomMobCommand(customMobManager));
         getCommand("removecustommob").setExecutor(new RemoveCustomMobCommand(customMobManager));
-        getCommand("cenchant").setExecutor(new CEnchantCommand(enchantmentManager));
         getCommand("invsee").setExecutor(new InvseeCommand());
                 
                 
@@ -87,7 +80,6 @@ public final class SomeFeature extends JavaPlugin {
         getCommand("shop").setTabCompleter(new ShopTabCompleter(customItemShop));
         getCommand("givecustomitem").setTabCompleter(new CustomItemTabCompleter());
         getCommand("spawncustommob").setTabCompleter(new CustomMobTabCompleter());
-        getCommand("cenchant").setTabCompleter(new CustomEnchantmentTabCompleter(enchantmentManager));
         getCommand("coins").setTabCompleter(new CoinTabCompleter());
         
         
