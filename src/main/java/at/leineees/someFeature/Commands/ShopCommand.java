@@ -2,6 +2,7 @@ package at.leineees.someFeature.Commands;
 
 import at.leineees.someFeature.CustomItems.CustomItems;
 import at.leineees.someFeature.Economy.CustomItemShop;
+import at.leineees.someFeature.Tools.TabCompleteHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -24,13 +25,7 @@ public class ShopCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (command.getName().equalsIgnoreCase("shop")) {
-            List<String> items = new ArrayList<>();
-            for (String customItem : CustomItems.getAllCustomItems().keySet()) {
-                items.add(customItem);
-            }
-            for (Material material : Material.values()) {
-                items.add("minecraft:" +  material.name().toLowerCase());
-            }
+            List<String> items = TabCompleteHelper.getAllItems();
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 if (args.length == 1 && !args[0].equalsIgnoreCase("create") && !args[0].equalsIgnoreCase("remove") && !args[0].equalsIgnoreCase("list")) {

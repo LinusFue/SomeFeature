@@ -42,3 +42,12 @@ commands:
   invsee:
     description: Opens the inventory of another player.
     usage: /invsee <player>
+  sell:
+    description: Opens the sell inventory
+    usage: /sell
+  price:
+    description: Manages item prices
+    usage:
+      - /price list
+      - /price set <item> <price>
+      - /price remove <item>
