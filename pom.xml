@@ -6,7 +6,7 @@
 
     <groupId>at.leineees</groupId>
     <artifactId>somefeature</artifactId>
-    <version>1.4</version>
+    <version>v1.5</version>
     <packaging>jar</packaging>
 
     <name>somefeature</name>

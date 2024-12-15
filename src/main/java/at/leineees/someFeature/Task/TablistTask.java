@@ -30,8 +30,8 @@ public class TablistTask implements Runnable {
             int footerPos = footerPosition.getOrDefault(uuid, 0) % footerLines.size();
             
             player.setPlayerListHeaderFooter(
-                    ChatColor.GREEN + replacePlaceholders(headerLines.get(headerPos), player),
-                    ChatColor.RED + replacePlaceholders(footerLines.get(footerPos), player));
+                    "§a" + replacePlaceholders(headerLines.get(headerPos), player),
+                    "§c" + replacePlaceholders(footerLines.get(footerPos), player));
 
             /*player.setPlayerListHeaderFooter(
                     (BaseComponent) miniMessage.deserialize(replacePlaceholders(headerLines.get(headerPos), player)),
