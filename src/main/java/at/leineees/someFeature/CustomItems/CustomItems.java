@@ -1,7 +1,6 @@
 package at.leineees.someFeature.CustomItems;
 
 import at.leineees.someFeature.SomeFeature;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
