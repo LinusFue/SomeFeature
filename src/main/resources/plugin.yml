@@ -25,7 +25,7 @@ commands:
       - /shop <shopName> removeitem <namespace:item>
   spawncustommob:
     description: Spawns a custom mob.
-    usage: /spawncustommob [minecraft:entity] [nametag] [command] [x] [y] [z]
+    usage: /spawncustommob [minecraft:entity] [nametag] [x] [y] [z] [command]
     aliases: 
       - scm
       - spawncm
@@ -36,9 +36,6 @@ commands:
       - rcm
       - removecm
       - rmcm
-  cenchant:
-    description: Fügt ein Custom Enchantment hinzu
-    usage: /cenchant <enchantment> <level>
   vanish:
     description: Makes the player completly invisible.
     usage: /vanish
