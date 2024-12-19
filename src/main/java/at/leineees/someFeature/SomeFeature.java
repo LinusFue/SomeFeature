@@ -24,6 +24,8 @@ public final class SomeFeature extends JavaPlugin {
     private PriceManager priceManager;
     
     public static NamespacedKey CUSTOM_ITEM_KEY;
+    public static NamespacedKey CUSTOM_ITEM_LEVEL_KEY;
+
 
     private static SomeFeature instance;
     @Override
@@ -39,6 +41,7 @@ public final class SomeFeature extends JavaPlugin {
         SomeFeatureSettings.getInstance().load();
         
         CUSTOM_ITEM_KEY = new NamespacedKey(this, "custom_item");
+        CUSTOM_ITEM_LEVEL_KEY = new NamespacedKey("somefeature", "custom_item_level");
 
 
         //Definitions
@@ -82,7 +85,7 @@ public final class SomeFeature extends JavaPlugin {
         getCommand("price").setExecutor(new PriceCommand(priceManager));
         getCommand("sell").setExecutor(new SellCommand(sellItems));
                 
-                
+        
         //TabCompleter
         getCommand("shop").setTabCompleter(new ShopTabCompleter(customItemShop));
         getCommand("givecustomitem").setTabCompleter(new CustomItemTabCompleter());

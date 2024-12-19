@@ -1,5 +1,6 @@
 package at.leineees.someFeature.Listener;
 
+import at.leineees.someFeature.SomeFeature;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,11 +12,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -93,6 +97,52 @@ public class ItemListener implements Listener {
             break3x3Area(block, player, item);
         }
     }
+
+    @EventHandler
+    public void onRightClick(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        ItemStack item = player.getInventory().getItemInMainHand();
+        UUID playerId = player.getUniqueId();
+        long currentTime = System.currentTimeMillis();
+
+        if (item != null && item.getType() == Material.EMERALD && item.getItemMeta() != null) {
+            PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+            if (container.has(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING) &&
+                    "healing_spell".equals(container.get(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING))) {
+
+                int level = container.getOrDefault(SomeFeature.CUSTOM_ITEM_LEVEL_KEY, PersistentDataType.INTEGER, 1);
+                int cooldown;
+                double healAmount;
+                switch (level) {
+                    case 1:
+                        cooldown = 20000;
+                        healAmount = 4.0;
+                        break;
+                    case 2:
+                        cooldown = 10000;
+                        healAmount = 4.0;
+                        break;
+                    case 3:
+                        cooldown = 7000;
+                        healAmount = 6.0;
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Invalid level: " + level);
+                }
+
+                if (cooldowns.containsKey(playerId) && (currentTime - cooldowns.get(playerId)) < cooldown) {
+                    player.sendMessage("§cYou must wait before using the healing spell again!");
+                    return;
+                }
+
+                double newHealth = Math.min(player.getHealth() + healAmount, player.getMaxHealth());
+                player.setHealth(newHealth);
+                player.sendMessage("§aYou have been healed for " + (healAmount / 2) + " hearts!");
+
+                cooldowns.put(playerId, currentTime);
+            }
+        }
+    }
     
     
 
@@ -142,13 +192,13 @@ public class ItemListener implements Listener {
     private boolean isLog(Material material) {
         return material == Material.OAK_LOG || material == Material.SPRUCE_LOG || material == Material.BIRCH_LOG ||
                 material == Material.JUNGLE_LOG || material == Material.ACACIA_LOG || material == Material.DARK_OAK_LOG ||
-                material == Material.CRIMSON_STEM || material == Material.WARPED_STEM;
+                material == Material.CRIMSON_STEM || material == Material.WARPED_STEM || material == Material.CHERRY_LOG;
     }
 
     private boolean isLeaf(Material material) {
         return material == Material.OAK_LEAVES || material == Material.SPRUCE_LEAVES || material == Material.BIRCH_LEAVES ||
                 material == Material.JUNGLE_LEAVES || material == Material.ACACIA_LEAVES || material == Material.DARK_OAK_LEAVES ||
-                material == Material.NETHER_WART_BLOCK || material == Material.WARPED_WART_BLOCK;
+                material == Material.NETHER_WART_BLOCK || material == Material.WARPED_WART_BLOCK || material == Material.CHERRY_LEAVES;
     }
 
     private void breakTree(Block startBlock) {

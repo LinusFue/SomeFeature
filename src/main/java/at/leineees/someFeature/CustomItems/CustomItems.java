@@ -10,31 +10,35 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class CustomItems {
 
-    private static final Map<String, ItemStack> customItems = new HashMap<>();
+    private static final Map<String, Supplier<ItemStack>> customItems = new HashMap<>();
 
 
     // Register custom items
     static {
-        registerCustomItem("somefeature:fly_feather", createFlyFeather());
-        registerCustomItem("somefeature:aspect_of_the_void", createAOTV());
-        registerCustomItem("somefeature:grappling_hook", createGrapplingHook());
-        registerCustomItem("somefeature:tree_fella", createTreeFella());
-        registerCustomItem("somefeature:super_pickaxe", createSuperPickaxe());
-        registerCustomItem("somefeature:flying_fish", createFlyingFish());
+        registerCustomItem("fly_feather", CustomItems::createFlyFeather);
+        registerCustomItem("grappling_hook", CustomItems::createGrapplingHook);
+        registerCustomItem("tree_fella", CustomItems::createTreeFella);
+        registerCustomItem("super_pickaxe", CustomItems::createSuperPickaxe);
+        registerCustomItem("flying_fish", CustomItems::createFlyingFish);
+        registerCustomItem("healing_spell_1", () -> CustomItems.createHealingSpell(1));
+        registerCustomItem("healing_spell_2", () -> CustomItems.createHealingSpell(2));
+        registerCustomItem("healing_spell_3", () -> CustomItems.createHealingSpell(3));
     }
 
-    private static void registerCustomItem(String key, ItemStack item) {
-        customItems.put(key, item);
+    private static void registerCustomItem(String key, Supplier<ItemStack> itemSupplier) {
+        customItems.put(key, itemSupplier);
     }
 
     public static ItemStack getCustomItem(String key) {
-        return customItems.get(key);
+        Supplier<ItemStack> itemSupplier = customItems.get(key);
+        return itemSupplier != null ? itemSupplier.get() : null;
     }
-
-    public static Map<String, ItemStack> getAllCustomItems() {
+    
+    public static Map<String, Supplier<ItemStack>> getAllCustomItems() {
         return new HashMap<>(customItems);
     }
     
@@ -59,18 +63,6 @@ public class CustomItems {
             meta.setDisplayName("§6Flight Feather");
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING, "fly_feather");
-            item.setItemMeta(meta);
-        }
-        return item;
-    }
-
-    public static ItemStack createAOTV() {
-        ItemStack item = new ItemStack(Material.DIAMOND_SHOVEL); // Choose your material
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName("§5Aspect of the Void");
-            PersistentDataContainer container = meta.getPersistentDataContainer();
-            container.set(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING, "aspect_of_the_void");
             item.setItemMeta(meta);
         }
         return item;
@@ -128,6 +120,36 @@ public class CustomItems {
         return item;
     }
 
-
+    public static ItemStack createHealingSpell(int level) {
+        ItemStack item = new ItemStack(Material.EMERALD);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName("§aHealing Spell Level " + level);
+            int cooldown;
+            double healAmount;
+            switch (level) {
+                case 1:
+                    cooldown = 20000;
+                    healAmount = 4.0;
+                    break;
+                case 2:
+                    cooldown = 10000;
+                    healAmount = 4.0;
+                    break;
+                case 3:
+                    cooldown = 7000;
+                    healAmount = 6.0;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid level: " + level);
+            }
+            meta.setLore(Arrays.asList("§8Heals you for " + (healAmount / 2) + " hearts!", "§8Cooldown: " + (cooldown / 1000) + " seconds"));
+            PersistentDataContainer container = meta.getPersistentDataContainer();
+            container.set(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING, "healing_spell");
+            container.set(SomeFeature.CUSTOM_ITEM_LEVEL_KEY, PersistentDataType.INTEGER, level);
+            item.setItemMeta(meta);
+        }
+        return item;
+    }
 
 }
