@@ -5,7 +5,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+
+import java.security.Key;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class GiveCustomItemCommand implements CommandExecutor {
     private final CustomItems customItems;
@@ -24,26 +29,15 @@ public class GiveCustomItemCommand implements CommandExecutor {
                         sender.sendMessage("§cUsage: /givecustomitem <item>");
                         return true;
                     }
-                    //Items
-                    switch (args[0].toLowerCase()) {
-                        case "fly_feather":
-                            player.getInventory().addItem(customItems.createFlyFeather());
-                            break;
-                        case "aspect_of_the_void":
-                            player.getInventory().addItem(customItems.createAOTV());
-                            break;
-                        case "grappling_hook":
-                            player.getInventory().addItem(customItems.createGrapplingHook());
-                            break;
-                        case "tree_fella":
-                            player.getInventory().addItem(customItems.createTreeFella());
-                            break;
-                        case "super_pickaxe":
-                            player.getInventory().addItem(customItems.createSuperPickaxe());
-                            break;
-                        default:
-                            sender.sendMessage("§cThis command can only be used by a player.");
-                            break;
+                    Map<String, Supplier<ItemStack>> items = CustomItems.getAllCustomItems();
+                    if (!items.containsKey(args[0].toLowerCase())) {
+                        sender.sendMessage("§cUnknown item: " + args[0]);
+                        return true;
+                    }
+                    ItemStack customItem = CustomItems.getCustomItem(args[0].toLowerCase());
+                    if(customItem != null) {
+                        player.getInventory().addItem(customItem);
+                        sender.sendMessage("§aGiven item: " + args[0]);
                     }
                     return true;
                 } else {

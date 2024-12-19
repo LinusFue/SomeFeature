@@ -1,5 +1,7 @@
 package at.leineees.someFeature.TabCompleter;
 
+import at.leineees.someFeature.CustomItems.CustomItems;
+import at.leineees.someFeature.Tools.TabCompleteHelper;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -12,16 +14,7 @@ public class CustomItemTabCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (command.getName().equalsIgnoreCase("givecustomitem")) {
-            List<String> suggestions = new ArrayList<>();
-            if (args.length == 1) {
-                suggestions.add("fly_feather");
-                suggestions.add("aspect_of_the_void");
-                suggestions.add("grappling_hook");
-                suggestions.add("tree_fella");
-                suggestions.add("super_pickaxe");
-                //more item suggestions
-            }
-            return suggestions;
+            return TabCompleteHelper.filterSuggestions(args[0], CustomItems.getAllCustomItems().keySet().stream().toList());
         }
         return null;
     }
