@@ -1,8 +1,10 @@
 package at.leineees.someFeature.Economy;
 
 import at.leineees.someFeature.Data.Coins.CoinManager;
+import at.leineees.someFeature.SomeFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -10,7 +12,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Arrays;
 
@@ -42,20 +47,32 @@ public class SellItems implements Listener {
 
             if (clickedItem != null && clickedItem.getType() == Material.EMERALD_BLOCK && clickedItem.getItemMeta().getDisplayName().equals("§aConfirm")) {
                 sellItemsInInventory(player, event.getInventory());
+                player.sendMessage("§aItems sold.");
             } else if (clickedItem != null && clickedItem.getType() != Material.AIR) {
                 if (event.getClickedInventory() != player.getInventory()) {
                     player.getInventory().addItem(clickedItem);
                     event.getInventory().setItem(event.getSlot(), null);
-                    int totalCoins = calculateTotalCoinsMinecraft(event.getInventory());
+                    int totalCoins = calculateTotalCoins(event.getInventory());
                     updateConfirmButton(event.getInventory(), totalCoins);
+                    player.sendMessage("§aItem returned to inventory.");
                 } else {
-                    String itemType = clickedItem.getType().getKey().toString();
-                    int price = priceManager.getPrice(itemType);
+                    String itemType;
+                    ItemMeta meta = clickedItem.getItemMeta();
+                    PersistentDataContainer container = meta.getPersistentDataContainer();
+                    if (container.has(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING)) {
+                        itemType = container.get(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING);
+                    } else if (clickedItem.getType().getKey().asString().startsWith("minecraft:")) {
+                        itemType = clickedItem.getType().getKey().toString();
+                    } else {
+                        itemType = null;
+                    }
+                    int price = priceManager.getPrice(new NamespacedKey(itemType.split(":")[0], itemType.split(":")[1]));
+
                     if (price > 0) {
                         if (event.getInventory().firstEmpty() != -1) {
                             event.getInventory().addItem(clickedItem);
                             player.getInventory().setItem(event.getSlot(), null);
-                            int totalCoins = calculateTotalCoinsMinecraft(event.getInventory());
+                            int totalCoins = calculateTotalCoins(event.getInventory());
                             updateConfirmButton(event.getInventory(), totalCoins);
                         } else {
                             player.sendMessage("§cThe sell inventory is full.");
@@ -87,8 +104,17 @@ public class SellItems implements Listener {
         for (int i = 0; i < 26; i++) { // Exclude the confirm button slot
             ItemStack item = inventory.getItem(i);
             if (item != null && item.getType() != Material.AIR) {
-                String itemType = item.getType().getKey().toString();
-                int price = priceManager.getPrice(itemType);
+                String itemType;
+                ItemMeta meta = item.getItemMeta();
+                PersistentDataContainer container = meta.getPersistentDataContainer();
+                if (container.has(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING)) {
+                    itemType = container.get(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING);
+                } else if (item.getType().getKey().asString().startsWith("minecraft:")) {
+                    itemType = item.getType().getKey().toString();
+                } else {
+                    itemType = null;
+                }
+                int price = priceManager.getPrice(new NamespacedKey(itemType.split(":")[0], itemType.split(":")[1]));
 
                 if (price > 0) {
                     int amount = item.getAmount();
@@ -110,14 +136,23 @@ public class SellItems implements Listener {
         player.closeInventory();
     }
 
-    private int calculateTotalCoinsMinecraft(Inventory inventory) {
+    private int calculateTotalCoins(Inventory inventory) {
         int totalCoins = 0;
 
         for (int i = 0; i < 26; i++) { // Exclude the confirm button slot
             ItemStack item = inventory.getItem(i);
             if (item != null && item.getType() != Material.AIR) {
-                String itemType = item.getType().getKey().toString();
-                int price = priceManager.getPrice(itemType);
+                String itemType;
+                ItemMeta meta = item.getItemMeta();
+                PersistentDataContainer container = meta.getPersistentDataContainer();
+                if (container.has(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING)) {
+                    itemType = container.get(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING);
+                } else if (item.getType().getKey().asString().startsWith("minecraft:")) {
+                    itemType = item.getType().getKey().toString();
+                } else {
+                    itemType = null;
+                }
+                int price = priceManager.getPrice(new NamespacedKey(itemType.split(":")[0], itemType.split(":")[1]));
 
                 if (price > 0) {
                     int amount = item.getAmount();

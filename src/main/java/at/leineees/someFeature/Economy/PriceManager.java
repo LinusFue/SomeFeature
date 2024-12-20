@@ -1,6 +1,8 @@
 package at.leineees.someFeature.Economy;
 
 import at.leineees.someFeature.SomeFeature;
+import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.Material;
@@ -13,7 +15,7 @@ import java.util.Map;
 public class PriceManager {
     private final File priceFile;
     private final FileConfiguration priceConfig;
-    private final Map<String, Integer> prices = new HashMap<>();
+    private final Map<NamespacedKey, Integer> prices = new HashMap<>();
 
     public PriceManager(File file) {
         priceFile = new File(file, "prices.yml");
@@ -23,13 +25,15 @@ public class PriceManager {
 
     public void loadPrices() {
         for (String key : priceConfig.getKeys(false)) {
-            prices.put(key, priceConfig.getInt(key));
+            String keyNamespace = key.split(":")[0];
+            String keyName = key.split(":")[1];
+            prices.put(new NamespacedKey(keyNamespace, keyName), priceConfig.getInt(key));
         }
     }
 
     public void savePrices() {
-        for (Map.Entry<String, Integer> entry : prices.entrySet()) {
-            priceConfig.set(entry.getKey(), entry.getValue());
+        for (Map.Entry<NamespacedKey, Integer> entry : prices.entrySet()) {
+            priceConfig.set(entry.getKey().toString(), entry.getValue());
         }
         try {
             priceConfig.save(priceFile);
@@ -38,16 +42,16 @@ public class PriceManager {
         }
     }
 
-    public int getPrice(String itemType) {
+    public int getPrice(NamespacedKey itemType) {
         return prices.getOrDefault(itemType, 0);
     }
 
-    public void setPrice(String itemType, int price) {
+    public void setPrice(NamespacedKey itemType, int price) {
         prices.put(itemType, price);
         savePrices();
     }
 
-    public Map<String, Integer> getPrices() {
+    public Map<NamespacedKey, Integer> getPrices() {
         return prices;
     }
 }

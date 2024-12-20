@@ -2,6 +2,7 @@ package at.leineees.someFeature.CustomItems;
 
 import at.leineees.someFeature.SomeFeature;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -13,33 +14,43 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class CustomItems {
+    //KEYS
+    public static final NamespacedKey FLY_FEATHER = new NamespacedKey(SomeFeature.getInstance(), "fly_feather");
+    public static final NamespacedKey GRAPPLING_HOOK = new NamespacedKey(SomeFeature.getInstance(), "grappling_hook");
+    public static final NamespacedKey TREE_FELLA = new NamespacedKey(SomeFeature.getInstance(), "tree_fella");
+    public static final NamespacedKey SUPER_PICKAXE = new NamespacedKey(SomeFeature.getInstance(), "super_pickaxe");
+    public static final NamespacedKey FLYING_FISH = new NamespacedKey(SomeFeature.getInstance(), "flying_fish");
+    public static final NamespacedKey HEALING_SPELL_1 = new NamespacedKey(SomeFeature.getInstance(), "healing_spell_1");
+    public static final NamespacedKey HEALING_SPELL_2 = new NamespacedKey(SomeFeature.getInstance(), "healing_spell_2");
+    public static final NamespacedKey HEALING_SPELL_3 = new NamespacedKey(SomeFeature.getInstance(), "healing_spell_3");
+    
 
-    private static final Map<String, Supplier<ItemStack>> customItems = new HashMap<>();
+    private static final Map<NamespacedKey, Supplier<ItemStack>> customItems = new HashMap<>();
 
 
     // Register custom items
     static {
-        registerCustomItem("fly_feather", CustomItems::createFlyFeather);
-        registerCustomItem("grappling_hook", CustomItems::createGrapplingHook);
-        registerCustomItem("tree_fella", CustomItems::createTreeFella);
-        registerCustomItem("super_pickaxe", CustomItems::createSuperPickaxe);
-        registerCustomItem("flying_fish", CustomItems::createFlyingFish);
-        registerCustomItem("healing_spell_1", () -> CustomItems.createHealingSpell(1));
-        registerCustomItem("healing_spell_2", () -> CustomItems.createHealingSpell(2));
-        registerCustomItem("healing_spell_3", () -> CustomItems.createHealingSpell(3));
+        registerCustomItem(FLY_FEATHER, CustomItems::createFlyFeather);
+        registerCustomItem(GRAPPLING_HOOK, CustomItems::createGrapplingHook);
+        registerCustomItem(TREE_FELLA, CustomItems::createTreeFella);
+        registerCustomItem(SUPER_PICKAXE, CustomItems::createSuperPickaxe);
+        registerCustomItem(FLYING_FISH, CustomItems::createFlyingFish);
+        registerCustomItem(HEALING_SPELL_1, () -> CustomItems.createHealingSpell(1));
+        registerCustomItem(HEALING_SPELL_2, () -> CustomItems.createHealingSpell(2));
+        registerCustomItem(HEALING_SPELL_3, () -> CustomItems.createHealingSpell(3));
     }
 
-    private static void registerCustomItem(String key, Supplier<ItemStack> itemSupplier) {
+    private static void registerCustomItem(NamespacedKey key, Supplier<ItemStack> itemSupplier) {
         customItems.put(key, itemSupplier);
     }
 
-    public static ItemStack getCustomItem(String key) {
+    public static ItemStack getCustomItem(NamespacedKey key) {
         Supplier<ItemStack> itemSupplier = customItems.get(key);
         return itemSupplier != null ? itemSupplier.get() : null;
     }
     
-    public static Map<String, Supplier<ItemStack>> getAllCustomItems() {
-        return new HashMap<>(customItems);
+    public static Map<NamespacedKey, Supplier<ItemStack>> getAllCustomItems() {
+        return customItems;
     }
     
     //customItemLayout
@@ -50,7 +61,7 @@ public class CustomItems {
             meta.setDisplayName(displayName);
             meta.setLore(Arrays.asList(lore));
             PersistentDataContainer container = meta.getPersistentDataContainer();
-            container.set(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING, "custom_item");
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, "custom_item");
             item.setItemMeta(meta);
         }
         return item;
@@ -62,7 +73,7 @@ public class CustomItems {
         if (meta != null) {
             meta.setDisplayName("§6Flight Feather");
             PersistentDataContainer container = meta.getPersistentDataContainer();
-            container.set(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING, "fly_feather");
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, FLY_FEATHER.asString());
             item.setItemMeta(meta);
         }
         return item;
@@ -75,7 +86,7 @@ public class CustomItems {
             meta.setDisplayName("§7Grappling Hook");
             meta.setLore(Arrays.asList("§8Cooldown: 3 seconds"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
-            container.set(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING, "grappling_hook");
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, GRAPPLING_HOOK.asString());
             item.setItemMeta(meta);
         }
         return item;
@@ -88,7 +99,7 @@ public class CustomItems {
             meta.setDisplayName("§6Tree Fella");
             meta.setLore(Arrays.asList("§8Instantly chop's down trees!", "§8Cooldown: 2 seconds"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
-            container.set(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING, "tree_fella");
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, TREE_FELLA.asString());
             item.setItemMeta(meta);
         }
         return item;
@@ -101,7 +112,7 @@ public class CustomItems {
             meta.setDisplayName("§5Super Pickaxe");
             meta.setLore(Arrays.asList("§8Diggs out a 3x3 Area!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
-            container.set(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING, "super_pickaxe");
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, SUPER_PICKAXE.asString());
             item.setItemMeta(meta);
         }
         return item;
@@ -114,7 +125,7 @@ public class CustomItems {
             meta.setDisplayName("§6Flying Fish");
             meta.setLore(Arrays.asList("§8Allows you to craft a Custom Item!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
-            container.set(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING, "flying_fish");
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, FLYING_FISH.asString());
             item.setItemMeta(meta);
         }
         return item;
@@ -127,26 +138,29 @@ public class CustomItems {
             meta.setDisplayName("§aHealing Spell Level " + level);
             int cooldown;
             double healAmount;
+            NamespacedKey key;
             switch (level) {
                 case 1:
                     cooldown = 20000;
                     healAmount = 4.0;
+                    key = HEALING_SPELL_1;
                     break;
                 case 2:
                     cooldown = 10000;
                     healAmount = 4.0;
+                    key = HEALING_SPELL_2;
                     break;
                 case 3:
                     cooldown = 7000;
                     healAmount = 6.0;
+                    key = HEALING_SPELL_3;
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid level: " + level);
             }
             meta.setLore(Arrays.asList("§8Heals you for " + (healAmount / 2) + " hearts!", "§8Cooldown: " + (cooldown / 1000) + " seconds"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
-            container.set(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING, "healing_spell");
-            container.set(SomeFeature.CUSTOM_ITEM_LEVEL_KEY, PersistentDataType.INTEGER, level);
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, key.asString());
             item.setItemMeta(meta);
         }
         return item;

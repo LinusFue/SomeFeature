@@ -1,6 +1,7 @@
 package at.leineees.someFeature.Commands;
 
 import at.leineees.someFeature.CustomItems.CustomItems;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -8,16 +9,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import javax.naming.Name;
 import java.security.Key;
 import java.util.Map;
 import java.util.function.Supplier;
 
 public class GiveCustomItemCommand implements CommandExecutor {
-    private final CustomItems customItems;
 
-    public GiveCustomItemCommand(CustomItems customItems) {
-        this.customItems = customItems;
-    }
+    public GiveCustomItemCommand(){}
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -29,12 +28,13 @@ public class GiveCustomItemCommand implements CommandExecutor {
                         sender.sendMessage("§cUsage: /givecustomitem <item>");
                         return true;
                     }
-                    Map<String, Supplier<ItemStack>> items = CustomItems.getAllCustomItems();
-                    if (!items.containsKey(args[0].toLowerCase())) {
+                    Map<NamespacedKey, Supplier<ItemStack>> items = CustomItems.getAllCustomItems();
+                    NamespacedKey key = new NamespacedKey(args[0].toLowerCase().split(":")[0], args[0].toLowerCase().split(":")[1]);
+                    if (!items.keySet().contains(key)) {
                         sender.sendMessage("§cUnknown item: " + args[0]);
                         return true;
                     }
-                    ItemStack customItem = CustomItems.getCustomItem(args[0].toLowerCase());
+                    ItemStack customItem = CustomItems.getCustomItem(key);
                     if(customItem != null) {
                         player.getInventory().addItem(customItem);
                         sender.sendMessage("§aGiven item: " + args[0]);

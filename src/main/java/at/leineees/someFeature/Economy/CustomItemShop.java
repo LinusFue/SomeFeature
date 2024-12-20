@@ -5,6 +5,7 @@ import at.leineees.someFeature.CustomItems.CustomItems;
 import at.leineees.someFeature.SomeFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -136,11 +137,17 @@ public class CustomItemShop implements Listener {
         Inventory shop = Bukkit.createInventory(null, 54, shopName);
 
         for (ShopItem shopItem : shopItems) {
-            String itemType = shopItem.getItemType();
+            String onlyItemType = shopItem.getItemType().split(":")[1];
+            NamespacedKey itemType = new NamespacedKey(shopItem.getNamespace(), onlyItemType);
+
             ItemStack itemStack;
 
-            if (itemType.startsWith("somefeature:")) {
+            if (itemType.getNamespace().equals("somefeature")) {
                 itemStack = CustomItems.getCustomItem(itemType);
+                if (itemStack == null) {
+                    Bukkit.getLogger().warning("Custom item not found: " + itemType.getKey());
+                    continue;
+                }
                 ItemMeta meta = itemStack.getItemMeta();
                 List<String> lore = new ArrayList<>();
                 lore.add("§6Cost: " + shopItem.getCost() + " coins");
@@ -148,9 +155,9 @@ public class CustomItemShop implements Listener {
                 itemStack.setItemMeta(meta);
                 itemStack.setAmount(shopItem.getAmount());
             } else {
-                Material material = Material.matchMaterial(itemType);
-                if (itemType == null || material == null) {
-                    Bukkit.getLogger().warning("Invalid item type: " + itemType);
+                Material material = Material.matchMaterial(itemType.getKey());
+                if (material == null) {
+                    Bukkit.getLogger().warning("Invalid material: " + itemType.getKey());
                     continue;
                 }
                 itemStack = new ItemStack(material);
@@ -181,9 +188,9 @@ public class CustomItemShop implements Listener {
                 PersistentDataContainer container = meta.getPersistentDataContainer();
                 if (meta != null) {
                     String itemKey = null;
-                    if (container.has(SomeFeature.getInstance().CUSTOM_ITEM_KEY, PersistentDataType.STRING)) {
-                        itemKey = "somefeature:" + container.get(SomeFeature.getInstance().CUSTOM_ITEM_KEY, PersistentDataType.STRING);
-                    } else {
+                    try {
+                        itemKey = container.get(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING);
+                    }catch (NullPointerException e){
                         itemKey = "minecraft:" + clickedItem.getType().toString().toLowerCase();
                     }
                     for (List<ShopItem> shopItems : shops.values()) {
