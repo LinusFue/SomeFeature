@@ -1,6 +1,7 @@
 package at.leineees.someFeature.Commands;
 
 import at.leineees.someFeature.Economy.PriceManager;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,7 +34,7 @@ public class PriceCommand implements CommandExecutor {
                     sender.sendMessage("§cUsage: /price set <item> <price>");
                     return false;
                 }
-                handleSetCommand(sender, args[1], args[2]);
+                handleSetCommand(sender, new NamespacedKey(args[1].split(":")[0], args[1].split(":")[1]), args[2]);
                 break;
             case "remove":
                 if (args.length != 2) {
@@ -57,12 +58,12 @@ public class PriceCommand implements CommandExecutor {
         }
 
         sender.sendMessage("§aItem Prices:");
-        for (Map.Entry<String, Integer> entry : priceManager.getPrices().entrySet()) {
+        for (Map.Entry<NamespacedKey, Integer> entry : priceManager.getPrices().entrySet()) {
             sender.sendMessage("§a" + entry.getKey() + ": " + entry.getValue() + " coins");
         }
     }
 
-    private void handleSetCommand(CommandSender sender, String itemType, String priceStr) {
+    private void handleSetCommand(CommandSender sender, NamespacedKey itemType, String priceStr) {
         try {
             int price = Integer.parseInt(priceStr);
             priceManager.setPrice(itemType, price);

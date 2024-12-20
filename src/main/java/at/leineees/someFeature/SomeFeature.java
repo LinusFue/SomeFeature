@@ -25,22 +25,13 @@ public final class SomeFeature extends JavaPlugin {
     
     public static NamespacedKey CUSTOM_ITEM_KEY;
     public static NamespacedKey CUSTOM_ITEM_LEVEL_KEY;
-
-
-    private static SomeFeature instance;
-    @Override
-    public void onLoad() {
-        if (instance != null) {
-            throw new IllegalStateException("Plugin already initialized!");
-        }
-        instance = this;
-    }
+    
     @Override
     public void onEnable() {
         Bukkit.broadcastMessage("§aSomeFeature enabled");
         SomeFeatureSettings.getInstance().load();
         
-        CUSTOM_ITEM_KEY = new NamespacedKey(this, "custom_item");
+        CUSTOM_ITEM_KEY = new NamespacedKey(this, "custom_item_key");
         CUSTOM_ITEM_LEVEL_KEY = new NamespacedKey("somefeature", "custom_item_level");
 
 
@@ -64,9 +55,9 @@ public final class SomeFeature extends JavaPlugin {
         //AddPlugins
         getServer().getPluginManager().registerEvents(SpawnElytraFly.create(this), this);
         getServer().getPluginManager().registerEvents(new PlayerListener(customScoreboardManager, coinManager), this);
+        getServer().getPluginManager().registerEvents(new ItemListener(), this);
         
         //AddListener
-        getServer().getPluginManager().registerEvents(new ItemListener(), this);
         getServer().getPluginManager().registerEvents(customItemShop, this);
         getServer().getPluginManager().registerEvents(customMob, this);
         getServer().getPluginManager().registerEvents(sellItems, this);
@@ -78,7 +69,7 @@ public final class SomeFeature extends JavaPlugin {
         getCommand("vanish").setExecutor(new VanishCommand(this));
         getCommand("shop").setExecutor(new ShopCommand(customItemShop));
         getCommand("coins").setExecutor(new CoinsCommand(coinManager));
-        getCommand("givecustomitem").setExecutor(new GiveCustomItemCommand(customItems));
+        getCommand("givecustomitem").setExecutor(new GiveCustomItemCommand());
         getCommand("spawncustommob").setExecutor(new SpawnCustomMobCommand(customMobManager));
         getCommand("removecustommob").setExecutor(new RemoveCustomMobCommand(customMobManager));
         getCommand("invsee").setExecutor(new InvseeCommand());
@@ -115,6 +106,6 @@ public final class SomeFeature extends JavaPlugin {
     }
     
     public static SomeFeature getInstance(){
-        return instance;
+        return getPlugin(SomeFeature.class);
     }
 }
