@@ -93,7 +93,7 @@ public class CustomItemShop implements Listener {
 
     public void removeShop(String shopName) {
         if (shops.containsKey(shopName)) {
-            shops.remove(shopName, new ArrayList<>());
+            shops.remove(shopName);
         }
     }
     
@@ -188,9 +188,9 @@ public class CustomItemShop implements Listener {
                 PersistentDataContainer container = meta.getPersistentDataContainer();
                 if (meta != null) {
                     String itemKey = null;
-                    try {
+                    if (container.has(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING)) {
                         itemKey = container.get(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING);
-                    }catch (NullPointerException e){
+                    }else {
                         itemKey = "minecraft:" + clickedItem.getType().toString().toLowerCase();
                     }
                     for (List<ShopItem> shopItems : shops.values()) {

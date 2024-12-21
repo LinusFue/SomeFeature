@@ -40,7 +40,7 @@ public class PriceCommand implements CommandExecutor {
                     sender.sendMessage("§cUsage: /price remove <item>");
                     return false;
                 }
-                handleRemoveCommand(sender, args[1]);
+                handleRemoveCommand(sender, new NamespacedKey(args[1].split(":")[0], args[1].split(":")[1]));
                 break;
             default:
                 sender.sendMessage("§cUnknown subcommand. Usage: /price <list|set|remove> [arguments]");
@@ -72,7 +72,7 @@ public class PriceCommand implements CommandExecutor {
         }
     }
 
-    private void handleRemoveCommand(CommandSender sender, String itemType) {
+    private void handleRemoveCommand(CommandSender sender, NamespacedKey itemType) {
         if (!priceManager.getPrices().containsKey(itemType)) {
             sender.sendMessage("§cItem does not exist.");
             return;

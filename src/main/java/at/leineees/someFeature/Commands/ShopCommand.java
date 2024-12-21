@@ -54,7 +54,7 @@ public class ShopCommand implements CommandExecutor {
                         player.sendMessage("§aShops: " + shopNames);
                     }
                     return true;
-                }else if (args.length == 5 && args[1].equalsIgnoreCase("additem")) {
+                } else if (args.length == 5 && args[1].equalsIgnoreCase("additem")) {
                     // Add item to the shop
                     if (player.hasPermission("somefeature.addshopitem")) {
                         String shopName = args[0];
@@ -69,10 +69,10 @@ public class ShopCommand implements CommandExecutor {
                             player.sendMessage("§cCost and amount must be valid numbers!");
                             return true;
                         }
-                        if(items.contains(itemType)) {
+                        if (items.contains(itemType)) {
                             customItemShop.addShopItem(shopName, itemType, cost, amount);
                             player.sendMessage("§aItem added to the shop " + shopName + "!");
-                        }else{
+                        } else {
                             player.sendMessage("§cItem not found!");
                         }
                         return true;
