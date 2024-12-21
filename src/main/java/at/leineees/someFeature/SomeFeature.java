@@ -3,6 +3,7 @@ package at.leineees.someFeature;
 import at.leineees.someFeature.Commands.*;
 import at.leineees.someFeature.Commands.SellCommand;
 import at.leineees.someFeature.CustomItems.CustomItems;
+import at.leineees.someFeature.CustomItems.CustomRecipeBook;
 import at.leineees.someFeature.CustomItems.CustomRecipies;
 import at.leineees.someFeature.Data.CustomMob.CustomMobManager;
 import at.leineees.someFeature.Data.Coins.CoinManager;
@@ -47,8 +48,10 @@ public final class SomeFeature extends JavaPlugin {
         CustomMob customMob = new CustomMob(this, customMobManager);
         priceManager = new PriceManager(getDataFolder());
         SellItems sellItems = new SellItems(priceManager, coinManager);
+        CustomRecipeBook customRecipeBook = new CustomRecipeBook();
         
         customRecipies.register();
+        customRecipeBook.loadRecipes();
         customMobManager.loadCustomMobs();
         priceManager.loadPrices();
 

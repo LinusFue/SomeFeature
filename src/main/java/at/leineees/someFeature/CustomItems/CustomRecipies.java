@@ -17,26 +17,42 @@ public class CustomRecipies {
     public CustomRecipies(JavaPlugin plugin){
         this.plugin = plugin;
     }
-    private List<Recipe> recipes = new ArrayList<>();
+    private static List<Recipe> recipes = new ArrayList<>();
+    public static List<Recipe> getRecipes(){
+        return recipes;
+    }
+    private static List<ItemStack> results = new ArrayList<>();
+    public static List<ItemStack> getResults(){
+        return results;
+    }
+    public static Recipe getRecipe(ItemStack result){
+        return recipes.get(results.indexOf(result));
+    }
     public void register(){
 
+        ItemStack treeFella = CustomItems.createTreeFella();
         ItemStack healingSpell1 = CustomItems.createHealingSpell(1);
         ItemStack healingSpell2 = CustomItems.createHealingSpell(2);
         ItemStack healingSpell3 = CustomItems.createHealingSpell(3);
         
-        Bukkit.addRecipe(treeFellaRecipe());
+        Bukkit.addRecipe(treeFellaRecipe(treeFella));
         Bukkit.addRecipe(spellRecipe1(healingSpell1));
         Bukkit.addRecipe(spellRecipe2(healingSpell1, healingSpell2));
         Bukkit.addRecipe(spellRecipe3(healingSpell2, healingSpell3));
 
-        recipes.add(treeFellaRecipe());
+        recipes.add(treeFellaRecipe(treeFella));
         recipes.add(spellRecipe1(healingSpell1));
         recipes.add(spellRecipe2(healingSpell1, healingSpell2));
         recipes.add(spellRecipe3(healingSpell2, healingSpell3));
+        
+        results.add(treeFella);
+        results.add(healingSpell1);
+        results.add(healingSpell2);
+        results.add(healingSpell3);
     }
     
-    private ShapelessRecipe treeFellaRecipe(){
-        ShapelessRecipe recipeTreeFella = new ShapelessRecipe(new NamespacedKey("somefeature", "tree_fella_recipe"), CustomItems.createTreeFella());
+    private ShapelessRecipe treeFellaRecipe(ItemStack output){
+        ShapelessRecipe recipeTreeFella = new ShapelessRecipe(new NamespacedKey("somefeature", "tree_fella_recipe"), output);
         recipeTreeFella.addIngredient(Material.NETHERITE_AXE);
         recipeTreeFella.addIngredient(Material.OAK_LOG)
                 .addIngredient(Material.SPRUCE_LOG)

@@ -1,5 +1,5 @@
 name: SomeFeature
-version: 'V1.4'
+version: 'V1.7'
 main: at.leineees.someFeature.SomeFeature
 api-version: '1.21'
 authors: [ LiveLeineees ]

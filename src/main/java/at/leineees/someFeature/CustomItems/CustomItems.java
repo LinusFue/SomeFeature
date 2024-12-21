@@ -188,7 +188,7 @@ public class CustomItems {
         ItemStack item = new ItemStack(Material.BOOK);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName("§4Recipe Book");
+            meta.setDisplayName("§dRecipe Book");
             meta.setLore(Arrays.asList("§8Zeigt custom Item Rezepte an!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, RECIPE_BOOK.toString());

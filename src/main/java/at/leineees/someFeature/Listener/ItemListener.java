@@ -1,7 +1,7 @@
 package at.leineees.someFeature.Listener;
 
 import at.leineees.someFeature.CustomItems.CustomItems;
-import at.leineees.someFeature.CustomRecipeBook;
+import at.leineees.someFeature.CustomItems.CustomRecipeBook;
 import at.leineees.someFeature.SomeFeature;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -18,14 +18,11 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
-import java.security.Key;
 import java.util.*;
 
 public class ItemListener implements Listener {
@@ -150,7 +147,7 @@ public class ItemListener implements Listener {
             if (CustomItems.isCustomItem(item)
                     && container.get(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING).startsWith("somefeature:recipe_book")
                     && item.getType() == Material.BOOK) {
-                CustomRecipeBook
+                CustomRecipeBook.openRecipeBook(player);
             }
         }
     }
