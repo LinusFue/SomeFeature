@@ -61,7 +61,7 @@ public class SellItems implements Listener {
                     PersistentDataContainer container = meta.getPersistentDataContainer();
                     if (container.has(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING)) {
                         itemType = container.get(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING);
-                    } else if (clickedItem.getType().getKey().asString().startsWith("minecraft:")) {
+                    } else if (clickedItem.getType().getKey().toString().startsWith("minecraft:")) {
                         itemType = clickedItem.getType().getKey().toString();
                     } else {
                         itemType = null;
@@ -109,7 +109,7 @@ public class SellItems implements Listener {
                 PersistentDataContainer container = meta.getPersistentDataContainer();
                 if (container.has(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING)) {
                     itemType = container.get(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING);
-                } else if (item.getType().getKey().asString().startsWith("minecraft:")) {
+                } else if (item.getType().getKey().toString().startsWith("minecraft:")) {
                     itemType = item.getType().getKey().toString();
                 } else {
                     itemType = null;
@@ -128,7 +128,7 @@ public class SellItems implements Listener {
 
         if (totalCoins > 0) {
             coinManager.addCoins(player, totalCoins);
-            player.sendMessage("§aYou sold items for " + totalCoins + " coins.");
+            player.sendMessage("§aYou sold items for §6" + totalCoins + " coins.");
         } else {
             player.sendMessage("§cNo sellable items found.");
         }
@@ -147,7 +147,7 @@ public class SellItems implements Listener {
                 PersistentDataContainer container = meta.getPersistentDataContainer();
                 if (container.has(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING)) {
                     itemType = container.get(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING);
-                } else if (item.getType().getKey().asString().startsWith("minecraft:")) {
+                } else if (item.getType().getKey().toString().startsWith("minecraft:")) {
                     itemType = item.getType().getKey().toString();
                 } else {
                     itemType = null;

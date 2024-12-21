@@ -32,7 +32,7 @@ public class TabCompleteHelper {
     public static List<String> filterSuggestions(String input, Set<NamespacedKey> suggestions) {
         List<String> filtered = new ArrayList<>();
         for (NamespacedKey suggestion : suggestions) {
-            if (suggestion.asString().toLowerCase().contains(input.toLowerCase())) {
+            if (suggestion.toString().toLowerCase().contains(input.toLowerCase())) {
                 filtered.add(suggestion.toString());
             }
         }
