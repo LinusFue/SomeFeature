@@ -8,7 +8,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -20,18 +19,17 @@ public class ArmorItemListener implements Listener {
         Player player = event.getPlayer();
         ItemStack chestplate = player.getInventory().getChestplate();
 
-        if (!event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
+        if (player.getGameMode() != GameMode.CREATIVE) {
             if (chestplate != null && chestplate.getType() == Material.NETHERITE_CHESTPLATE) {
                 ItemMeta meta = chestplate.getItemMeta();
                 if (meta != null) {
                     PersistentDataContainer container = meta.getPersistentDataContainer();
                     if (container.has(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING) &&
-                            container.get(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING).equals("somefeature:elytra_chestplate")) {
+                            "somefeature:elytra_chestplate".equals(container.get(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING))) {
 
                         player.setGliding(true);
                         event.setCancelled(true);
-                        ItemStack elytra = new ItemStack(Material.ELYTRA);
-                        player.sendEquipmentChange(player, EquipmentSlot.CHEST, elytra);
+                        showElytra(player);
                     }
                 }
             }
@@ -51,5 +49,10 @@ public class ArmorItemListener implements Listener {
             }
             player.getInventory().setChestplate(chestplate);
         }
+    }
+
+    private void showElytra(Player player) {
+        ItemStack elytra = new ItemStack(Material.ELYTRA);
+        player.sendEquipmentChange(player, org.bukkit.inventory.EquipmentSlot.CHEST, elytra);
     }
 }
