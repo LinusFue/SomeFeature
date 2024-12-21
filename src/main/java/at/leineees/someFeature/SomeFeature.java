@@ -54,15 +54,17 @@ public final class SomeFeature extends JavaPlugin {
 
         //AddPlugins
         getServer().getPluginManager().registerEvents(SpawnElytraFly.create(this), this);
-        getServer().getPluginManager().registerEvents(new PlayerListener(customScoreboardManager, coinManager), this);
-        getServer().getPluginManager().registerEvents(new ItemListener(), this);
         
         //AddListener
+        getServer().getPluginManager().registerEvents(new PlayerListener(customScoreboardManager, coinManager), this);
+        getServer().getPluginManager().registerEvents(new ItemListener(), this);
+        getServer().getPluginManager().registerEvents(new ArmorItemListener(), this);
         getServer().getPluginManager().registerEvents(customItemShop, this);
         getServer().getPluginManager().registerEvents(customMob, this);
         getServer().getPluginManager().registerEvents(sellItems, this);
         
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
+        getServer().getPluginManager().registerEvents(new AnvilRecipeListener(), this);
         
         //AddCommands
         getCommand("fly").setExecutor(new FlyCommand());
