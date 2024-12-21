@@ -1,9 +1,11 @@
 package at.leineees.someFeature.Listener;
 
+import at.leineees.someFeature.CustomItems.CustomItems;
 import at.leineees.someFeature.SomeFeature;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -22,6 +24,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
+import java.security.Key;
 import java.util.*;
 
 public class ItemListener implements Listener {
@@ -107,16 +110,17 @@ public class ItemListener implements Listener {
 
         if (item != null && item.getType() == Material.EMERALD && item.getItemMeta() != null) {
             PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-            if (container.has(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING) &&
-                    "healing_spell".equals(container.get(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING))) {
-
-                int level = container.getOrDefault(SomeFeature.CUSTOM_ITEM_LEVEL_KEY, PersistentDataType.INTEGER, 1);
+            if (container.has(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING) 
+                    && container.get(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING).startsWith("somefeature:healing_spell")) {
                 int cooldown;
                 double healAmount;
+
+                String key = container.get(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING);
+                int level = Integer.parseInt(key.split("_")[key.split("_").length - 1]);
                 switch (level) {
                     case 1:
                         cooldown = 20000;
-                        healAmount = 4.0;
+                        healAmount = 3.0;
                         break;
                     case 2:
                         cooldown = 10000;
