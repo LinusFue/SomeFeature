@@ -1,6 +1,7 @@
 package at.leineees.someFeature.Listener;
 
 import at.leineees.someFeature.CustomItems.CustomItems;
+import at.leineees.someFeature.CustomRecipeBook;
 import at.leineees.someFeature.SomeFeature;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -108,10 +109,11 @@ public class ItemListener implements Listener {
         UUID playerId = player.getUniqueId();
         long currentTime = System.currentTimeMillis();
 
-        if (item != null && item.getType() == Material.EMERALD && item.getItemMeta() != null) {
+        if (item != null && item.getItemMeta() != null) {
             PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-            if (container.has(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING) 
-                    && container.get(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING).startsWith("somefeature:healing_spell")) {
+            if (CustomItems.isCustomItem(item)
+                    && container.get(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING).startsWith("somefeature:healing_spell")
+                    && item.getType() == Material.EMERALD) {
                 int cooldown;
                 double healAmount;
 
@@ -144,6 +146,11 @@ public class ItemListener implements Listener {
                 player.sendMessage("§aYou have been healed for " + (healAmount / 2) + " hearts!");
 
                 cooldowns.put(playerId, currentTime);
+            }
+            if (CustomItems.isCustomItem(item)
+                    && container.get(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING).startsWith("somefeature:recipe_book")
+                    && item.getType() == Material.BOOK) {
+                CustomRecipeBook
             }
         }
     }

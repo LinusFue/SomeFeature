@@ -25,6 +25,7 @@ public class CustomItems {
     public static final NamespacedKey HEALING_SPELL_2 = new NamespacedKey(SomeFeature.getInstance(), "healing_spell_2");
     public static final NamespacedKey HEALING_SPELL_3 = new NamespacedKey(SomeFeature.getInstance(), "healing_spell_3");
     public static final NamespacedKey ELYTRA_CHESTPLATE = new NamespacedKey(SomeFeature.getInstance(), "elytra_chestplate");
+    public static final NamespacedKey RECIPE_BOOK = new NamespacedKey(SomeFeature.getInstance(), "recipe_book");
     
 
     private static final Map<NamespacedKey, Supplier<ItemStack>> customItems = new HashMap<>();
@@ -41,6 +42,7 @@ public class CustomItems {
         registerCustomItem(HEALING_SPELL_2, () -> CustomItems.createHealingSpell(2));
         registerCustomItem(HEALING_SPELL_3, () -> CustomItems.createHealingSpell(3));
         registerCustomItem(ELYTRA_CHESTPLATE, CustomItems::createElytraChestplate);
+        registerCustomItem(RECIPE_BOOK, CustomItems::createRecipeBook);
     }
 
     private static void registerCustomItem(NamespacedKey key, Supplier<ItemStack> itemSupplier) {
@@ -177,6 +179,19 @@ public class CustomItems {
             meta.setLore(Arrays.asList("§8Combines the power of a Netherite Chestplate and an Elytra"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, ELYTRA_CHESTPLATE.toString());
+            item.setItemMeta(meta);
+        }
+        return item;
+    }
+    
+    public static ItemStack createRecipeBook() {
+        ItemStack item = new ItemStack(Material.BOOK);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName("§4Recipe Book");
+            meta.setLore(Arrays.asList("§8Zeigt custom Item Rezepte an!"));
+            PersistentDataContainer container = meta.getPersistentDataContainer();
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, RECIPE_BOOK.toString());
             item.setItemMeta(meta);
         }
         return item;

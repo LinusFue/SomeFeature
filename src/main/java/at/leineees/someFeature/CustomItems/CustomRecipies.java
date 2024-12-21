@@ -3,17 +3,21 @@ package at.leineees.someFeature.CustomItems;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomRecipies {
     private JavaPlugin plugin;
     public CustomRecipies(JavaPlugin plugin){
         this.plugin = plugin;
     }
+    private List<Recipe> recipes = new ArrayList<>();
     public void register(){
 
         ItemStack healingSpell1 = CustomItems.createHealingSpell(1);
@@ -24,6 +28,11 @@ public class CustomRecipies {
         Bukkit.addRecipe(spellRecipe1(healingSpell1));
         Bukkit.addRecipe(spellRecipe2(healingSpell1, healingSpell2));
         Bukkit.addRecipe(spellRecipe3(healingSpell2, healingSpell3));
+
+        recipes.add(treeFellaRecipe());
+        recipes.add(spellRecipe1(healingSpell1));
+        recipes.add(spellRecipe2(healingSpell1, healingSpell2));
+        recipes.add(spellRecipe3(healingSpell2, healingSpell3));
     }
     
     private ShapelessRecipe treeFellaRecipe(){
