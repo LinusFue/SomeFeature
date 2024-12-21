@@ -207,7 +207,7 @@ public class CustomItemShop implements Listener {
                                     }
                                     if (itemToAdd != null) {
                                         player.getInventory().addItem(itemToAdd);
-                                        player.sendMessage("§aYou have purchased " + meta.getDisplayName() + " for " + cost + " coins.");
+                                        player.sendMessage("§aYou have purchased " + meta.getDisplayName() + " §afor §6" + cost + " coins.");
                                         coinManager.removeCoins(player, cost);
                                     } else {
                                         player.sendMessage("§cFailed to add item to inventory.");

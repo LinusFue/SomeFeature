@@ -73,7 +73,7 @@ public class CustomItems {
         if (meta != null) {
             meta.setDisplayName("§6Flight Feather");
             PersistentDataContainer container = meta.getPersistentDataContainer();
-            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, FLY_FEATHER.asString());
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, FLY_FEATHER.toString());
             item.setItemMeta(meta);
         }
         return item;
@@ -86,7 +86,7 @@ public class CustomItems {
             meta.setDisplayName("§7Grappling Hook");
             meta.setLore(Arrays.asList("§8Cooldown: 3 seconds"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
-            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, GRAPPLING_HOOK.asString());
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, GRAPPLING_HOOK.toString());
             item.setItemMeta(meta);
         }
         return item;
@@ -99,7 +99,7 @@ public class CustomItems {
             meta.setDisplayName("§6Tree Fella");
             meta.setLore(Arrays.asList("§8Instantly chop's down trees!", "§8Cooldown: 2 seconds"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
-            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, TREE_FELLA.asString());
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, TREE_FELLA.toString());
             item.setItemMeta(meta);
         }
         return item;
@@ -112,7 +112,7 @@ public class CustomItems {
             meta.setDisplayName("§5Super Pickaxe");
             meta.setLore(Arrays.asList("§8Diggs out a 3x3 Area!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
-            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, SUPER_PICKAXE.asString());
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, SUPER_PICKAXE.toString());
             item.setItemMeta(meta);
         }
         return item;
@@ -125,7 +125,7 @@ public class CustomItems {
             meta.setDisplayName("§6Flying Fish");
             meta.setLore(Arrays.asList("§8Allows you to craft a Custom Item!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
-            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, FLYING_FISH.asString());
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, FLYING_FISH.toString());
             item.setItemMeta(meta);
         }
         return item;
@@ -160,7 +160,7 @@ public class CustomItems {
             }
             meta.setLore(Arrays.asList("§8Heals you for " + (healAmount / 2) + " hearts!", "§8Cooldown: " + (cooldown / 1000) + " seconds"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
-            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, key.asString());
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, key.toString());
             item.setItemMeta(meta);
         }
         return item;
