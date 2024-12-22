@@ -31,20 +31,20 @@ public class CustomRecipes {
         ItemStack healingSpell2 = CustomItems.createHealingSpell(2);
         ItemStack healingSpell3 = CustomItems.createHealingSpell(3);
         ItemStack elytraChestplate = CustomItems.createElytraChestplate();
+        ItemStack multiToolBase = CustomItems.createMultiToolBase();
+        ItemStack multiTool = CustomItems.createMultiTool();
         
         recipes.add(spellRecipe1(healingSpell1));
         recipes.add(spellRecipe2(healingSpell1, healingSpell2));
         recipes.add(spellRecipe3(healingSpell2, healingSpell3));
         recipes.add(elytraChestplateRecipe(elytraChestplate));
-        
-        results.add(healingSpell1);
-        results.add(healingSpell2);
-        results.add(healingSpell3);
-        results.add(elytraChestplate);
+        recipes.add(multiToolBaseRecipe(multiToolBase));
+        recipes.add(multiToolRecipe(multiToolBase, multiTool));
         
         for (Recipe recipe : recipes) {
+            Bukkit.addRecipe(recipe);
             results.add(recipe.getResult());
-        }
+        }        
     }
     
     private ShapelessRecipe treeFellaRecipe(ItemStack output){
@@ -90,10 +90,20 @@ public class CustomRecipes {
         RecipeChoice addition = new RecipeChoice.MaterialChoice(Material.ELYTRA);
         return new AnvilRecipe(new NamespacedKey("somefeature", "elytra_chestplate_recipe"), output, base, addition);
     }
-    
-    private AnvilRecipe flyFeather(ItemStack output){
-        RecipeChoice base = new RecipeChoice.MaterialChoice(Material.FEATHER);
-        RecipeChoice addition = new RecipeChoice.MaterialChoice(Material.ELYTRA);
-        return new AnvilRecipe(new NamespacedKey("somefeature", "fly_feather_recipe"), output, base, addition);
+    private ShapedRecipe multiToolBaseRecipe(ItemStack output){
+        ShapedRecipe multiToolBaseR = new ShapedRecipe(new NamespacedKey("somefeature", "multi-tool-base-recipe"), output);
+        multiToolBaseR.shape(" L ", "LCL", " D ");
+        multiToolBaseR.setIngredient('D', Material.DIAMOND);
+        multiToolBaseR.setIngredient('C', Material.END_CRYSTAL);
+        multiToolBaseR.setIngredient('L', Material.LEAD);
+        return multiToolBaseR;
+    }
+    private ShapelessRecipe multiToolRecipe(ItemStack input, ItemStack output) {
+        ShapelessRecipe multiToolR = new ShapelessRecipe(new NamespacedKey("somefeature", "multi_tool_recipe"), output);
+        multiToolR.addIngredient(input);
+        multiToolR.addIngredient(Material.NETHERITE_PICKAXE);
+        multiToolR.addIngredient(Material.NETHERITE_SHOVEL);
+        multiToolR.addIngredient(Material.NETHERITE_AXE);
+        return multiToolR;
     }
 }

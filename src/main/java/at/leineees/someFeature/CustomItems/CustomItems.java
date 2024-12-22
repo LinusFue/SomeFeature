@@ -27,6 +27,7 @@ public class CustomItems {
     public static final NamespacedKey ELYTRA_CHESTPLATE = new NamespacedKey(SomeFeature.getInstance(), "elytra_chestplate");
     public static final NamespacedKey RECIPE_BOOK = new NamespacedKey(SomeFeature.getInstance(), "recipe_book");
     public static final NamespacedKey MULTI_TOOL = new NamespacedKey(SomeFeature.getInstance(), "multi_tool");
+    public static final NamespacedKey MULTI_TOOL_BASE = new NamespacedKey(SomeFeature.getInstance(), "multi_tool_base");
     
 
     private static final Map<NamespacedKey, Supplier<ItemStack>> customItems = new HashMap<>();
@@ -45,6 +46,7 @@ public class CustomItems {
         registerCustomItem(ELYTRA_CHESTPLATE, CustomItems::createElytraChestplate);
         registerCustomItem(RECIPE_BOOK, CustomItems::createRecipeBook);
         registerCustomItem(MULTI_TOOL, CustomItems::createMultiTool);
+        registerCustomItem(MULTI_TOOL_BASE, CustomItems::createMultiToolBase);
     }
 
     private static void registerCustomItem(NamespacedKey key, Supplier<ItemStack> itemSupplier) {
@@ -204,9 +206,22 @@ public class CustomItems {
         ItemMeta meta = item.getItemMeta();
         if(meta != null) {
             meta.setDisplayName("§6Multi Tool");
-            meta.setLore(Arrays.asList("§8Allows you to bundle multiple tools into one!"));
+            meta.setLore(Arrays.asList("§8Allows you to bundle multiple tools into one!", "§4Experimental!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, MULTI_TOOL.toString());
+            item.setItemMeta(meta);
+        }
+        return item;
+    }
+    
+    public static ItemStack createMultiToolBase(){
+        ItemStack item = new ItemStack(Material.DIAMOND);
+        ItemMeta meta = item.getItemMeta();
+        if(meta != null) {
+            meta.setDisplayName("§6Multi Tool Base");
+            meta.setLore(Arrays.asList("§8Allows you to craft a powerful multitool!", "§4Experimental!"));
+            PersistentDataContainer container = meta.getPersistentDataContainer();
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, MULTI_TOOL_BASE.toString());
             item.setItemMeta(meta);
         }
         return item;
