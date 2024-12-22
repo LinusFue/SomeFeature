@@ -41,6 +41,7 @@ public class ArmorItemListener implements Listener {
         Player player = event.getPlayer();
         if (!player.isGliding()) {
             ItemStack chestplate = player.getInventory().getChestplate();
+            if(chestplate == null) return;
             ItemMeta meta = chestplate.getItemMeta();
             if (meta != null) {
                 PersistentDataContainer container = meta.getPersistentDataContainer();
