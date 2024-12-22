@@ -26,6 +26,7 @@ public class CustomItems {
     public static final NamespacedKey HEALING_SPELL_3 = new NamespacedKey(SomeFeature.getInstance(), "healing_spell_3");
     public static final NamespacedKey ELYTRA_CHESTPLATE = new NamespacedKey(SomeFeature.getInstance(), "elytra_chestplate");
     public static final NamespacedKey RECIPE_BOOK = new NamespacedKey(SomeFeature.getInstance(), "recipe_book");
+    public static final NamespacedKey MULTI_TOOL = new NamespacedKey(SomeFeature.getInstance(), "multi_tool");
     
 
     private static final Map<NamespacedKey, Supplier<ItemStack>> customItems = new HashMap<>();
@@ -43,6 +44,7 @@ public class CustomItems {
         registerCustomItem(HEALING_SPELL_3, () -> CustomItems.createHealingSpell(3));
         registerCustomItem(ELYTRA_CHESTPLATE, CustomItems::createElytraChestplate);
         registerCustomItem(RECIPE_BOOK, CustomItems::createRecipeBook);
+        registerCustomItem(MULTI_TOOL, CustomItems::createMultiTool);
     }
 
     private static void registerCustomItem(NamespacedKey key, Supplier<ItemStack> itemSupplier) {
@@ -192,6 +194,19 @@ public class CustomItems {
             meta.setLore(Arrays.asList("§8Zeigt custom Item Rezepte an!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, RECIPE_BOOK.toString());
+            item.setItemMeta(meta);
+        }
+        return item;
+    }
+    
+    public static ItemStack createMultiTool(){
+        ItemStack item = new ItemStack(Material.DIAMOND);
+        ItemMeta meta = item.getItemMeta();
+        if(meta != null) {
+            meta.setDisplayName("§6Multi Tool");
+            meta.setLore(Arrays.asList("§8Allows you to bundle multiple tools into one!"));
+            PersistentDataContainer container = meta.getPersistentDataContainer();
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, MULTI_TOOL.toString());
             item.setItemMeta(meta);
         }
         return item;

@@ -19,11 +19,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
 import java.util.*;
+
+import static at.leineees.someFeature.CustomItems.CustomItems.MULTI_TOOL;
 
 public class ItemListener implements Listener {
 
@@ -151,10 +154,37 @@ public class ItemListener implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void onPlayerLookAtBlock(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        ItemStack mainHand = player.getInventory().getItemInMainHand();
+
+        // Check if held item is MultiTool
+        if (!isMultiTool(mainHand)) {
+            return;
+        }
+
+        Block targetBlock = player.getTargetBlock(null, 5);
+        Material blockType = targetBlock.getType();
+        ItemStack newTool = getAppropriateToolForBlock(blockType, mainHand);
+
+        // Transfer the MultiTool data and name
+        transferMultiToolProperties(mainHand, newTool);
+
+        player.getInventory().setItemInMainHand(newTool);
+    }
     
+    
+    /**
     
 
     //more Methods for main Methods
+    
+    
+    
+    
+     **/
 
     private void break3x3Area(Block startBlock, Player player, ItemStack item) {
         Set<Block> blocksToBreak = new HashSet<>();
@@ -267,5 +297,81 @@ public class ItemListener implements Listener {
                 }
             }
         }
+    }
+
+    private boolean isMultiTool(ItemStack item) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return false;
+
+        PersistentDataContainer container = meta.getPersistentDataContainer();
+        return container.has(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"),
+                PersistentDataType.STRING) &&
+                meta.getDisplayName().equals("§6Multi Tool");
+    }
+
+    private ItemStack getAppropriateToolForBlock(Material blockType, ItemStack currentTool) {
+        Material toolMaterial;
+
+        if (blockType == Material.AIR) {
+            toolMaterial = Material.DIAMOND;
+        } else if (isAxeMaterial(blockType)) {
+            toolMaterial = Material.NETHERITE_AXE;
+        } else if (isShovelMaterial(blockType)) {
+            toolMaterial = Material.NETHERITE_SHOVEL;
+        } else if (isPickaxeMaterial(blockType)) {
+            toolMaterial = Material.NETHERITE_PICKAXE;
+        } else {
+            toolMaterial = Material.DIAMOND;
+        }
+
+        return new ItemStack(toolMaterial);
+    }
+
+    private void transferMultiToolProperties(ItemStack source, ItemStack target) {
+        ItemMeta sourceMeta = source.getItemMeta();
+        ItemMeta targetMeta = target.getItemMeta();
+
+        if (sourceMeta == null || targetMeta == null) return;
+
+        // Transfer name
+        targetMeta.setDisplayName("§6Multi Tool");
+
+        // Transfer lore
+        targetMeta.setLore(Arrays.asList("§8Allows you to bundle multiple tools into one!"));
+
+        // Transfer enchantments
+        sourceMeta.getEnchants().forEach((enchant, level) ->
+                targetMeta.addEnchant(enchant, level, true));
+
+        // Transfer persistent data
+        PersistentDataContainer sourceContainer = sourceMeta.getPersistentDataContainer();
+        PersistentDataContainer targetContainer = targetMeta.getPersistentDataContainer();
+
+        targetContainer.set(
+                new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"),
+                PersistentDataType.STRING,
+                MULTI_TOOL.toString()
+        );
+
+        target.setItemMeta(targetMeta);
+    }
+
+    private boolean isAxeMaterial(Material material) {
+        return material.name().contains("LOG") ||
+                material.name().contains("WOOD") ||
+                material.name().contains("PLANKS");
+    }
+
+    private boolean isShovelMaterial(Material material) {
+        return material == Material.DIRT ||
+                material == Material.GRASS_BLOCK ||
+                material == Material.SAND ||
+                material == Material.GRAVEL;
+    }
+
+    private boolean isPickaxeMaterial(Material material) {
+        return material.name().contains("STONE") ||
+                material.name().contains("ORE") ||
+                material == Material.OBSIDIAN;
     }
 }
