@@ -1,5 +1,6 @@
 package at.leineees.someFeature.TabCompleter;
 
+import at.leineees.someFeature.Tools.TabCompleteHelper;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -26,11 +27,11 @@ public class CoinTabCompleter implements TabCompleter {
                     }
                 } else if (args.length == 2) {
                     if (player.hasPermission("somefeature.coins.manage")) {
-                        return Arrays.asList("add", "remove");
+                        return TabCompleteHelper.filterSuggestions(args[1], Arrays.asList("add", "remove", "set"));
                     }
                 } else if (args.length == 3) {
                     if (player.hasPermission("somefeature.coins.manage")) {
-                        return Arrays.asList("1", "10", "100", "1000");
+                        return TabCompleteHelper.filterSuggestions(args[2], Arrays.asList("1", "10", "100", "1000"));
                     }
                 }
             }

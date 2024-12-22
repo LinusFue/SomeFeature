@@ -3,18 +3,15 @@ package at.leineees.someFeature.CustomItems;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomRecipies {
+public class CustomRecipes {
     private JavaPlugin plugin;
-    public CustomRecipies(JavaPlugin plugin){
+    public CustomRecipes(JavaPlugin plugin){
         this.plugin = plugin;
     }
     private static List<Recipe> recipes = new ArrayList<>();
@@ -29,26 +26,25 @@ public class CustomRecipies {
         return recipes.get(results.indexOf(result));
     }
     public void register(){
-
-        ItemStack treeFella = CustomItems.createTreeFella();
+        //outputs
         ItemStack healingSpell1 = CustomItems.createHealingSpell(1);
         ItemStack healingSpell2 = CustomItems.createHealingSpell(2);
         ItemStack healingSpell3 = CustomItems.createHealingSpell(3);
+        ItemStack elytraChestplate = CustomItems.createElytraChestplate();
         
-        Bukkit.addRecipe(treeFellaRecipe(treeFella));
-        Bukkit.addRecipe(spellRecipe1(healingSpell1));
-        Bukkit.addRecipe(spellRecipe2(healingSpell1, healingSpell2));
-        Bukkit.addRecipe(spellRecipe3(healingSpell2, healingSpell3));
-
-        recipes.add(treeFellaRecipe(treeFella));
         recipes.add(spellRecipe1(healingSpell1));
         recipes.add(spellRecipe2(healingSpell1, healingSpell2));
         recipes.add(spellRecipe3(healingSpell2, healingSpell3));
+        recipes.add(elytraChestplateRecipe(elytraChestplate));
         
-        results.add(treeFella);
         results.add(healingSpell1);
         results.add(healingSpell2);
         results.add(healingSpell3);
+        results.add(elytraChestplate);
+        
+        for (Recipe recipe : recipes) {
+            results.add(recipe.getResult());
+        }
     }
     
     private ShapelessRecipe treeFellaRecipe(ItemStack output){
@@ -88,5 +84,16 @@ public class CustomRecipies {
         spellRecipe.setIngredient('S', Material.NETHER_STAR);
         spellRecipe.setIngredient('N', Material.NETHERITE_INGOT);
         return spellRecipe;
+    }
+    private AnvilRecipe elytraChestplateRecipe(ItemStack output){
+        RecipeChoice base = new RecipeChoice.MaterialChoice(Material.NETHERITE_CHESTPLATE);
+        RecipeChoice addition = new RecipeChoice.MaterialChoice(Material.ELYTRA);
+        return new AnvilRecipe(new NamespacedKey("somefeature", "elytra_chestplate_recipe"), output, base, addition);
+    }
+    
+    private AnvilRecipe flyFeather(ItemStack output){
+        RecipeChoice base = new RecipeChoice.MaterialChoice(Material.FEATHER);
+        RecipeChoice addition = new RecipeChoice.MaterialChoice(Material.ELYTRA);
+        return new AnvilRecipe(new NamespacedKey("somefeature", "fly_feather_recipe"), output, base, addition);
     }
 }

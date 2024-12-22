@@ -1,12 +1,10 @@
 package at.leineees.someFeature.Listener;
 
-import at.leineees.someFeature.CustomItems.CustomItems;
+import at.leineees.someFeature.CustomItems.AnvilRecipe;
 import at.leineees.someFeature.CustomItems.CustomRecipeBook;
-import at.leineees.someFeature.CustomItems.CustomRecipies;
-import at.leineees.someFeature.SomeFeature;
+import at.leineees.someFeature.CustomItems.CustomRecipes;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,8 +12,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
 import java.util.Map;
@@ -37,6 +33,19 @@ public class InventoryListener implements Listener {
                     int slot = event.getSlot();
                     ItemStack currentItem = event.getCurrentItem();
                     targetInventory.setItem(slot, currentItem);
+                }
+            }
+        }
+        if (event.getInventory() instanceof AnvilInventory) {
+            AnvilInventory inventory = (AnvilInventory) event.getInventory();
+            if (event.getSlot() == 2) {
+                ItemStack result = event.getCurrentItem();
+                if (result != null && result.getType() != Material.AIR) {
+                    event.setCursor(result);
+                    inventory.setItem(0, null);
+                    inventory.setItem(1, null);
+                    event.setCurrentItem(null);
+                    event.setCancelled(true);
                 }
             }
         }
@@ -88,11 +97,11 @@ public class InventoryListener implements Listener {
     }
 
     private void showRecipeDetails(Player player, ItemStack result) {
-        Inventory recipeView = Bukkit.createInventory(null, 27, "§6Recipe: " + result.getType().name());
+        Inventory recipeView = Bukkit.createInventory(null, 27, "§6Recipe: " + result.getItemMeta().getDisplayName());
 
         // Crafting Grid (Slots 10-12, 19-21)
         
-        Recipe recipe = CustomRecipies.getRecipe(result);
+        Recipe recipe = CustomRecipes.getRecipe(result);
         
         if (recipe instanceof ShapedRecipe) {
             ShapedRecipe shaped = (ShapedRecipe) recipe;
@@ -135,69 +144,68 @@ public class InventoryListener implements Listener {
         if(recipe instanceof FurnaceRecipe){
             FurnaceRecipe furnace = (FurnaceRecipe) recipe;
             ItemStack ingredient = furnace.getInput();
-            ItemStack smeltingResult = furnace.getResult();
 
             recipeView.setItem(0, new ItemStack(Material.FURNACE));
             
             recipeView.setItem(11, ingredient);
-            recipeView.setItem(20, smeltingResult);
         }
         
         if(recipe instanceof BlastingRecipe){
             BlastingRecipe blasting = (BlastingRecipe) recipe;
             ItemStack ingredient = blasting.getInput();
-            ItemStack smeltingResult = blasting.getResult();
 
             recipeView.setItem(0, new ItemStack(Material.BLAST_FURNACE));
             
             recipeView.setItem(11, ingredient);
-            recipeView.setItem(20, smeltingResult);
         }
         
         if(recipe instanceof CampfireRecipe){
             CampfireRecipe campfire = (CampfireRecipe) recipe;
             ItemStack ingredient = campfire.getInput();
-            ItemStack smeltingResult = campfire.getResult();
 
             recipeView.setItem(0, new ItemStack(Material.CAMPFIRE));
             
             recipeView.setItem(11, ingredient);
-            recipeView.setItem(20, smeltingResult);
         }
         
         if(recipe instanceof SmokingRecipe){
             SmokingRecipe smoking = (SmokingRecipe) recipe;
             ItemStack ingredient = smoking.getInput();
-            ItemStack smeltingResult = smoking.getResult();
 
             recipeView.setItem(0, new ItemStack(Material.SMOKER));
             
             recipeView.setItem(11, ingredient);
-            recipeView.setItem(20, smeltingResult);
         }
         
         if(recipe instanceof StonecuttingRecipe){
             StonecuttingRecipe stonecutting = (StonecuttingRecipe) recipe;
             ItemStack ingredient = stonecutting.getInput();
-            ItemStack smeltingResult = stonecutting.getResult();
 
             recipeView.setItem(0, new ItemStack(Material.STONECUTTER));
             
             recipeView.setItem(11, ingredient);
-            recipeView.setItem(20, smeltingResult);
         }
         
         if(recipe instanceof SmithingRecipe){
             SmithingRecipe smithing = (SmithingRecipe) recipe;
             ItemStack base = smithing.getBase().getItemStack();
             ItemStack addition = smithing.getAddition().getItemStack();
-            ItemStack resultSmithing = smithing.getResult();
 
             recipeView.setItem(0, new ItemStack(Material.SMITHING_TABLE));
+
+            recipeView.setItem(11, base);
+            recipeView.setItem(13, addition);
+        }
+        
+        if(recipe instanceof AnvilRecipe){
+            AnvilRecipe anvil = (AnvilRecipe) recipe;
+            ItemStack base = anvil.getBase().getItemStack();
+            ItemStack addition = anvil.getAddition().getItemStack();
+
+            recipeView.setItem(0, new ItemStack(Material.ANVIL));
             
-            recipeView.setItem(10, base);
-            recipeView.setItem(12, addition);
-            recipeView.setItem(21, resultSmithing);
+            recipeView.setItem(11, base);
+            recipeView.setItem(13, addition);
         }
         
         ItemStack backArrow = new ItemStack(Material.ARROW);
@@ -207,7 +215,7 @@ public class InventoryListener implements Listener {
         recipeView.setItem(18, backArrow);
         
         // Result (Slot 15)
-        recipeView.setItem(15, result);
+        recipeView.setItem(16, result);
 
         player.openInventory(recipeView);
     }

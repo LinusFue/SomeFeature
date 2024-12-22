@@ -4,7 +4,7 @@ import at.leineees.someFeature.Commands.*;
 import at.leineees.someFeature.Commands.SellCommand;
 import at.leineees.someFeature.CustomItems.CustomItems;
 import at.leineees.someFeature.CustomItems.CustomRecipeBook;
-import at.leineees.someFeature.CustomItems.CustomRecipies;
+import at.leineees.someFeature.CustomItems.CustomRecipes;
 import at.leineees.someFeature.Data.CustomMob.CustomMobManager;
 import at.leineees.someFeature.Data.Coins.CoinManager;
 import at.leineees.someFeature.Economy.CustomItemShop;
@@ -44,13 +44,13 @@ public final class SomeFeature extends JavaPlugin {
         customItemShop = new CustomItemShop(coinManager, customItems);
 
 
-        CustomRecipies customRecipies = new CustomRecipies(this);
+        CustomRecipes customRecipes = new CustomRecipes(this);
         CustomMob customMob = new CustomMob(this, customMobManager);
         priceManager = new PriceManager(getDataFolder());
         SellItems sellItems = new SellItems(priceManager, coinManager);
         CustomRecipeBook customRecipeBook = new CustomRecipeBook();
         
-        customRecipies.register();
+        customRecipes.register();
         customRecipeBook.loadRecipes();
         customMobManager.loadCustomMobs();
         priceManager.loadPrices();
@@ -67,7 +67,6 @@ public final class SomeFeature extends JavaPlugin {
         getServer().getPluginManager().registerEvents(sellItems, this);
         
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
-        getServer().getPluginManager().registerEvents(new AnvilRecipeListener(), this);
         
         //AddCommands
         getCommand("fly").setExecutor(new FlyCommand());
