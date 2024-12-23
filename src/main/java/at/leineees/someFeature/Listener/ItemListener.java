@@ -3,10 +3,7 @@ package at.leineees.someFeature.Listener;
 import at.leineees.someFeature.CustomItems.CustomItems;
 import at.leineees.someFeature.CustomItems.CustomRecipeBook;
 import at.leineees.someFeature.SomeFeature;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -14,10 +11,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -31,6 +27,7 @@ import static at.leineees.someFeature.CustomItems.CustomItems.MULTI_TOOL;
 public class ItemListener implements Listener {
 
     private final HashMap<UUID, Long> cooldowns = new HashMap<>();
+    private final Map<UUID, Double> playerBoosts = new HashMap<>();
 
 
 
@@ -173,6 +170,40 @@ public class ItemListener implements Listener {
         transferMultiToolProperties(mainHand, newTool);
 
         player.getInventory().setItemInMainHand(newTool);
+    }
+
+
+    @EventHandler
+    public void onInventoryChange(InventoryClickEvent event) {
+        if (!(event.getWhoClicked() instanceof Player)) return;
+        Player player = (Player) event.getWhoClicked();
+
+        // Schedule a task to run in the next tick to ensure inventory contents are updated
+        Bukkit.getScheduler().runTask(SomeFeature.getInstance(), () -> updatePlayerHealthBoost(player));
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        updatePlayerHealthBoost(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        removeHealthBoost(event.getPlayer());
+        playerBoosts.remove(event.getPlayer().getUniqueId());
+    }
+
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent event) {
+        Bukkit.getScheduler().runTask(SomeFeature.getInstance(), () -> updatePlayerHealthBoost(event.getPlayer()));
+    }
+
+    @EventHandler
+    public void onItemPickup(EntityPickupItemEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            Bukkit.getScheduler().runTask(SomeFeature.getInstance(), () -> updatePlayerHealthBoost(player));
+        }
     }
     
     
@@ -439,4 +470,46 @@ public class ItemListener implements Listener {
                 material == Material.CHIPPED_ANVIL ||
                 material == Material.DAMAGED_ANVIL;
     }
+
+    private void updatePlayerHealthBoost(Player player) {
+        // Remove existing boost first
+        removeHealthBoost(player);
+
+        // Check inventory for Life Ring
+        double highestBoost = 0.0;
+        for (ItemStack item : player.getInventory().getContents()) {
+            if (item != null && item.getType() == Material.GOLD_NUGGET && item.hasItemMeta()) {
+                ItemMeta meta = item.getItemMeta();
+                PersistentDataContainer container = meta.getPersistentDataContainer();
+                String customItemKey = container.get(
+                        new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"),
+                        PersistentDataType.STRING
+                );
+
+                if (customItemKey != null) {
+                    double boost = 0.0;
+                    if (customItemKey.equals(CustomItems.LIFE_RING_1.toString())) boost = 5.0;
+                    else if (customItemKey.equals(CustomItems.LIFE_RING_2.toString())) boost = 10.0;
+                    else if (customItemKey.equals(CustomItems.LIFE_RING_3.toString())) boost = 20.0;
+
+                    highestBoost = Math.max(highestBoost, boost);
+                }
+            }
+        }
+        // Apply the highest boost found
+        if (highestBoost > 0) {
+            player.setMaxHealth(20 + highestBoost);
+            player.setHealth(Math.min(player.getHealth() + highestBoost, player.getMaxHealth()));
+            playerBoosts.put(player.getUniqueId(), highestBoost);
+        }
+    }
+
+    private void removeHealthBoost(Player player) {
+        Double currentBoost = playerBoosts.get(player.getUniqueId());
+        if (currentBoost != null) {
+            player.setMaxHealth(20); // Reset to default max health
+            player.setHealth(Math.min(player.getHealth(), 20)); // Ensure health doesn't exceed new max
+            playerBoosts.remove(player.getUniqueId());
+        }
+    }    
 }

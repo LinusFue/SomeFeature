@@ -1,6 +1,7 @@
 package at.leineees.someFeature.CustomItems;
 
 import at.leineees.someFeature.SomeFeature;
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -28,6 +29,9 @@ public class CustomItems {
     public static final NamespacedKey RECIPE_BOOK = new NamespacedKey(SomeFeature.getInstance(), "recipe_book");
     public static final NamespacedKey MULTI_TOOL = new NamespacedKey(SomeFeature.getInstance(), "multi_tool");
     public static final NamespacedKey MULTI_TOOL_BASE = new NamespacedKey(SomeFeature.getInstance(), "multi_tool_base");
+    public static final NamespacedKey LIFE_RING_1 = new NamespacedKey(SomeFeature.getInstance(), "life_ring_1");
+    public static final NamespacedKey LIFE_RING_2 = new NamespacedKey(SomeFeature.getInstance(), "life_ring_2");
+    public static final NamespacedKey LIFE_RING_3 = new NamespacedKey(SomeFeature.getInstance(), "life_ring_3");
     
 
     private static final Map<NamespacedKey, Supplier<ItemStack>> customItems = new HashMap<>();
@@ -47,6 +51,9 @@ public class CustomItems {
         registerCustomItem(RECIPE_BOOK, CustomItems::createRecipeBook);
         registerCustomItem(MULTI_TOOL, CustomItems::createMultiTool);
         registerCustomItem(MULTI_TOOL_BASE, CustomItems::createMultiToolBase);
+        registerCustomItem(LIFE_RING_1, () -> CustomItems.createLifeRing(1));
+        registerCustomItem(LIFE_RING_2, () -> CustomItems.createLifeRing(2));
+        registerCustomItem(LIFE_RING_3, () -> CustomItems.createLifeRing(3));
     }
 
     private static void registerCustomItem(NamespacedKey key, Supplier<ItemStack> itemSupplier) {
@@ -222,6 +229,36 @@ public class CustomItems {
             meta.setLore(Arrays.asList("§8Allows you to craft a powerful multitool!", "§4Experimental!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, MULTI_TOOL_BASE.toString());
+            item.setItemMeta(meta);
+        }
+        return item;
+    }
+    public static ItemStack createLifeRing(int level) {
+        ItemStack item = new ItemStack(Material.GOLD_NUGGET);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName("§aLife Ring Level " + level);
+            double healthAmount = 0.0;
+            NamespacedKey key;
+            switch (level) {
+                case 1:
+                    healthAmount = 5.0;
+                    key = LIFE_RING_1;
+                    break;
+                case 2:
+                    healthAmount = 10.0;
+                    key = LIFE_RING_2;
+                    break;
+                case 3:
+                    healthAmount = 20.0;
+                    key = LIFE_RING_3;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid level: " + level);
+            }
+            meta.setLore(Arrays.asList("§8You Gain " + healthAmount/2 + " hearts when held in your inventory!", "§4Experimental!"));
+            PersistentDataContainer container = meta.getPersistentDataContainer();
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, key.toString());
             item.setItemMeta(meta);
         }
         return item;
