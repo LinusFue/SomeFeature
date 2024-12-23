@@ -51,3 +51,6 @@ commands:
       - /price list
       - /price set <item> <price>
       - /price remove <item>
+  heal: 
+    description: Heals the player.
+    usage: /heal
