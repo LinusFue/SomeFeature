@@ -33,19 +33,19 @@ public class ShopCommand implements CommandExecutor {
                     String shopName = args[0];
                     customItemShop.openShop(player, shopName);
                     return true;
-                } else if (args.length == 2 && args[0].equalsIgnoreCase("create")) {
+                } else if (args.length == 2 && args[0].equalsIgnoreCase("create") && player.hasPermission("somefeature.shop.edit")) {
                     // Create a new shop
                     String shopName = args[1];
                     customItemShop.createShop(shopName);
                     player.sendMessage("§aShop " + shopName + " created!");
                     return true;
-                } else if (args.length == 2 && args[0].equalsIgnoreCase("remove")) {
+                } else if (args.length == 2 && args[0].equalsIgnoreCase("remove") && player.hasPermission("somefeature.shop.edit")) {
                     // Remove a shop
                     String shopName = args[1];
                     customItemShop.removeShop(shopName);
                     player.sendMessage("§aShop " + shopName + " removed!");
                     return true;
-                } else if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
+                } else if (args.length == 1 && args[0].equalsIgnoreCase("list") && player.hasPermission("somefeature.shop.edit")) {
                     // List all shops
                     Set<String> shopNames = customItemShop.getShopNames();
                     if (shopNames.isEmpty()) {
