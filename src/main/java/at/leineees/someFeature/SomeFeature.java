@@ -79,6 +79,7 @@ public final class SomeFeature extends JavaPlugin {
         getCommand("invsee").setExecutor(new InvseeCommand());
         getCommand("price").setExecutor(new PriceCommand(priceManager));
         getCommand("sell").setExecutor(new SellCommand(sellItems));
+        getCommand("spawn").setExecutor(new SpawnCommand(this));
                 
         
         //TabCompleter
@@ -87,7 +88,13 @@ public final class SomeFeature extends JavaPlugin {
         getCommand("spawncustommob").setTabCompleter(new CustomMobTabCompleter());
         getCommand("coins").setTabCompleter(new CoinTabCompleter());
         getCommand("price").setTabCompleter(new PriceTabCompleter(priceManager));
-        
+
+
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            if(player.getGameMode().equals(GameMode.ADVENTURE) || player.getGameMode().equals(GameMode.SURVIVAL)) {
+                player.setAllowFlight(false);
+            }
+        }
         
         //Schedulers
         getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {

@@ -54,3 +54,8 @@ commands:
   heal: 
     description: Heals the player.
     usage: /heal
+  spawn: 
+    description: Teleports the player to the spawn.
+    usage: /spawn [setspawn]
+    aliases: 
+      - hub

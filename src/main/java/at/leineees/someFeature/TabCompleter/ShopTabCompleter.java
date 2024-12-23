@@ -27,9 +27,11 @@ public class ShopTabCompleter implements TabCompleter {
             List<String> items = TabCompleteHelper.getAllItems();
             if (args.length == 1) {
                 List<String> suggestions = new ArrayList<>(customItemShop.getShopNames());
-                suggestions.add("create");
-                suggestions.add("remove");
-                suggestions.add("list");
+                if(sender.hasPermission("somefeature.shot.edit")) {
+                    suggestions.add("create");
+                    suggestions.add("remove");
+                    suggestions.add("list");
+                }
                 return suggestions;
             } else if (args.length == 2 && args[0].equalsIgnoreCase("create")) {
                 return new ArrayList<>(Arrays.asList("<ShopName>"));
