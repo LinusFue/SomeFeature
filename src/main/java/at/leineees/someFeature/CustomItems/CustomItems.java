@@ -256,7 +256,7 @@ public class CustomItems {
                 default:
                     throw new IllegalArgumentException("Invalid level: " + level);
             }
-            meta.setLore(Arrays.asList("§8You Gain " + healthAmount/2 + " hearts when held in your inventory!"));
+            meta.setLore(Arrays.asList("§8You Gain " + healthAmount/2 + " hearts when held in your inventory!", "§4Experimental!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, key.toString());
             item.setItemMeta(meta);
