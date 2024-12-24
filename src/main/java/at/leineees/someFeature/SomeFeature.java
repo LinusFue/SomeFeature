@@ -5,6 +5,7 @@ import at.leineees.someFeature.Commands.SellCommand;
 import at.leineees.someFeature.CustomItems.CustomItems;
 import at.leineees.someFeature.CustomItems.CustomRecipeBook;
 import at.leineees.someFeature.CustomItems.CustomRecipes;
+import at.leineees.someFeature.Data.BackpackManager;
 import at.leineees.someFeature.Data.CustomMob.CustomMobManager;
 import at.leineees.someFeature.Data.Coins.CoinManager;
 import at.leineees.someFeature.Economy.CustomItemShop;
@@ -23,6 +24,7 @@ public final class SomeFeature extends JavaPlugin {
     private CustomMobManager customMobManager;
     private CustomItemShop customItemShop;
     private PriceManager priceManager;
+    private BackpackManager backpackManager;
     
     public static NamespacedKey CUSTOM_ITEM_KEY;
     public static NamespacedKey CUSTOM_ITEM_LEVEL_KEY;
@@ -42,6 +44,7 @@ public final class SomeFeature extends JavaPlugin {
         CustomScoreboardManager customScoreboardManager = new CustomScoreboardManager(this);
         CoinManager coinManager = new CoinManager(this, customScoreboardManager);
         customItemShop = new CustomItemShop(coinManager, customItems);
+        backpackManager = new BackpackManager();
 
 
         CustomRecipes customRecipes = new CustomRecipes(this);
@@ -54,6 +57,7 @@ public final class SomeFeature extends JavaPlugin {
         customRecipeBook.loadRecipes();
         customMobManager.loadCustomMobs();
         priceManager.loadPrices();
+        backpackManager.init(getDataFolder());
 
         //AddPlugins
         getServer().getPluginManager().registerEvents(SpawnElytraFly.create(this), this);

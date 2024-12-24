@@ -33,6 +33,7 @@ public class CustomRecipes {
         ItemStack elytraChestplate = CustomItems.createElytraChestplate();
         ItemStack multiToolBase = CustomItems.createMultiToolBase();
         ItemStack multiTool = CustomItems.createMultiTool();
+        ItemStack backpack = CustomItems.createBackpack();
         
         recipes.add(spellRecipe1(healingSpell1));
         recipes.add(spellRecipe2(healingSpell1, healingSpell2));
@@ -40,6 +41,7 @@ public class CustomRecipes {
         recipes.add(elytraChestplateRecipe(elytraChestplate));
         recipes.add(multiToolBaseRecipe(multiToolBase));
         recipes.add(multiToolRecipe(multiToolBase, multiTool));
+        recipes.add(backpackRecipe(backpack));
         
         for (Recipe recipe : recipes) {
             Bukkit.addRecipe(recipe);
@@ -105,5 +107,13 @@ public class CustomRecipes {
         multiToolR.addIngredient(Material.NETHERITE_SHOVEL);
         multiToolR.addIngredient(Material.NETHERITE_AXE);
         return multiToolR;
+    }
+
+    private ShapedRecipe backpackRecipe(ItemStack output){
+        ShapedRecipe backpackR = new ShapedRecipe(new NamespacedKey("somefeature", "backpack_recipe"), output);
+        backpackR.shape("LCL", "LCL", "LLL");
+        backpackR.setIngredient('C', Material.CHEST);
+        backpackR.setIngredient('L', Material.LEATHER);
+        return backpackR;
     }
 }

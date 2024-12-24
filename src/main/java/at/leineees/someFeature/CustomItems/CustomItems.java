@@ -32,6 +32,7 @@ public class CustomItems {
     public static final NamespacedKey LIFE_RING_1 = new NamespacedKey(SomeFeature.getInstance(), "life_ring_1");
     public static final NamespacedKey LIFE_RING_2 = new NamespacedKey(SomeFeature.getInstance(), "life_ring_2");
     public static final NamespacedKey LIFE_RING_3 = new NamespacedKey(SomeFeature.getInstance(), "life_ring_3");
+    public static final NamespacedKey BACKPACK = new NamespacedKey(SomeFeature.getInstance(), "backpack");
     
 
     private static final Map<NamespacedKey, Supplier<ItemStack>> customItems = new HashMap<>();
@@ -54,6 +55,7 @@ public class CustomItems {
         registerCustomItem(LIFE_RING_1, () -> CustomItems.createLifeRing(1));
         registerCustomItem(LIFE_RING_2, () -> CustomItems.createLifeRing(2));
         registerCustomItem(LIFE_RING_3, () -> CustomItems.createLifeRing(3));
+        registerCustomItem(BACKPACK, CustomItems::createBackpack);
     }
 
     private static void registerCustomItem(NamespacedKey key, Supplier<ItemStack> itemSupplier) {
@@ -259,6 +261,19 @@ public class CustomItems {
             meta.setLore(Arrays.asList("§8You Gain " + healthAmount/2 + " hearts when held in your inventory!", "§4Experimental!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, key.toString());
+            item.setItemMeta(meta);
+        }
+        return item;
+    }
+
+    public static ItemStack createBackpack(){
+        ItemStack item = new ItemStack(Material.NAUTILUS_SHELL);
+        ItemMeta meta = item.getItemMeta();
+        if(meta != null) {
+            meta.setDisplayName("§fBackpack");
+            meta.setLore(Arrays.asList("§8Allows you to store more Items!"));
+            PersistentDataContainer container = meta.getPersistentDataContainer();
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, BACKPACK.toString());
             item.setItemMeta(meta);
         }
         return item;

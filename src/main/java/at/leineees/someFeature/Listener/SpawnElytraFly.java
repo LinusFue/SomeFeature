@@ -125,6 +125,7 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
         Player player = event.getPlayer();
         if (player.isGliding() && player.isOnGround()) {
             player.setGliding(false);
+            player.setAllowFlight(false);
             flying.remove(player);
             boosted.remove(player);
         }
