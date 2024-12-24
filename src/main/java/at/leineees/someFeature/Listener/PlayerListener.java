@@ -5,6 +5,7 @@ import at.leineees.someFeature.Feature.CustomScoreboardManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -29,5 +30,10 @@ public class PlayerListener implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         scoreboardManager.updateBiome(player);
+    }
+    
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event){
+        coinManager.removeCoins(event.getEntity(), coinManager.getCoins(event.getEntity()) / 2);
     }
 }

@@ -2,6 +2,7 @@ package at.leineees.someFeature.Listener;
 
 import at.leineees.someFeature.CustomItems.CustomItems;
 import at.leineees.someFeature.CustomItems.CustomRecipeBook;
+import at.leineees.someFeature.Data.BackpackManager;
 import at.leineees.someFeature.SomeFeature;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -13,7 +14,9 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -149,6 +152,23 @@ public class ItemListener implements Listener {
                     && item.getType() == Material.BOOK) {
                 CustomRecipeBook.openRecipeBook(player);
             }
+            if (item.getType() == Material.NAUTILUS_SHELL && item.hasItemMeta()) {
+                container = item.getItemMeta().getPersistentDataContainer();
+                if (container.has(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING) &&
+                        container.get(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING).equals("somefeature:backpack")) {
+
+                    // Open backpack inventory
+                    event.getPlayer().openInventory(BackpackManager.getBackpack(event.getPlayer()));
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        if (event.getView().getTitle().equals("Backpack")) {
+            BackpackManager.saveBackpack((Player) event.getPlayer(), event.getInventory());
         }
     }
 
