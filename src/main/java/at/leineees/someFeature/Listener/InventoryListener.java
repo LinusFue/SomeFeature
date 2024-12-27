@@ -36,19 +36,6 @@ public class InventoryListener implements Listener {
                 }
             }
         }
-        if (event.getInventory() instanceof AnvilInventory) {
-            AnvilInventory inventory = (AnvilInventory) event.getInventory();
-            if (event.getSlot() == 2) {
-                ItemStack result = event.getCurrentItem();
-                if (result != null && result.getType() != Material.AIR) {
-                    event.setCursor(result);
-                    inventory.setItem(0, null);
-                    inventory.setItem(1, null);
-                    event.setCurrentItem(null);
-                    event.setCancelled(true);
-                }
-            }
-        }
     }
 
     @EventHandler

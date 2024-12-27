@@ -3,10 +3,14 @@ package at.leineees.someFeature.CustomItems;
 import at.leineees.someFeature.SomeFeature;
 import com.google.common.base.Preconditions;
 import org.bukkit.Keyed;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
@@ -76,9 +80,34 @@ public class AnvilRecipe implements Recipe, Keyed, Listener {
                             result.setItemMeta(resultMeta);
                         }
                         event.setResult(result);
+                        inventory.setRepairCost(1);
                     }
                 }
             }
         }
-    }    
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getInventory().getType() == InventoryType.ANVIL) {
+            AnvilInventory inventory = (AnvilInventory) event.getInventory();
+            if (event.getSlotType() == InventoryType.SlotType.RESULT) {
+                ItemStack result = event.getCurrentItem();
+                if (result != null && result.getType() != Material.AIR) {
+                    Player player = (Player) event.getWhoClicked();
+                    int repairCost = inventory.getRepairCost();
+                    if (player.getLevel() >= repairCost) {
+                        player.setLevel(player.getLevel() - repairCost);
+                        if(result != null && result.getType() != Material.AIR) {
+                            event.setCursor(result);
+                            inventory.setItem(0, null);
+                            inventory.setItem(1, null);
+                        }
+                    } else {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+    }
 }

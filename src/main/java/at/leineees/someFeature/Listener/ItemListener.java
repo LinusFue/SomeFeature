@@ -32,6 +32,8 @@ public class ItemListener implements Listener {
     private final HashMap<UUID, Long> cooldowns = new HashMap<>();
     private final Map<UUID, Double> playerBoosts = new HashMap<>();
 
+    private static final int TREE_FELLA_BLOCK_LIMIT = 300;
+
 
 
     @EventHandler
@@ -92,7 +94,7 @@ public class ItemListener implements Listener {
                 ("§6Tree Fella").equals(item.getItemMeta().getDisplayName())) {
             Block block = event.getBlock();
             if (isLog(block.getType())) {
-                breakTree(block);
+                breakTree(block, TREE_FELLA_BLOCK_LIMIT);
             }
         }
         if (item != null && item.getType() == Material.NETHERITE_PICKAXE && item.getItemMeta() != null &&
@@ -290,27 +292,26 @@ public class ItemListener implements Listener {
                 material == Material.NETHER_WART_BLOCK || material == Material.WARPED_WART_BLOCK || material == Material.CHERRY_LEAVES;
     }
 
-    private void breakTree(Block startBlock) {
+    private void breakTree(Block startBlock, int blockLimit) {
         Set<Block> blocksToBreak = new HashSet<>();
-        findTreeBlocks(startBlock, blocksToBreak);
+        findTreeBlocks(startBlock, blocksToBreak, blockLimit);
 
         for (Block block : blocksToBreak) {
             block.breakNaturally();
         }
     }
 
-    private void findTreeBlocks(Block block, Set<Block> blocksToBreak) {
-        if (blocksToBreak.contains(block)) {
+    private void findTreeBlocks(Block block, Set<Block> blocksToBreak, int blockLimit) {
+        if(blocksToBreak.size() >= blockLimit) {
             return;
         }
-
         blocksToBreak.add(block);
 
         for (Block relative : getAdjacentBlocks(block)) {
-            if (isLog(relative.getType()) || isLeaf(relative.getType())) {
-                findTreeBlocks(relative, blocksToBreak);
+                if ((isLog(relative.getType()) || isLeaf(relative.getType())) && !blocksToBreak.contains(relative)) {
+                    findTreeBlocks(relative, blocksToBreak, blockLimit);
+                }
             }
-        }
     }
 
     private Set<Block> getAdjacentBlocks(Block block) {
@@ -323,16 +324,6 @@ public class ItemListener implements Listener {
         adjacentBlocks.add(block.getRelative(0, 0, -1));
         return adjacentBlocks;
     }
-    
-    
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
-        if (player.isGliding() && player.isOnGround()) {
-            player.setGliding(false);
-            player.sendMessage("§cYou have landed and stopped gliding.");
-        }
-    }
 
     @EventHandler
     public void onPlayerFall(EntityDamageEvent event) {
@@ -341,10 +332,8 @@ public class ItemListener implements Listener {
             if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
                 ItemStack item = player.getInventory().getItemInMainHand();
                 if (item != null && item.getType() == Material.FISHING_ROD && item.getItemMeta() != null &&
-                        ("§7Grappling Hook").equals(item.getItemMeta().getDisplayName()) ||
-                        item != null && item.getType() == Material.DIAMOND_SHOVEL && item.getItemMeta() != null &&
-                                ("§5Aspect of the Void").equals(item.getItemMeta().getDisplayName())) {
-                    event.setCancelled(true); // Cancel fall damage
+                        ("§7Grappling Hook").equals(item.getItemMeta().getDisplayName())) {
+                    event.setCancelled(true);
                 }
             }
         }
