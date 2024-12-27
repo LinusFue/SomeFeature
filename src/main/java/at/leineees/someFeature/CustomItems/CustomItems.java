@@ -273,18 +273,4 @@ public class CustomItems {
         return container.has(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING);
     }
 
-    //customItemLayout
-    public ItemStack createCustomItem(Material material, String displayName, String... lore) {
-        ItemStack item = new ItemStack(material);
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(displayName);
-            meta.setLore(Arrays.asList(lore));
-            PersistentDataContainer container = meta.getPersistentDataContainer();
-            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, "custom_item");
-            item.setItemMeta(meta);
-        }
-        return item;
-    }
-
 }
