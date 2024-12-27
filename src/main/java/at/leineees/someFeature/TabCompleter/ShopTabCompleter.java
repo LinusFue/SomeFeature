@@ -34,7 +34,7 @@ public class ShopTabCompleter implements TabCompleter {
                 }
                 return suggestions;
             } else if (args.length == 2 && args[0].equalsIgnoreCase("create")) {
-                return new ArrayList<>(Arrays.asList("<ShopName>"));
+                return new ArrayList<>(List.of("<ShopName>"));
             }else if (args.length == 2 && args[0].equalsIgnoreCase("remove")) {
                 return TabCompleteHelper.filterSuggestions(args[1], new ArrayList<>(customItemShop.getShopNames()));
             }else if (args.length == 2 && !args[0].equalsIgnoreCase("create") && !args[0].equalsIgnoreCase("remove") && !args[0].equalsIgnoreCase("list")) {

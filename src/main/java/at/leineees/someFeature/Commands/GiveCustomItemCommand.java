@@ -19,8 +19,7 @@ public class GiveCustomItemCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (command.getName().equalsIgnoreCase("givecustomitem")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
+            if (sender instanceof Player player) {
                 if (player.hasPermission("minecraft.give")) {
                     if (args.length == 0) {
                         sender.sendMessage("§cUsage: /givecustomitem <item>");
@@ -29,7 +28,7 @@ public class GiveCustomItemCommand implements CommandExecutor {
                     if (args[0].contains(":") && args[0].split(":").length == 2) {
                         Map<NamespacedKey, Supplier<ItemStack>> items = CustomItems.getAllCustomItems();
                         NamespacedKey key = new NamespacedKey(args[0].toLowerCase().split(":")[0], args[0].toLowerCase().split(":")[1]);
-                        if (!items.keySet().contains(key)) {
+                        if (!items.containsKey(key)) {
                             sender.sendMessage("§cUnknown item: " + args[0]);
                             return true;
                         }

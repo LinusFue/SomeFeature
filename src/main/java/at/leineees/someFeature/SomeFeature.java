@@ -52,7 +52,7 @@ public final class SomeFeature extends JavaPlugin {
         customRecipes.register();
         customRecipeBook.loadRecipes();
         priceManager.loadPrices();
-        backpackManager.init(getDataFolder());
+        BackpackManager.init(getDataFolder());
 
         //AddPlugins
         getServer().getPluginManager().registerEvents(SpawnElytraFly.create(this), this);

@@ -19,7 +19,7 @@ public class TradeTabCompleter implements TabCompleter {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if (command.getName().equalsIgnoreCase("trade")) {
             if (args.length == 1) {
-                return TabCompleteHelper.filterSuggestions(args[0], Arrays.asList("coins"));
+                return TabCompleteHelper.filterSuggestions(args[0], List.of("coins"));
             } else if (args.length == 2 && args[0].equalsIgnoreCase("coins")) {
                 List<String> completions = new ArrayList<>();
                 for (Player player : Bukkit.getOnlinePlayers()) {

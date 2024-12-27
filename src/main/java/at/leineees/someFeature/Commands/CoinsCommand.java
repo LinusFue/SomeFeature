@@ -18,8 +18,7 @@ public class CoinsCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (command.getName().equalsIgnoreCase("coins")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
+            if (sender instanceof Player player) {
                 if (args.length == 0) {
                     player.sendMessage("§aYou have " + coinManager.getCoins(player) + " coins.");
                     return true;

@@ -92,9 +92,7 @@ public class CustomItemShop implements Listener {
     }
 
     public void removeShop(String shopName) {
-        if (shops.containsKey(shopName)) {
-            shops.remove(shopName);
-        }
+        shops.remove(shopName);
     }
     
     public void addShopItem(String shopName, String itemType, int cost, int amount) {

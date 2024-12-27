@@ -10,15 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomRecipes {
-    private JavaPlugin plugin;
+    private final JavaPlugin plugin;
     public CustomRecipes(JavaPlugin plugin){
         this.plugin = plugin;
     }
-    private static List<Recipe> recipes = new ArrayList<>();
+    private static final List<Recipe> recipes = new ArrayList<>();
     public static List<Recipe> getRecipes(){
         return recipes;
     }
-    private static List<ItemStack> results = new ArrayList<>();
+    private static final List<ItemStack> results = new ArrayList<>();
     public static List<ItemStack> getResults(){
         return results;
     }

@@ -107,7 +107,7 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
             event.setCancelled(true);
             flying.add(player);
             return;
-        };
+        }
         event.setCancelled(true);
         player.setGliding(true);
         flying.add(player);

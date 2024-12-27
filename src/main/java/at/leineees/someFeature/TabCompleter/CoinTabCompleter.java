@@ -15,8 +15,7 @@ public class CoinTabCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (command.getName().equalsIgnoreCase("coins")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
+            if (sender instanceof Player player) {
                 if (args.length == 1) {
                     if (player.hasPermission("somefeature.coins.others")) {
                         List<String> playerNames = new ArrayList<>();

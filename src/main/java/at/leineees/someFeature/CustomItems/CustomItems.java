@@ -12,6 +12,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -102,7 +103,7 @@ public class CustomItems {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setDisplayName("§7Grappling Hook");
-            meta.setLore(Arrays.asList("§8Cooldown: 3 seconds"));
+            meta.setLore(List.of("§8Cooldown: 3 seconds"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, GRAPPLING_HOOK.toString());
             item.setItemMeta(meta);
@@ -128,7 +129,7 @@ public class CustomItems {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setDisplayName("§5Super Pickaxe");
-            meta.setLore(Arrays.asList("§8Diggs out a 3x3 Area!"));
+            meta.setLore(List.of("§8Diggs out a 3x3 Area!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, SUPER_PICKAXE.toString());
             item.setItemMeta(meta);
@@ -141,7 +142,7 @@ public class CustomItems {
         ItemMeta meta = item.getItemMeta();
         if(meta != null) {
             meta.setDisplayName("§6Flying Fish");
-            meta.setLore(Arrays.asList("§8Allows you to craft a Custom Item!"));
+            meta.setLore(List.of("§8Allows you to craft a Custom Item!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, FLYING_FISH.toString());
             item.setItemMeta(meta);
@@ -189,7 +190,7 @@ public class CustomItems {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setDisplayName("§6Elytra Chestplate");
-            meta.setLore(Arrays.asList("§8Combines the power of a Netherite Chestplate and an Elytra"));
+            meta.setLore(List.of("§8Combines the power of a Netherite Chestplate and an Elytra"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, ELYTRA_CHESTPLATE.toString());
             item.setItemMeta(meta);
@@ -202,7 +203,7 @@ public class CustomItems {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setDisplayName("§dRecipe Book");
-            meta.setLore(Arrays.asList("§8Zeigt custom Item Rezepte an!"));
+            meta.setLore(List.of("§8Zeigt custom Item Rezepte an!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, RECIPE_BOOK.toString());
             item.setItemMeta(meta);
@@ -271,7 +272,7 @@ public class CustomItems {
         ItemMeta meta = item.getItemMeta();
         if(meta != null) {
             meta.setDisplayName("§fBackpack");
-            meta.setLore(Arrays.asList("§8Allows you to store more Items!"));
+            meta.setLore(List.of("§8Allows you to store more Items!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, BACKPACK.toString());
             item.setItemMeta(meta);

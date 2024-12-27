@@ -48,7 +48,7 @@ public class CustomScoreboardManager {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    coinsTeam.setSuffix("§f" + String.valueOf(newCoins));
+                    coinsTeam.setSuffix("§f" + newCoins);
                 }
             }.runTaskLater(plugin, 60L); // 60 ticks = 3 seconds
         }

@@ -18,6 +18,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class SellItems implements Listener {
     private final PriceManager priceManager;
@@ -169,7 +170,7 @@ public class SellItems implements Listener {
         ItemMeta confirmMeta = confirmButton.getItemMeta();
         if (confirmMeta != null) {
             confirmMeta.setDisplayName("§aConfirm");
-            confirmMeta.setLore(Arrays.asList("§6" + totalCoins + " coins"));
+            confirmMeta.setLore(List.of("§6" + totalCoins + " coins"));
             confirmButton.setItemMeta(confirmMeta);
         }
         inventory.setItem(26, confirmButton);

@@ -197,8 +197,7 @@ public class ItemListener implements Listener {
 
     @EventHandler
     public void onInventoryChange(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) return;
-        Player player = (Player) event.getWhoClicked();
+        if (!(event.getWhoClicked() instanceof Player player)) return;
 
         // Schedule a task to run in the next tick to ensure inventory contents are updated
         Bukkit.getScheduler().runTask(SomeFeature.getInstance(), () -> updatePlayerHealthBoost(player));
@@ -222,8 +221,7 @@ public class ItemListener implements Listener {
 
     @EventHandler
     public void onItemPickup(EntityPickupItemEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player player) {
             Bukkit.getScheduler().runTask(SomeFeature.getInstance(), () -> updatePlayerHealthBoost(player));
         }
     }
@@ -327,8 +325,7 @@ public class ItemListener implements Listener {
 
     @EventHandler
     public void onPlayerFall(EntityDamageEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player player) {
             if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
                 ItemStack item = player.getInventory().getItemInMainHand();
                 if (item != null && item.getType() == Material.FISHING_ROD && item.getItemMeta() != null &&
@@ -383,7 +380,7 @@ public class ItemListener implements Listener {
         targetMeta.setDisplayName("§6Multi Tool");
 
         // Transfer lore
-        targetMeta.setLore(Arrays.asList("§8Allows you to bundle multiple tools into one!"));
+        targetMeta.setLore(List.of("§8Allows you to bundle multiple tools into one!"));
 
         // Transfer enchantments
         sourceMeta.getEnchants().forEach((enchant, level) ->

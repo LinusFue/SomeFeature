@@ -90,8 +90,7 @@ public class InventoryListener implements Listener {
         
         Recipe recipe = CustomRecipes.getRecipe(result);
         
-        if (recipe instanceof ShapedRecipe) {
-            ShapedRecipe shaped = (ShapedRecipe) recipe;
+        if (recipe instanceof ShapedRecipe shaped) {
             String[] shape = shaped.getShape();
             Map<Character, ItemStack> ingrediens = shaped.getIngredientMap();
 
@@ -112,8 +111,7 @@ public class InventoryListener implements Listener {
         }
         
         
-        if(recipe instanceof ShapelessRecipe){
-            ShapelessRecipe shapeless = (ShapelessRecipe) recipe;
+        if(recipe instanceof ShapelessRecipe shapeless){
             List<ItemStack> ingredients = shapeless.getIngredientList();
             
             recipeView.setItem(0, new ItemStack(Material.CRAFTING_TABLE));
@@ -128,8 +126,7 @@ public class InventoryListener implements Listener {
             }
         }
         
-        if(recipe instanceof FurnaceRecipe){
-            FurnaceRecipe furnace = (FurnaceRecipe) recipe;
+        if(recipe instanceof FurnaceRecipe furnace){
             ItemStack ingredient = furnace.getInput();
 
             recipeView.setItem(0, new ItemStack(Material.FURNACE));
@@ -137,8 +134,7 @@ public class InventoryListener implements Listener {
             recipeView.setItem(11, ingredient);
         }
         
-        if(recipe instanceof BlastingRecipe){
-            BlastingRecipe blasting = (BlastingRecipe) recipe;
+        if(recipe instanceof BlastingRecipe blasting){
             ItemStack ingredient = blasting.getInput();
 
             recipeView.setItem(0, new ItemStack(Material.BLAST_FURNACE));
@@ -146,8 +142,7 @@ public class InventoryListener implements Listener {
             recipeView.setItem(11, ingredient);
         }
         
-        if(recipe instanceof CampfireRecipe){
-            CampfireRecipe campfire = (CampfireRecipe) recipe;
+        if(recipe instanceof CampfireRecipe campfire){
             ItemStack ingredient = campfire.getInput();
 
             recipeView.setItem(0, new ItemStack(Material.CAMPFIRE));
@@ -155,8 +150,7 @@ public class InventoryListener implements Listener {
             recipeView.setItem(11, ingredient);
         }
         
-        if(recipe instanceof SmokingRecipe){
-            SmokingRecipe smoking = (SmokingRecipe) recipe;
+        if(recipe instanceof SmokingRecipe smoking){
             ItemStack ingredient = smoking.getInput();
 
             recipeView.setItem(0, new ItemStack(Material.SMOKER));
@@ -164,8 +158,7 @@ public class InventoryListener implements Listener {
             recipeView.setItem(11, ingredient);
         }
         
-        if(recipe instanceof StonecuttingRecipe){
-            StonecuttingRecipe stonecutting = (StonecuttingRecipe) recipe;
+        if(recipe instanceof StonecuttingRecipe stonecutting){
             ItemStack ingredient = stonecutting.getInput();
 
             recipeView.setItem(0, new ItemStack(Material.STONECUTTER));
@@ -173,8 +166,7 @@ public class InventoryListener implements Listener {
             recipeView.setItem(11, ingredient);
         }
         
-        if(recipe instanceof SmithingRecipe){
-            SmithingRecipe smithing = (SmithingRecipe) recipe;
+        if(recipe instanceof SmithingRecipe smithing){
             ItemStack base = smithing.getBase().getItemStack();
             ItemStack addition = smithing.getAddition().getItemStack();
 
@@ -184,8 +176,7 @@ public class InventoryListener implements Listener {
             recipeView.setItem(13, addition);
         }
         
-        if(recipe instanceof AnvilRecipe){
-            AnvilRecipe anvil = (AnvilRecipe) recipe;
+        if(recipe instanceof AnvilRecipe anvil){
             ItemStack base = anvil.getBase().getItemStack();
             ItemStack addition = anvil.getAddition().getItemStack();
 
