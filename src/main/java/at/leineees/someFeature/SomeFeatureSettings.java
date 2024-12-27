@@ -9,32 +9,34 @@ public class SomeFeatureSettings {
     private final static SomeFeatureSettings instance = new SomeFeatureSettings();
     private File file;
     private YamlConfiguration settings;
-    
-    private SomeFeatureSettings() {}
+
+    private SomeFeatureSettings() {
+    }
+
     public static SomeFeatureSettings getInstance() {
         return instance;
     }
-    
+
     public void load() {
         file = new File(SomeFeature.getInstance().getDataFolder(), "settings.yml");
-        if(!file.exists()) {
+        if (!file.exists()) {
             SomeFeature.getInstance().saveResource("settings.yml", false);
         }
         settings = new YamlConfiguration();
         settings.options().parseComments(true);
-        try{
+        try {
             settings.load(file);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     public void set(String path, Object value) {
         settings.set(path, value);
-        
+
         save();
     }
-    
+
     public void save() {
         try {
             settings.save(file);
@@ -52,7 +54,7 @@ public class SomeFeatureSettings {
         List<String> footer = settings.getStringList("Tablist.Footer");
         return footer;
     }
-    
+
     public SomeFeatureSettings getSettings() {
         return instance;
     }

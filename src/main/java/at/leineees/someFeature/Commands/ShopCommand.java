@@ -1,17 +1,13 @@
 package at.leineees.someFeature.Commands;
 
-import at.leineees.someFeature.CustomItems.CustomItems;
 import at.leineees.someFeature.Economy.CustomItemShop;
 import at.leineees.someFeature.Tools.TabCompleteHelper;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -26,8 +22,7 @@ public class ShopCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (command.getName().equalsIgnoreCase("shop")) {
             List<String> items = TabCompleteHelper.getAllItems();
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
+            if (sender instanceof Player player) {
                 if (args.length == 1 && !args[0].equalsIgnoreCase("create") && !args[0].equalsIgnoreCase("remove") && !args[0].equalsIgnoreCase("list")) {
                     // Open the shop
                     String shopName = args[0];

@@ -1,7 +1,6 @@
 package at.leineees.someFeature.Task;
 
 import at.leineees.someFeature.SomeFeatureSettings;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -15,7 +14,12 @@ public class TablistTask implements Runnable {
     private final Map<UUID, Integer> headerPosition = new HashMap<>();
     private final Map<UUID, Integer> footerPosition = new HashMap<>();
 
-    private TablistTask() {}
+    private TablistTask() {
+    }
+
+    public static TablistTask getInstance() {
+        return instance;
+    }
 
     @Override
     public void run() {
@@ -28,7 +32,7 @@ public class TablistTask implements Runnable {
             UUID uuid = player.getUniqueId();
             int headerPos = headerPosition.getOrDefault(uuid, 0) % headerLines.size();
             int footerPos = footerPosition.getOrDefault(uuid, 0) % footerLines.size();
-            
+
             player.setPlayerListHeaderFooter(
                     "§a" + replacePlaceholders(headerLines.get(headerPos), player),
                     "§c" + replacePlaceholders(footerLines.get(footerPos), player));
@@ -44,9 +48,5 @@ public class TablistTask implements Runnable {
 
     private String replacePlaceholders(String line, Player player) {
         return line.replace("%player%", player.getName());
-    }
-
-    public static TablistTask getInstance() {
-        return instance;
     }
 }

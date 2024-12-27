@@ -18,8 +18,7 @@ public class CoinsCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (command.getName().equalsIgnoreCase("coins")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
+            if (sender instanceof Player player) {
                 if (args.length == 0) {
                     player.sendMessage("§aYou have " + coinManager.getCoins(player) + " coins.");
                     return true;
@@ -48,10 +47,10 @@ public class CoinsCommand implements CommandExecutor {
                         } else if (action.equalsIgnoreCase("remove")) {
                             coinManager.removeCoins(target, amount);
                             player.sendMessage("§aRemoved " + amount + " coins from " + target.getName() + ".");
-                        } else if(action.equalsIgnoreCase("set")) {
+                        } else if (action.equalsIgnoreCase("set")) {
                             coinManager.setCoins(target, amount);
                             player.sendMessage("§aSet " + target.getName() + "'s coins to " + amount + ".");
-                        }else {
+                        } else {
                             player.sendMessage("§cUsage: /coins <player> <add|remove|set> <amount>");
                         }
                     } else {

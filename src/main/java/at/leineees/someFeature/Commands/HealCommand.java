@@ -9,8 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public class HealCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             if (command.getName().equalsIgnoreCase("heal")) {
                 {
                     player.setHealth(player.getMaxHealth());

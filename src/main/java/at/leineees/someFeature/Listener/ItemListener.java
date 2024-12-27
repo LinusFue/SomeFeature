@@ -16,7 +16,6 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -29,12 +28,9 @@ import static at.leineees.someFeature.CustomItems.CustomItems.MULTI_TOOL;
 
 public class ItemListener implements Listener {
 
+    private static final int TREE_FELLA_BLOCK_LIMIT = 300;
     private final HashMap<UUID, Long> cooldowns = new HashMap<>();
     private final Map<UUID, Double> playerBoosts = new HashMap<>();
-
-    private static final int TREE_FELLA_BLOCK_LIMIT = 300;
-
-
 
     @EventHandler
     public void onPlayerItemHeldFlyFeather(PlayerItemHeldEvent event) {
@@ -197,8 +193,7 @@ public class ItemListener implements Listener {
 
     @EventHandler
     public void onInventoryChange(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) return;
-        Player player = (Player) event.getWhoClicked();
+        if (!(event.getWhoClicked() instanceof Player player)) return;
 
         // Schedule a task to run in the next tick to ensure inventory contents are updated
         Bukkit.getScheduler().runTask(SomeFeature.getInstance(), () -> updatePlayerHealthBoost(player));
@@ -222,21 +217,14 @@ public class ItemListener implements Listener {
 
     @EventHandler
     public void onItemPickup(EntityPickupItemEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player player) {
             Bukkit.getScheduler().runTask(SomeFeature.getInstance(), () -> updatePlayerHealthBoost(player));
         }
     }
-    
-    
-    /**
-    
 
-    //more Methods for main Methods
-    
-    
-    
-    
+
+    /**
+     * //more Methods for main Methods
      **/
 
     private void break3x3Area(Block startBlock, Player player, ItemStack item) {
@@ -267,7 +255,7 @@ public class ItemListener implements Listener {
                         block.getWorld().dropItemNaturally(block.getLocation(), drop);
                     }
                     block.setType(Material.AIR); // Remove the block
-                }else {
+                } else {
                     block.breakNaturally(item);
                 }
             }
@@ -279,7 +267,7 @@ public class ItemListener implements Listener {
                 material == Material.END_PORTAL || material == Material.NETHER_PORTAL || material == Material.COMMAND_BLOCK ||
                 material == Material.CHAIN_COMMAND_BLOCK || material == Material.REPEATING_COMMAND_BLOCK;
     }
-    
+
     private boolean isLog(Material material) {
         return material == Material.OAK_LOG || material == Material.SPRUCE_LOG || material == Material.BIRCH_LOG ||
                 material == Material.JUNGLE_LOG || material == Material.ACACIA_LOG || material == Material.DARK_OAK_LOG ||
@@ -302,16 +290,16 @@ public class ItemListener implements Listener {
     }
 
     private void findTreeBlocks(Block block, Set<Block> blocksToBreak, int blockLimit) {
-        if(blocksToBreak.size() >= blockLimit) {
+        if (blocksToBreak.size() >= blockLimit) {
             return;
         }
         blocksToBreak.add(block);
 
         for (Block relative : getAdjacentBlocks(block)) {
-                if ((isLog(relative.getType()) || isLeaf(relative.getType())) && !blocksToBreak.contains(relative)) {
-                    findTreeBlocks(relative, blocksToBreak, blockLimit);
-                }
+            if ((isLog(relative.getType()) || isLeaf(relative.getType())) && !blocksToBreak.contains(relative)) {
+                findTreeBlocks(relative, blocksToBreak, blockLimit);
             }
+        }
     }
 
     private Set<Block> getAdjacentBlocks(Block block) {
@@ -327,8 +315,7 @@ public class ItemListener implements Listener {
 
     @EventHandler
     public void onPlayerFall(EntityDamageEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player player) {
             if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
                 ItemStack item = player.getInventory().getItemInMainHand();
                 if (item != null && item.getType() == Material.FISHING_ROD && item.getItemMeta() != null &&
@@ -363,10 +350,10 @@ public class ItemListener implements Listener {
         } else {
             toolMaterial = Material.DIAMOND;
         }
-        
+
         ItemStack newTool = new ItemStack(toolMaterial);
         ItemMeta newMeta = newTool.getItemMeta();
-        if(newMeta != null) {
+        if (newMeta != null) {
             newMeta.isUnbreakable();
         }
 
@@ -383,7 +370,7 @@ public class ItemListener implements Listener {
         targetMeta.setDisplayName("§6Multi Tool");
 
         // Transfer lore
-        targetMeta.setLore(Arrays.asList("§8Allows you to bundle multiple tools into one!"));
+        targetMeta.setLore(List.of("§8Allows you to bundle multiple tools into one!"));
 
         // Transfer enchantments
         sourceMeta.getEnchants().forEach((enchant, level) ->
@@ -520,5 +507,5 @@ public class ItemListener implements Listener {
             player.setHealth(Math.min(player.getHealth(), 20)); // Ensure health doesn't exceed new max
             playerBoosts.remove(player.getUniqueId());
         }
-    }    
+    }
 }

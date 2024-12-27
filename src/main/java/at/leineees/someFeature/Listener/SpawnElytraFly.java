@@ -15,9 +15,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -41,6 +41,17 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
     private final List<Player> boosted = new ArrayList<>();
     private final String message;
 
+    private SpawnElytraFly(Plugin plugin, int multiplyValue, int spawnRadius, boolean boostEnabled, World world, String message) {
+        this.plugin = plugin;
+        this.multiplyValue = multiplyValue;
+        this.spawnRadius = spawnRadius;
+        this.boostEnabled = boostEnabled;
+        this.world = world;
+        this.message = message;
+
+        this.runTaskTimer(this.plugin, 0, 3);
+    }
+
     public static SpawnElytraFly create(Plugin plugin) {
         var config = plugin.getConfig();
         if (!config.contains("multiplyValue") || !config.contains("spawnRadius") || !config.contains("boostEnabled") || !config.contains("world") || !config.contains("message")) {
@@ -54,17 +65,6 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
                 config.getBoolean("boostEnabled"),
                 Objects.requireNonNull(Bukkit.getWorld(config.getString("world")), "Invalid world " + config.getString("world")),
                 config.getString("message"));
-    }
-
-    private SpawnElytraFly(Plugin plugin, int multiplyValue, int spawnRadius, boolean boostEnabled, World world, String message) {
-        this.plugin = plugin;
-        this.multiplyValue = multiplyValue;
-        this.spawnRadius = spawnRadius;
-        this.boostEnabled = boostEnabled;
-        this.world = world;
-        this.message = message;
-
-        this.runTaskTimer(this.plugin, 0, 3);
     }
 
     @Override
@@ -101,13 +101,13 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
         ItemStack chestplate = player.getInventory().getChestplate();
         ItemMeta meta = chestplate.getItemMeta();
         if (player.getGameMode() != GameMode.SURVIVAL && player.getGameMode() != GameMode.ADVENTURE) return;
-        if (!isInSpawnRadius(player) && canUseElytra(player)){
+        if (!isInSpawnRadius(player) && canUseElytra(player)) {
             showElytraIfChestplate(player);
             player.setGliding(true);
             event.setCancelled(true);
             flying.add(player);
             return;
-        };
+        }
         event.setCancelled(true);
         player.setGliding(true);
         flying.add(player);
@@ -125,7 +125,7 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
         Player player = event.getPlayer();
         if (!player.isGliding()) {
             ItemStack chestplate = player.getInventory().getChestplate();
-            if(chestplate == null) return;
+            if (chestplate == null) return;
             ItemMeta meta = chestplate.getItemMeta();
             if (meta != null) {
                 chestplate.setItemMeta(meta);
@@ -183,7 +183,7 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
     private void showElytraIfChestplate(Player player) {
         ItemStack chestplate = player.getInventory().getChestplate();
         ItemMeta meta = chestplate.getItemMeta();
-        if(meta != null) {
+        if (meta != null) {
             PersistentDataContainer container = meta.getPersistentDataContainer();
             if (container.get(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING).equals("somefeature:elytra_chestplate") && chestplate.getType().equals(Material.NETHERITE_CHESTPLATE)) {
                 player.sendEquipmentChange(player, EquipmentSlot.CHEST, new ItemStack(Material.ELYTRA));

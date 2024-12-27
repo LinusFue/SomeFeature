@@ -1,10 +1,8 @@
 package at.leineees.someFeature.CustomItems;
 
 import at.leineees.someFeature.SomeFeature;
-import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -12,6 +10,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -33,7 +32,7 @@ public class CustomItems {
     public static final NamespacedKey LIFE_RING_2 = new NamespacedKey(SomeFeature.getInstance(), "life_ring_2");
     public static final NamespacedKey LIFE_RING_3 = new NamespacedKey(SomeFeature.getInstance(), "life_ring_3");
     public static final NamespacedKey BACKPACK = new NamespacedKey(SomeFeature.getInstance(), "backpack");
-    
+
 
     private static final Map<NamespacedKey, Supplier<ItemStack>> customItems = new HashMap<>();
 
@@ -66,23 +65,9 @@ public class CustomItems {
         Supplier<ItemStack> itemSupplier = customItems.get(key);
         return itemSupplier != null ? itemSupplier.get() : null;
     }
-    
+
     public static Map<NamespacedKey, Supplier<ItemStack>> getAllCustomItems() {
         return customItems;
-    }
-    
-    //customItemLayout
-    public ItemStack createCustomItem(Material material, String displayName, String... lore) {
-        ItemStack item = new ItemStack(material);
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(displayName);
-            meta.setLore(Arrays.asList(lore));
-            PersistentDataContainer container = meta.getPersistentDataContainer();
-            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, "custom_item");
-            item.setItemMeta(meta);
-        }
-        return item;
     }
 
     public static ItemStack createFlyFeather() {
@@ -102,7 +87,7 @@ public class CustomItems {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setDisplayName("§7Grappling Hook");
-            meta.setLore(Arrays.asList("§8Cooldown: 3 seconds"));
+            meta.setLore(List.of("§8Cooldown: 3 seconds"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, GRAPPLING_HOOK.toString());
             item.setItemMeta(meta);
@@ -122,26 +107,26 @@ public class CustomItems {
         }
         return item;
     }
-    
+
     public static ItemStack createSuperPickaxe() {
         ItemStack item = new ItemStack(Material.NETHERITE_PICKAXE);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setDisplayName("§5Super Pickaxe");
-            meta.setLore(Arrays.asList("§8Diggs out a 3x3 Area!"));
+            meta.setLore(List.of("§8Diggs out a 3x3 Area!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, SUPER_PICKAXE.toString());
             item.setItemMeta(meta);
         }
         return item;
     }
-    
-    public static ItemStack createFlyingFish(){
+
+    public static ItemStack createFlyingFish() {
         ItemStack item = new ItemStack(Material.COD);
         ItemMeta meta = item.getItemMeta();
-        if(meta != null) {
+        if (meta != null) {
             meta.setDisplayName("§6Flying Fish");
-            meta.setLore(Arrays.asList("§8Allows you to craft a Custom Item!"));
+            meta.setLore(List.of("§8Allows you to craft a Custom Item!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, FLYING_FISH.toString());
             item.setItemMeta(meta);
@@ -189,31 +174,31 @@ public class CustomItems {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setDisplayName("§6Elytra Chestplate");
-            meta.setLore(Arrays.asList("§8Combines the power of a Netherite Chestplate and an Elytra"));
+            meta.setLore(List.of("§8Combines the power of a Netherite Chestplate and an Elytra"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, ELYTRA_CHESTPLATE.toString());
             item.setItemMeta(meta);
         }
         return item;
     }
-    
+
     public static ItemStack createRecipeBook() {
         ItemStack item = new ItemStack(Material.BOOK);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setDisplayName("§dRecipe Book");
-            meta.setLore(Arrays.asList("§8Zeigt custom Item Rezepte an!"));
+            meta.setLore(List.of("§8Zeigt custom Item Rezepte an!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, RECIPE_BOOK.toString());
             item.setItemMeta(meta);
         }
         return item;
     }
-    
-    public static ItemStack createMultiTool(){
+
+    public static ItemStack createMultiTool() {
         ItemStack item = new ItemStack(Material.DIAMOND);
         ItemMeta meta = item.getItemMeta();
-        if(meta != null) {
+        if (meta != null) {
             meta.setDisplayName("§6Multi Tool");
             meta.setLore(Arrays.asList("§8Allows you to bundle multiple tools into one!", "§4Experimental!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
@@ -222,11 +207,11 @@ public class CustomItems {
         }
         return item;
     }
-    
-    public static ItemStack createMultiToolBase(){
+
+    public static ItemStack createMultiToolBase() {
         ItemStack item = new ItemStack(Material.DIAMOND);
         ItemMeta meta = item.getItemMeta();
-        if(meta != null) {
+        if (meta != null) {
             meta.setDisplayName("§6Multi Tool Base");
             meta.setLore(Arrays.asList("§8Allows you to craft a powerful multitool!", "§4Experimental!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
@@ -235,6 +220,7 @@ public class CustomItems {
         }
         return item;
     }
+
     public static ItemStack createLifeRing(int level) {
         ItemStack item = new ItemStack(Material.GOLD_NUGGET);
         ItemMeta meta = item.getItemMeta();
@@ -258,7 +244,7 @@ public class CustomItems {
                 default:
                     throw new IllegalArgumentException("Invalid level: " + level);
             }
-            meta.setLore(Arrays.asList("§8You Gain " + healthAmount/2 + " hearts when held in your inventory!", "§4Experimental!"));
+            meta.setLore(Arrays.asList("§8You Gain " + healthAmount / 2 + " hearts when held in your inventory!", "§4Experimental!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, key.toString());
             item.setItemMeta(meta);
@@ -266,19 +252,19 @@ public class CustomItems {
         return item;
     }
 
-    public static ItemStack createBackpack(){
+    public static ItemStack createBackpack() {
         ItemStack item = new ItemStack(Material.NAUTILUS_SHELL);
         ItemMeta meta = item.getItemMeta();
-        if(meta != null) {
+        if (meta != null) {
             meta.setDisplayName("§fBackpack");
-            meta.setLore(Arrays.asList("§8Allows you to store more Items!"));
+            meta.setLore(List.of("§8Allows you to store more Items!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, BACKPACK.toString());
             item.setItemMeta(meta);
         }
         return item;
     }
-    
+
     public static boolean isCustomItem(ItemStack item) {
         if (item == null || item.getItemMeta() == null) {
             return false;

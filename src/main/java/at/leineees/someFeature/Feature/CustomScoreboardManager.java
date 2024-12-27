@@ -25,7 +25,7 @@ public class CustomScoreboardManager {
         Team coinsTeam = board.registerNewTeam("coins");
         coinsTeam.addEntry("§6Coins: ");
         objective.getScore("§6Coins: ").setScore(5);
-        
+
         String separator = new String(new char[("§6Coins: ").length()]).replace('\0', '_');
         objective.getScore(separator).setScore(4);
         objective.getScore("  ").setScore(3);
@@ -33,7 +33,7 @@ public class CustomScoreboardManager {
         Team biomeTeam = board.registerNewTeam("biome");
         biomeTeam.addEntry("§aBiome: ");
         objective.getScore("§aBiome: ").setScore(2);
-        
+
         player.setScoreboard(board);
     }
 
@@ -48,7 +48,7 @@ public class CustomScoreboardManager {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    coinsTeam.setSuffix("§f" + String.valueOf(newCoins));
+                    coinsTeam.setSuffix("§f" + newCoins);
                 }
             }.runTaskLater(plugin, 60L); // 60 ticks = 3 seconds
         }
@@ -58,7 +58,7 @@ public class CustomScoreboardManager {
         Scoreboard board = player.getScoreboard();
         Team biomeTeam = board.getTeam("biome");
         if (biomeTeam != null) {
-            String biome = player.getLocation().getBlock().getBiome().name();
+            String biome = player.getLocation().getBlock().getBiome().toString();
             biomeTeam.setSuffix("§f" + biome);
         }
     }

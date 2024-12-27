@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class SpawnCommand implements CommandExecutor {
     private final JavaPlugin plugin;
     private Location spawnLocation;
@@ -22,12 +24,10 @@ public class SpawnCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("§cDieser Befehl kann nur von Spielern verwendet werden.");
             return true;
         }
-
-        Player player = (Player) sender;
 
         if (args.length == 0) {
             if (spawnLocation != null) {
@@ -67,7 +67,7 @@ public class SpawnCommand implements CommandExecutor {
     private void loadSpawnLocation() {
         FileConfiguration config = plugin.getConfig();
         if (config.contains("spawn.world")) {
-            World world = Bukkit.getWorld(config.getString("spawn.world"));
+            World world = Bukkit.getWorld(Objects.requireNonNull(config.getString("spawn.world")));
             double x = config.getDouble("spawn.x");
             double y = config.getDouble("spawn.y");
             double z = config.getDouble("spawn.z");

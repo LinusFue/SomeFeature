@@ -18,8 +18,7 @@ public class TradeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (command.getName().equalsIgnoreCase("trade")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
+            if (sender instanceof Player player) {
                 if (args.length == 3 && args[0].equalsIgnoreCase("coins")) {
                     Player target = Bukkit.getPlayer(args[1]);
                     if (target != null) {

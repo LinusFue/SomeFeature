@@ -6,18 +6,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class SellItems implements Listener {
     private final PriceManager priceManager;
@@ -66,6 +65,7 @@ public class SellItems implements Listener {
                     } else {
                         itemType = null;
                     }
+                    assert itemType != null;
                     int price = priceManager.getPrice(new NamespacedKey(itemType.split(":")[0], itemType.split(":")[1]));
 
                     if (price > 0) {
@@ -84,7 +84,7 @@ public class SellItems implements Listener {
             }
         }
     }
-    
+
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         if (event.getView().getTitle().equals("Sell")) {
@@ -114,6 +114,7 @@ public class SellItems implements Listener {
                 } else {
                     itemType = null;
                 }
+                assert itemType != null;
                 int price = priceManager.getPrice(new NamespacedKey(itemType.split(":")[0], itemType.split(":")[1]));
 
                 if (price > 0) {
@@ -152,6 +153,7 @@ public class SellItems implements Listener {
                 } else {
                     itemType = null;
                 }
+                assert itemType != null;
                 int price = priceManager.getPrice(new NamespacedKey(itemType.split(":")[0], itemType.split(":")[1]));
 
                 if (price > 0) {
@@ -169,7 +171,7 @@ public class SellItems implements Listener {
         ItemMeta confirmMeta = confirmButton.getItemMeta();
         if (confirmMeta != null) {
             confirmMeta.setDisplayName("§aConfirm");
-            confirmMeta.setLore(Arrays.asList("§6" + totalCoins + " coins"));
+            confirmMeta.setLore(List.of("§6" + totalCoins + " coins"));
             confirmButton.setItemMeta(confirmMeta);
         }
         inventory.setItem(26, confirmButton);
