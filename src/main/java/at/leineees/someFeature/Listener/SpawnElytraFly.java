@@ -75,15 +75,15 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
             if (!isInSpawnRadius(player)) {
                 player.setAllowFlight(canUseElytra(player));
                 if (flying.contains(player) && !player.getLocation().getBlock().getRelative(BlockFace.SELF).getType().isAir()) {
-                    boosted.remove(player);
+                    boosted.add(player);
                     player.setAllowFlight(false);
                     player.setGliding(false);
                     Bukkit.getScheduler().runTaskLater(plugin, () -> flying.remove(player), 5);
-                    boosted.add(player);
+                    boosted.remove(player);
                 }
                 return;
             }
-            if (!player.getAllowFlight()) {
+            if (!player.getAllowFlight() && isInSpawnRadius(player)) {
                 player.setAllowFlight(true);
                 if (flying.contains(player) && !player.getLocation().getBlock().getRelative(BlockFace.SELF).getType().isAir()) {
                     player.setAllowFlight(false);
@@ -98,26 +98,24 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
     @EventHandler
     public void onDoubleJump(PlayerToggleFlightEvent event) {
         Player player = event.getPlayer();
-        ItemStack chestplate = player.getInventory().getChestplate();
-        ItemMeta meta = chestplate.getItemMeta();
         if (player.getGameMode() != GameMode.SURVIVAL && player.getGameMode() != GameMode.ADVENTURE) return;
         if (!isInSpawnRadius(player) && canUseElytra(player)) {
             showElytraIfChestplate(player);
             player.setGliding(true);
             event.setCancelled(true);
             flying.add(player);
-            return;
+        } else {
+            event.setCancelled(true);
+            player.setGliding(true);
+            flying.add(player);
+            if (!boostEnabled) return;
+            String[] messageParts = message.split("%key%");
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
+                    new ComponentBuilder(messageParts[0])
+                            .append(new KeybindComponent("key.swapOffhand"))
+                            .append(messageParts[1])
+                            .create());
         }
-        event.setCancelled(true);
-        player.setGliding(true);
-        flying.add(player);
-        if (!boostEnabled) return;
-        String[] messageParts = message.split("%key%");
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-                new ComponentBuilder(messageParts[0])
-                        .append(new KeybindComponent("key.swapOffhand"))
-                        .append(messageParts[1])
-                        .create());
     }
 
     @EventHandler
@@ -131,6 +129,7 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
                 chestplate.setItemMeta(meta);
             }
             player.getInventory().setChestplate(chestplate);
+            if (!boosted.contains(player)) boosted.remove(player);
         }
     }
 

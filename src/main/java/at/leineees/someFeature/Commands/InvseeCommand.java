@@ -12,6 +12,13 @@ public class InvseeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if(sender instanceof Player player){
+            if(!player.hasPermission("somefeature.invsee")){
+                player.sendMessage("§cYou dont have perisson for this Command!");
+                return true;
+            }
+        }
+
         if (!(sender instanceof Player player)) {
             sender.sendMessage("§cOnly players can use this command.");
             return true;
