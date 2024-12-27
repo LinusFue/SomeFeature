@@ -6,7 +6,6 @@ import at.leineees.someFeature.CustomItems.CustomItems;
 import at.leineees.someFeature.CustomItems.CustomRecipeBook;
 import at.leineees.someFeature.CustomItems.CustomRecipes;
 import at.leineees.someFeature.Data.BackpackManager;
-import at.leineees.someFeature.Data.CustomMob.CustomMobManager;
 import at.leineees.someFeature.Data.Coins.CoinManager;
 import at.leineees.someFeature.Economy.CustomItemShop;
 import at.leineees.someFeature.Economy.PriceManager;
@@ -21,7 +20,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 
 public final class SomeFeature extends JavaPlugin {
-    private CustomMobManager customMobManager;
     private CustomItemShop customItemShop;
     private PriceManager priceManager;
     private BackpackManager backpackManager;
@@ -39,7 +37,6 @@ public final class SomeFeature extends JavaPlugin {
 
 
         //Definitions
-        customMobManager = new CustomMobManager(this);
         CustomItems customItems = new CustomItems();
         CustomScoreboardManager customScoreboardManager = new CustomScoreboardManager(this);
         CoinManager coinManager = new CoinManager(this, customScoreboardManager);
@@ -48,14 +45,12 @@ public final class SomeFeature extends JavaPlugin {
 
 
         CustomRecipes customRecipes = new CustomRecipes(this);
-        CustomMob customMob = new CustomMob(this, customMobManager);
         priceManager = new PriceManager(getDataFolder());
         SellItems sellItems = new SellItems(priceManager, coinManager);
         CustomRecipeBook customRecipeBook = new CustomRecipeBook();
         
         customRecipes.register();
         customRecipeBook.loadRecipes();
-        customMobManager.loadCustomMobs();
         priceManager.loadPrices();
         backpackManager.init(getDataFolder());
 
@@ -67,7 +62,6 @@ public final class SomeFeature extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ItemListener(), this);
         getServer().getPluginManager().registerEvents(new ArmorItemListener(), this);
         getServer().getPluginManager().registerEvents(customItemShop, this);
-        getServer().getPluginManager().registerEvents(customMob, this);
         getServer().getPluginManager().registerEvents(sellItems, this);
         
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
@@ -78,8 +72,6 @@ public final class SomeFeature extends JavaPlugin {
         getCommand("shop").setExecutor(new ShopCommand(customItemShop));
         getCommand("coins").setExecutor(new CoinsCommand(coinManager));
         getCommand("givecustomitem").setExecutor(new GiveCustomItemCommand());
-        getCommand("spawncustommob").setExecutor(new SpawnCustomMobCommand(customMobManager));
-        getCommand("removecustommob").setExecutor(new RemoveCustomMobCommand(customMobManager));
         getCommand("invsee").setExecutor(new InvseeCommand());
         getCommand("price").setExecutor(new PriceCommand(priceManager));
         getCommand("sell").setExecutor(new SellCommand(sellItems));
@@ -90,7 +82,6 @@ public final class SomeFeature extends JavaPlugin {
         //TabCompleter
         getCommand("shop").setTabCompleter(new ShopTabCompleter(customItemShop));
         getCommand("givecustomitem").setTabCompleter(new CustomItemTabCompleter());
-        getCommand("spawncustommob").setTabCompleter(new CustomMobTabCompleter());
         getCommand("coins").setTabCompleter(new CoinTabCompleter());
         getCommand("price").setTabCompleter(new PriceTabCompleter(priceManager));
         getCommand("trade").setTabCompleter(new TradeTabCompleter());
@@ -117,7 +108,6 @@ public final class SomeFeature extends JavaPlugin {
     public void onDisable() {
         Bukkit.broadcastMessage("§4SomeFeature disabled");
         SomeFeatureSettings.getInstance().save();
-        customMobManager.saveCustomMobs();
         customItemShop.saveShops();
         priceManager.savePrices();
     }
