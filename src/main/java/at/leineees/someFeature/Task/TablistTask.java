@@ -17,6 +17,10 @@ public class TablistTask implements Runnable {
     private TablistTask() {
     }
 
+    public static TablistTask getInstance() {
+        return instance;
+    }
+
     @Override
     public void run() {
         List<String> headerLines = SomeFeatureSettings.getInstance().getTablistHeader();
@@ -44,9 +48,5 @@ public class TablistTask implements Runnable {
 
     private String replacePlaceholders(String line, Player player) {
         return line.replace("%player%", player.getName());
-    }
-
-    public static TablistTask getInstance() {
-        return instance;
     }
 }

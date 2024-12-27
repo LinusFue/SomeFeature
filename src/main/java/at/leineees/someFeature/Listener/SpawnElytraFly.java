@@ -41,6 +41,17 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
     private final List<Player> boosted = new ArrayList<>();
     private final String message;
 
+    private SpawnElytraFly(Plugin plugin, int multiplyValue, int spawnRadius, boolean boostEnabled, World world, String message) {
+        this.plugin = plugin;
+        this.multiplyValue = multiplyValue;
+        this.spawnRadius = spawnRadius;
+        this.boostEnabled = boostEnabled;
+        this.world = world;
+        this.message = message;
+
+        this.runTaskTimer(this.plugin, 0, 3);
+    }
+
     public static SpawnElytraFly create(Plugin plugin) {
         var config = plugin.getConfig();
         if (!config.contains("multiplyValue") || !config.contains("spawnRadius") || !config.contains("boostEnabled") || !config.contains("world") || !config.contains("message")) {
@@ -54,17 +65,6 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
                 config.getBoolean("boostEnabled"),
                 Objects.requireNonNull(Bukkit.getWorld(config.getString("world")), "Invalid world " + config.getString("world")),
                 config.getString("message"));
-    }
-
-    private SpawnElytraFly(Plugin plugin, int multiplyValue, int spawnRadius, boolean boostEnabled, World world, String message) {
-        this.plugin = plugin;
-        this.multiplyValue = multiplyValue;
-        this.spawnRadius = spawnRadius;
-        this.boostEnabled = boostEnabled;
-        this.world = world;
-        this.message = message;
-
-        this.runTaskTimer(this.plugin, 0, 3);
     }
 
     @Override

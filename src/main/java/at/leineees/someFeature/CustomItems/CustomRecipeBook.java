@@ -11,6 +11,10 @@ public class CustomRecipeBook {
     public CustomRecipeBook() {
     }
 
+    public static void openRecipeBook(Player player) {
+        player.openInventory(recipeInventory);
+    }
+
     public void loadRecipes() {
         int slot = 0;
         for (Recipe recipe : CustomRecipes.getRecipes()) {
@@ -22,9 +26,5 @@ public class CustomRecipeBook {
                 if (slot >= 54) break;
             }
         }
-    }
-
-    public static void openRecipeBook(Player player) {
-        player.openInventory(recipeInventory);
     }
 }

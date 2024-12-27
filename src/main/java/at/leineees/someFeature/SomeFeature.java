@@ -21,12 +21,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 
 public final class SomeFeature extends JavaPlugin {
+    public static NamespacedKey CUSTOM_ITEM_KEY;
+    public static NamespacedKey CUSTOM_ITEM_LEVEL_KEY;
     private CustomItemShop customItemShop;
     private PriceManager priceManager;
     private BackpackManager backpackManager;
 
-    public static NamespacedKey CUSTOM_ITEM_KEY;
-    public static NamespacedKey CUSTOM_ITEM_LEVEL_KEY;
+    public static SomeFeature getInstance() {
+        return getPlugin(SomeFeature.class);
+    }
 
     @Override
     public void onEnable() {
@@ -111,9 +114,5 @@ public final class SomeFeature extends JavaPlugin {
         SomeFeatureSettings.getInstance().save();
         customItemShop.saveShops();
         priceManager.savePrices();
-    }
-
-    public static SomeFeature getInstance() {
-        return getPlugin(SomeFeature.class);
     }
 }

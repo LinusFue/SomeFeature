@@ -28,11 +28,9 @@ import static at.leineees.someFeature.CustomItems.CustomItems.MULTI_TOOL;
 
 public class ItemListener implements Listener {
 
+    private static final int TREE_FELLA_BLOCK_LIMIT = 300;
     private final HashMap<UUID, Long> cooldowns = new HashMap<>();
     private final Map<UUID, Double> playerBoosts = new HashMap<>();
-
-    private static final int TREE_FELLA_BLOCK_LIMIT = 300;
-
 
     @EventHandler
     public void onPlayerItemHeldFlyFeather(PlayerItemHeldEvent event) {

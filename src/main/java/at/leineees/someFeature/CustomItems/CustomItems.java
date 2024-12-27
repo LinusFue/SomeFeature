@@ -70,20 +70,6 @@ public class CustomItems {
         return customItems;
     }
 
-    //customItemLayout
-    public ItemStack createCustomItem(Material material, String displayName, String... lore) {
-        ItemStack item = new ItemStack(material);
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(displayName);
-            meta.setLore(Arrays.asList(lore));
-            PersistentDataContainer container = meta.getPersistentDataContainer();
-            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, "custom_item");
-            item.setItemMeta(meta);
-        }
-        return item;
-    }
-
     public static ItemStack createFlyFeather() {
         ItemStack item = new ItemStack(Material.FEATHER); // Choose your material
         ItemMeta meta = item.getItemMeta();
@@ -285,6 +271,20 @@ public class CustomItems {
         }
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
         return container.has(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING);
+    }
+
+    //customItemLayout
+    public ItemStack createCustomItem(Material material, String displayName, String... lore) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName(displayName);
+            meta.setLore(Arrays.asList(lore));
+            PersistentDataContainer container = meta.getPersistentDataContainer();
+            container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, "custom_item");
+            item.setItemMeta(meta);
+        }
+        return item;
     }
 
 }
