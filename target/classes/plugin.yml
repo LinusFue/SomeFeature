@@ -59,3 +59,7 @@ commands:
     usage: /spawn [setspawn]
     aliases: 
       - hub
+  trade:
+    description: Trade with other players.
+    usage:
+      - /trade <coins> <player> <amount>

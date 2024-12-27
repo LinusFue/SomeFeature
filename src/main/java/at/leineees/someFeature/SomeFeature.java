@@ -84,6 +84,7 @@ public final class SomeFeature extends JavaPlugin {
         getCommand("price").setExecutor(new PriceCommand(priceManager));
         getCommand("sell").setExecutor(new SellCommand(sellItems));
         getCommand("spawn").setExecutor(new SpawnCommand(this));
+        getCommand("trade").setExecutor(new TradeCommand(coinManager));
                 
         
         //TabCompleter
@@ -92,6 +93,7 @@ public final class SomeFeature extends JavaPlugin {
         getCommand("spawncustommob").setTabCompleter(new CustomMobTabCompleter());
         getCommand("coins").setTabCompleter(new CoinTabCompleter());
         getCommand("price").setTabCompleter(new PriceTabCompleter(priceManager));
+        getCommand("trade").setTabCompleter(new TradeTabCompleter());
 
 
         for(Player player : Bukkit.getOnlinePlayers()) {
