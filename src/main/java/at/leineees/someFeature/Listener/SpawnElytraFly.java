@@ -1,10 +1,12 @@
 package at.leineees.someFeature.Listener;
 
+import at.leineees.someFeature.SomeFeature;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.KeybindComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
@@ -16,6 +18,11 @@ import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -64,13 +71,21 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
     public void run() {
         world.getPlayers().forEach(player -> {
             if (player.getGameMode() != GameMode.SURVIVAL && player.getGameMode() != GameMode.ADVENTURE) return;
+            player.setAllowFlight(false);
             if (!isInSpawnRadius(player)) {
-                player.setAllowFlight(false);
+                player.setAllowFlight(canUseElytra(player));
+                if (flying.contains(player) && !player.getLocation().getBlock().getRelative(BlockFace.SELF).getType().isAir()) {
+                    boosted.remove(player);
+                    player.setAllowFlight(false);
+                    player.setGliding(false);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> flying.remove(player), 5);
+                    boosted.add(player);
+                }
                 return;
             }
             if (!player.getAllowFlight()) {
                 player.setAllowFlight(true);
-                if (flying.contains(player) && !player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType().isAir()) {
+                if (flying.contains(player) && !player.getLocation().getBlock().getRelative(BlockFace.SELF).getType().isAir()) {
                     player.setAllowFlight(false);
                     player.setGliding(false);
                     boosted.remove(player);
@@ -83,8 +98,16 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
     @EventHandler
     public void onDoubleJump(PlayerToggleFlightEvent event) {
         Player player = event.getPlayer();
+        ItemStack chestplate = player.getInventory().getChestplate();
+        ItemMeta meta = chestplate.getItemMeta();
         if (player.getGameMode() != GameMode.SURVIVAL && player.getGameMode() != GameMode.ADVENTURE) return;
-        if (!isInSpawnRadius(player)) return;
+        if (!isInSpawnRadius(player) && canUseElytra(player)){
+            showElytraIfChestplate(player);
+            player.setGliding(true);
+            event.setCancelled(true);
+            flying.add(player);
+            return;
+        };
         event.setCancelled(true);
         player.setGliding(true);
         flying.add(player);
@@ -95,6 +118,20 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
                         .append(new KeybindComponent("key.swapOffhand"))
                         .append(messageParts[1])
                         .create());
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        if (!player.isGliding()) {
+            ItemStack chestplate = player.getInventory().getChestplate();
+            if(chestplate == null) return;
+            ItemMeta meta = chestplate.getItemMeta();
+            if (meta != null) {
+                chestplate.setItemMeta(meta);
+            }
+            player.getInventory().setChestplate(chestplate);
+        }
     }
 
     @EventHandler
@@ -127,5 +164,30 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
     private boolean isInSpawnRadius(Player player) {
         if (!player.getWorld().equals(world)) return false;
         return world.getSpawnLocation().distance(player.getLocation()) <= spawnRadius;
+    }
+
+    private boolean canUseElytra(Player player) {
+        ItemStack chestplate = player.getInventory().getChestplate();
+        if (chestplate == null) return false;
+        ItemMeta meta = chestplate.getItemMeta();
+        if (meta != null) {
+            PersistentDataContainer container = meta.getPersistentDataContainer();
+            return chestplate.getType() == Material.ELYTRA
+                    || (chestplate.getType() == Material.NETHERITE_CHESTPLATE
+                    && container.has(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING)
+                    && "somefeature:elytra_chestplate".equals(container.get(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING)));
+        }
+        return false;
+    }
+
+    private void showElytraIfChestplate(Player player) {
+        ItemStack chestplate = player.getInventory().getChestplate();
+        ItemMeta meta = chestplate.getItemMeta();
+        if(meta != null) {
+            PersistentDataContainer container = meta.getPersistentDataContainer();
+            if (container.get(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING).equals("somefeature:elytra_chestplate") && chestplate.getType().equals(Material.NETHERITE_CHESTPLATE)) {
+                player.sendEquipmentChange(player, EquipmentSlot.CHEST, new ItemStack(Material.ELYTRA));
+            }
+        }
     }
 }

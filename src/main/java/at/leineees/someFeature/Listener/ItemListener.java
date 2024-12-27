@@ -324,16 +324,6 @@ public class ItemListener implements Listener {
         adjacentBlocks.add(block.getRelative(0, 0, -1));
         return adjacentBlocks;
     }
-    
-    
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
-        if (player.isGliding() && player.isOnGround()) {
-            player.setGliding(false);
-            player.sendMessage("§cYou have landed and stopped gliding.");
-        }
-    }
 
     @EventHandler
     public void onPlayerFall(EntityDamageEvent event) {
@@ -342,10 +332,8 @@ public class ItemListener implements Listener {
             if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
                 ItemStack item = player.getInventory().getItemInMainHand();
                 if (item != null && item.getType() == Material.FISHING_ROD && item.getItemMeta() != null &&
-                        ("§7Grappling Hook").equals(item.getItemMeta().getDisplayName()) ||
-                        item != null && item.getType() == Material.DIAMOND_SHOVEL && item.getItemMeta() != null &&
-                                ("§5Aspect of the Void").equals(item.getItemMeta().getDisplayName())) {
-                    event.setCancelled(true); // Cancel fall damage
+                        ("§7Grappling Hook").equals(item.getItemMeta().getDisplayName())) {
+                    event.setCancelled(true);
                 }
             }
         }
