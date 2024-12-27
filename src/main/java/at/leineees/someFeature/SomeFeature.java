@@ -87,11 +87,11 @@ public final class SomeFeature extends JavaPlugin {
         getCommand("trade").setTabCompleter(new TradeTabCompleter());
 
 
-        for(Player player : Bukkit.getOnlinePlayers()) {
+        /*for(Player player : Bukkit.getOnlinePlayers()) {
             if(player.getGameMode().equals(GameMode.ADVENTURE) || player.getGameMode().equals(GameMode.SURVIVAL)) {
                 player.setAllowFlight(false);
             }
-        }
+        }*/
         
         //Schedulers
         getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {

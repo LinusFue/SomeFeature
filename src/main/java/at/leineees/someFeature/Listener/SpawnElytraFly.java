@@ -64,8 +64,12 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
     public void run() {
         world.getPlayers().forEach(player -> {
             if (player.getGameMode() != GameMode.SURVIVAL && player.getGameMode() != GameMode.ADVENTURE) return;
+            if (!isInSpawnRadius(player)) {
+                player.setAllowFlight(false);
+                return;
+            }
             if (!player.getAllowFlight()) {
-                player.setAllowFlight(isInSpawnRadius(player));
+                player.setAllowFlight(true);
                 if (flying.contains(player) && !player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType().isAir()) {
                     player.setAllowFlight(false);
                     player.setGliding(false);
@@ -117,17 +121,6 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
             if (!player.isOnGround()) {
                 event.setCancelled(true);
             }
-        }
-    }
-
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
-        if (player.isGliding() && player.isOnGround()) {
-            player.setGliding(false);
-            player.setAllowFlight(false);
-            flying.remove(player);
-            boosted.remove(player);
         }
     }
 

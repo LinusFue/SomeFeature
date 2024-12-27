@@ -16,26 +16,12 @@ commands:
   coins:
     description: Shows the player's coins.
     usage: /coins [player] [add|remove] [amount]
-  
   shop:
     description: Manage and open shops
     usage: 
       - /shop <shopName> or /shop create <shopName> 
       - /shop remove <shopName> or /shop <shopName> additem <namespace:item> <cost> <amount> 
       - /shop <shopName> removeitem <namespace:item>
-  spawncustommob:
-    description: Spawns a custom mob.
-    usage: /spawncustommob [minecraft:entity] [nametag] [x] [y] [z] [command]
-    aliases: 
-      - scm
-      - spawncm
-  removecustommob:
-    description: Removes a custom mob.
-    usage: /removecustommob [nametag|id|@m]
-    aliases:
-      - rcm
-      - removecm
-      - rmcm
   vanish:
     description: Makes the player completly invisible.
     usage: /vanish
