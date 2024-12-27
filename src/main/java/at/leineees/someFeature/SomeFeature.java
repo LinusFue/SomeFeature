@@ -41,7 +41,7 @@ public final class SomeFeature extends JavaPlugin {
         CustomScoreboardManager customScoreboardManager = new CustomScoreboardManager(this);
         CoinManager coinManager = new CoinManager(this, customScoreboardManager);
         customItemShop = new CustomItemShop(coinManager, customItems);
-        backpackManager = new BackpackManager();
+        backpackManager = BackpackManager.getInstance();
 
 
         CustomRecipes customRecipes = new CustomRecipes(this);

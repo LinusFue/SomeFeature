@@ -98,7 +98,7 @@ public class AnvilRecipe implements Recipe, Keyed, Listener {
                     int repairCost = inventory.getRepairCost();
                     if (player.getLevel() >= repairCost) {
                         player.setLevel(player.getLevel() - repairCost);
-                        if(result != null && result.getType() != Material.AIR) {
+                        if(result.getType() != Material.AIR) {
                             event.setCursor(result);
                             inventory.setItem(0, null);
                             inventory.setItem(1, null);

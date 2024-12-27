@@ -1,5 +1,6 @@
 package at.leineees.someFeature.Data;
 
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public class BackpackManager {
@@ -18,6 +20,9 @@ public class BackpackManager {
     private static final Map<UUID, ItemStack[]> backpackContents = new HashMap<>();
     private static File file;
     private static FileConfiguration config;
+
+    @Getter
+    private static BackpackManager instance;
 
     public static void init(File dataFolder) {
         file = new File(dataFolder, "backpacks.yml");
@@ -54,7 +59,7 @@ public class BackpackManager {
     private static void loadBackpacks() {
         for (String key : config.getKeys(false)) {
             UUID playerId = UUID.fromString(key);
-            ItemStack[] contents = config.getList(key).toArray(new ItemStack[0]);
+            ItemStack[] contents = Objects.requireNonNull(config.getList(key)).toArray(new ItemStack[0]);
             backpackContents.put(playerId, contents);
         }
     }

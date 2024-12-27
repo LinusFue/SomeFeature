@@ -58,7 +58,7 @@ public class CustomScoreboardManager {
         Scoreboard board = player.getScoreboard();
         Team biomeTeam = board.getTeam("biome");
         if (biomeTeam != null) {
-            String biome = player.getLocation().getBlock().getBiome().name();
+            String biome = player.getLocation().getBlock().getBiome().toString();
             biomeTeam.setSuffix("§f" + biome);
         }
     }

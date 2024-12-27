@@ -77,6 +77,7 @@ public class InventoryListener implements Listener {
         if(event.getView().getTitle().startsWith("§6Recipe: ")) {
             event.setCancelled(true);
             ItemStack clickedItem = event.getCurrentItem();
+            assert clickedItem != null;
             if(clickedItem.getItemMeta().getDisplayName().equals("§7Back")){
                 CustomRecipeBook.openRecipeBook((Player) event.getWhoClicked());
             }

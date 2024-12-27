@@ -1,11 +1,8 @@
 package at.leineees.someFeature.Economy;
 
-import at.leineees.someFeature.SomeFeature;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.Material;
 
 import java.io.File;
 import java.io.IOException;

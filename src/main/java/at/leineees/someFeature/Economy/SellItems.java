@@ -67,6 +67,7 @@ public class SellItems implements Listener {
                     } else {
                         itemType = null;
                     }
+                    assert itemType != null;
                     int price = priceManager.getPrice(new NamespacedKey(itemType.split(":")[0], itemType.split(":")[1]));
 
                     if (price > 0) {
@@ -115,6 +116,7 @@ public class SellItems implements Listener {
                 } else {
                     itemType = null;
                 }
+                assert itemType != null;
                 int price = priceManager.getPrice(new NamespacedKey(itemType.split(":")[0], itemType.split(":")[1]));
 
                 if (price > 0) {
@@ -153,6 +155,7 @@ public class SellItems implements Listener {
                 } else {
                     itemType = null;
                 }
+                assert itemType != null;
                 int price = priceManager.getPrice(new NamespacedKey(itemType.split(":")[0], itemType.split(":")[1]));
 
                 if (price > 0) {
