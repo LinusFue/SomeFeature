@@ -31,9 +31,9 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         scoreboardManager.updateBiome(player);
     }
-    
+
     @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event){
+    public void onPlayerDeath(PlayerDeathEvent event) {
         coinManager.removeCoins(event.getEntity(), coinManager.getCoins(event.getEntity()) / 2);
     }
 }

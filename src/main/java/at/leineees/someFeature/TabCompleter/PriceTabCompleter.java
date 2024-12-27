@@ -23,13 +23,13 @@ public class PriceTabCompleter implements TabCompleter {
         if (args.length == 1) {
             return TabCompleteHelper.filterSuggestions(args[0], Arrays.asList("list", "set", "remove"));
         } else if (args.length == 2) {
-            if(args[0].equalsIgnoreCase("set")) {
+            if (args[0].equalsIgnoreCase("set")) {
                 return TabCompleteHelper.filterSuggestions(args[1], TabCompleteHelper.getAllItems());
             } else if (args[0].equalsIgnoreCase("remove")) {
                 return TabCompleteHelper.filterSuggestions(args[1], priceManager.getPrices().keySet());
             }
-        }else if (args.length == 3) {
-            if(args[0].equalsIgnoreCase("set")){
+        } else if (args.length == 3) {
+            if (args[0].equalsIgnoreCase("set")) {
                 suggestions.add("<price>");
             }
         }

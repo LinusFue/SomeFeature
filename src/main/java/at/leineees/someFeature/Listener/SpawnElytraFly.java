@@ -15,9 +15,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -101,7 +101,7 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
         ItemStack chestplate = player.getInventory().getChestplate();
         ItemMeta meta = chestplate.getItemMeta();
         if (player.getGameMode() != GameMode.SURVIVAL && player.getGameMode() != GameMode.ADVENTURE) return;
-        if (!isInSpawnRadius(player) && canUseElytra(player)){
+        if (!isInSpawnRadius(player) && canUseElytra(player)) {
             showElytraIfChestplate(player);
             player.setGliding(true);
             event.setCancelled(true);
@@ -125,7 +125,7 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
         Player player = event.getPlayer();
         if (!player.isGliding()) {
             ItemStack chestplate = player.getInventory().getChestplate();
-            if(chestplate == null) return;
+            if (chestplate == null) return;
             ItemMeta meta = chestplate.getItemMeta();
             if (meta != null) {
                 chestplate.setItemMeta(meta);
@@ -183,7 +183,7 @@ public class SpawnElytraFly extends BukkitRunnable implements Listener {
     private void showElytraIfChestplate(Player player) {
         ItemStack chestplate = player.getInventory().getChestplate();
         ItemMeta meta = chestplate.getItemMeta();
-        if(meta != null) {
+        if (meta != null) {
             PersistentDataContainer container = meta.getPersistentDataContainer();
             if (container.get(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING).equals("somefeature:elytra_chestplate") && chestplate.getType().equals(Material.NETHERITE_CHESTPLATE)) {
                 player.sendEquipmentChange(player, EquipmentSlot.CHEST, new ItemStack(Material.ELYTRA));

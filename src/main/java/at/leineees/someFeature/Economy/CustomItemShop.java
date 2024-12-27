@@ -1,7 +1,7 @@
 package at.leineees.someFeature.Economy;
 
-import at.leineees.someFeature.Data.Coins.CoinManager;
 import at.leineees.someFeature.CustomItems.CustomItems;
+import at.leineees.someFeature.Data.Coins.CoinManager;
 import at.leineees.someFeature.SomeFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -84,7 +84,7 @@ public class CustomItemShop implements Listener {
             e.printStackTrace();
         }
     }
-    
+
     public void createShop(String shopName) {
         if (!shops.containsKey(shopName)) {
             shops.put(shopName, new ArrayList<>());
@@ -94,7 +94,7 @@ public class CustomItemShop implements Listener {
     public void removeShop(String shopName) {
         shops.remove(shopName);
     }
-    
+
     public void addShopItem(String shopName, String itemType, int cost, int amount) {
         shops.computeIfAbsent(shopName, k -> new ArrayList<>()).add(new ShopItem(cost, itemType, SomeFeature.getInstance().toString(), amount));
     }
@@ -120,7 +120,7 @@ public class CustomItemShop implements Listener {
         }
         return itemTypes;
     }
-    
+
     public List<ShopItem> getShopItems(String shopName) {
         return shops.get(shopName);
     }
@@ -188,7 +188,7 @@ public class CustomItemShop implements Listener {
                     String itemKey = null;
                     if (container.has(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING)) {
                         itemKey = container.get(SomeFeature.CUSTOM_ITEM_KEY, PersistentDataType.STRING);
-                    }else {
+                    } else {
                         itemKey = "minecraft:" + clickedItem.getType().toString().toLowerCase();
                     }
                     for (List<ShopItem> shopItems : shops.values()) {

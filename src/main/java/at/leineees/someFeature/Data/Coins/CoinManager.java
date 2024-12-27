@@ -54,7 +54,7 @@ public class CoinManager {
         saveCoins();
         scoreboardManager.updateCoins(player, getCoins(player), -amount);
     }
-    
+
     public void setCoins(Player player, int amount) {
         UUID playerUUID = player.getUniqueId();
         playerCoins.put(playerUUID, amount);

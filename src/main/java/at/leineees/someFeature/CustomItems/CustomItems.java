@@ -1,10 +1,8 @@
 package at.leineees.someFeature.CustomItems;
 
 import at.leineees.someFeature.SomeFeature;
-import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -34,7 +32,7 @@ public class CustomItems {
     public static final NamespacedKey LIFE_RING_2 = new NamespacedKey(SomeFeature.getInstance(), "life_ring_2");
     public static final NamespacedKey LIFE_RING_3 = new NamespacedKey(SomeFeature.getInstance(), "life_ring_3");
     public static final NamespacedKey BACKPACK = new NamespacedKey(SomeFeature.getInstance(), "backpack");
-    
+
 
     private static final Map<NamespacedKey, Supplier<ItemStack>> customItems = new HashMap<>();
 
@@ -67,11 +65,11 @@ public class CustomItems {
         Supplier<ItemStack> itemSupplier = customItems.get(key);
         return itemSupplier != null ? itemSupplier.get() : null;
     }
-    
+
     public static Map<NamespacedKey, Supplier<ItemStack>> getAllCustomItems() {
         return customItems;
     }
-    
+
     //customItemLayout
     public ItemStack createCustomItem(Material material, String displayName, String... lore) {
         ItemStack item = new ItemStack(material);
@@ -123,7 +121,7 @@ public class CustomItems {
         }
         return item;
     }
-    
+
     public static ItemStack createSuperPickaxe() {
         ItemStack item = new ItemStack(Material.NETHERITE_PICKAXE);
         ItemMeta meta = item.getItemMeta();
@@ -136,11 +134,11 @@ public class CustomItems {
         }
         return item;
     }
-    
-    public static ItemStack createFlyingFish(){
+
+    public static ItemStack createFlyingFish() {
         ItemStack item = new ItemStack(Material.COD);
         ItemMeta meta = item.getItemMeta();
-        if(meta != null) {
+        if (meta != null) {
             meta.setDisplayName("§6Flying Fish");
             meta.setLore(List.of("§8Allows you to craft a Custom Item!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
@@ -197,7 +195,7 @@ public class CustomItems {
         }
         return item;
     }
-    
+
     public static ItemStack createRecipeBook() {
         ItemStack item = new ItemStack(Material.BOOK);
         ItemMeta meta = item.getItemMeta();
@@ -210,11 +208,11 @@ public class CustomItems {
         }
         return item;
     }
-    
-    public static ItemStack createMultiTool(){
+
+    public static ItemStack createMultiTool() {
         ItemStack item = new ItemStack(Material.DIAMOND);
         ItemMeta meta = item.getItemMeta();
-        if(meta != null) {
+        if (meta != null) {
             meta.setDisplayName("§6Multi Tool");
             meta.setLore(Arrays.asList("§8Allows you to bundle multiple tools into one!", "§4Experimental!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
@@ -223,11 +221,11 @@ public class CustomItems {
         }
         return item;
     }
-    
-    public static ItemStack createMultiToolBase(){
+
+    public static ItemStack createMultiToolBase() {
         ItemStack item = new ItemStack(Material.DIAMOND);
         ItemMeta meta = item.getItemMeta();
-        if(meta != null) {
+        if (meta != null) {
             meta.setDisplayName("§6Multi Tool Base");
             meta.setLore(Arrays.asList("§8Allows you to craft a powerful multitool!", "§4Experimental!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
@@ -236,6 +234,7 @@ public class CustomItems {
         }
         return item;
     }
+
     public static ItemStack createLifeRing(int level) {
         ItemStack item = new ItemStack(Material.GOLD_NUGGET);
         ItemMeta meta = item.getItemMeta();
@@ -259,7 +258,7 @@ public class CustomItems {
                 default:
                     throw new IllegalArgumentException("Invalid level: " + level);
             }
-            meta.setLore(Arrays.asList("§8You Gain " + healthAmount/2 + " hearts when held in your inventory!", "§4Experimental!"));
+            meta.setLore(Arrays.asList("§8You Gain " + healthAmount / 2 + " hearts when held in your inventory!", "§4Experimental!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
             container.set(new NamespacedKey(SomeFeature.getInstance(), "custom_item_key"), PersistentDataType.STRING, key.toString());
             item.setItemMeta(meta);
@@ -267,10 +266,10 @@ public class CustomItems {
         return item;
     }
 
-    public static ItemStack createBackpack(){
+    public static ItemStack createBackpack() {
         ItemStack item = new ItemStack(Material.NAUTILUS_SHELL);
         ItemMeta meta = item.getItemMeta();
-        if(meta != null) {
+        if (meta != null) {
             meta.setDisplayName("§fBackpack");
             meta.setLore(List.of("§8Allows you to store more Items!"));
             PersistentDataContainer container = meta.getPersistentDataContainer();
@@ -279,7 +278,7 @@ public class CustomItems {
         }
         return item;
     }
-    
+
     public static boolean isCustomItem(ItemStack item) {
         if (item == null || item.getItemMeta() == null) {
             return false;

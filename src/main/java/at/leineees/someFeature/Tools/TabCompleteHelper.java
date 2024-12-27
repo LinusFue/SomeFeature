@@ -19,7 +19,7 @@ public class TabCompleteHelper {
         }
         return filtered;
     }
-    
+
     /*public static List<String> filterSuggestions(String input, Set<String> suggestions) {
         List<String> filtered = new ArrayList<>();
         for (String suggestion : suggestions) {
@@ -38,16 +38,16 @@ public class TabCompleteHelper {
         }
         return filtered;
     }
-    
+
     public static List<String> getAllItems() {
         List<String> items = new ArrayList<>();
         for (NamespacedKey customItem : CustomItems.getAllCustomItems().keySet()) {
             items.add(customItem.toString());
         }
         for (Material material : Material.values()) {
-            items.add("minecraft:" +  material.name().toLowerCase());
+            items.add("minecraft:" + material.name().toLowerCase());
         }
         return items;
     }
-    
+
 }

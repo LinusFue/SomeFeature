@@ -47,10 +47,10 @@ public class CoinsCommand implements CommandExecutor {
                         } else if (action.equalsIgnoreCase("remove")) {
                             coinManager.removeCoins(target, amount);
                             player.sendMessage("§aRemoved " + amount + " coins from " + target.getName() + ".");
-                        } else if(action.equalsIgnoreCase("set")) {
+                        } else if (action.equalsIgnoreCase("set")) {
                             coinManager.setCoins(target, amount);
                             player.sendMessage("§aSet " + target.getName() + "'s coins to " + amount + ".");
-                        }else {
+                        } else {
                             player.sendMessage("§cUsage: /coins <player> <add|remove|set> <amount>");
                         }
                     } else {

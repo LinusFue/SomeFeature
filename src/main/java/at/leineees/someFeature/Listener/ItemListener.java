@@ -16,7 +16,6 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -33,7 +32,6 @@ public class ItemListener implements Listener {
     private final Map<UUID, Double> playerBoosts = new HashMap<>();
 
     private static final int TREE_FELLA_BLOCK_LIMIT = 300;
-
 
 
     @EventHandler
@@ -225,16 +223,10 @@ public class ItemListener implements Listener {
             Bukkit.getScheduler().runTask(SomeFeature.getInstance(), () -> updatePlayerHealthBoost(player));
         }
     }
-    
-    
-    /**
-    
 
-    //more Methods for main Methods
-    
-    
-    
-    
+
+    /**
+     * //more Methods for main Methods
      **/
 
     private void break3x3Area(Block startBlock, Player player, ItemStack item) {
@@ -265,7 +257,7 @@ public class ItemListener implements Listener {
                         block.getWorld().dropItemNaturally(block.getLocation(), drop);
                     }
                     block.setType(Material.AIR); // Remove the block
-                }else {
+                } else {
                     block.breakNaturally(item);
                 }
             }
@@ -277,7 +269,7 @@ public class ItemListener implements Listener {
                 material == Material.END_PORTAL || material == Material.NETHER_PORTAL || material == Material.COMMAND_BLOCK ||
                 material == Material.CHAIN_COMMAND_BLOCK || material == Material.REPEATING_COMMAND_BLOCK;
     }
-    
+
     private boolean isLog(Material material) {
         return material == Material.OAK_LOG || material == Material.SPRUCE_LOG || material == Material.BIRCH_LOG ||
                 material == Material.JUNGLE_LOG || material == Material.ACACIA_LOG || material == Material.DARK_OAK_LOG ||
@@ -300,16 +292,16 @@ public class ItemListener implements Listener {
     }
 
     private void findTreeBlocks(Block block, Set<Block> blocksToBreak, int blockLimit) {
-        if(blocksToBreak.size() >= blockLimit) {
+        if (blocksToBreak.size() >= blockLimit) {
             return;
         }
         blocksToBreak.add(block);
 
         for (Block relative : getAdjacentBlocks(block)) {
-                if ((isLog(relative.getType()) || isLeaf(relative.getType())) && !blocksToBreak.contains(relative)) {
-                    findTreeBlocks(relative, blocksToBreak, blockLimit);
-                }
+            if ((isLog(relative.getType()) || isLeaf(relative.getType())) && !blocksToBreak.contains(relative)) {
+                findTreeBlocks(relative, blocksToBreak, blockLimit);
             }
+        }
     }
 
     private Set<Block> getAdjacentBlocks(Block block) {
@@ -360,10 +352,10 @@ public class ItemListener implements Listener {
         } else {
             toolMaterial = Material.DIAMOND;
         }
-        
+
         ItemStack newTool = new ItemStack(toolMaterial);
         ItemMeta newMeta = newTool.getItemMeta();
-        if(newMeta != null) {
+        if (newMeta != null) {
             newMeta.isUnbreakable();
         }
 
@@ -517,5 +509,5 @@ public class ItemListener implements Listener {
             player.setHealth(Math.min(player.getHealth(), 20)); // Ensure health doesn't exceed new max
             playerBoosts.remove(player.getUniqueId());
         }
-    }    
+    }
 }

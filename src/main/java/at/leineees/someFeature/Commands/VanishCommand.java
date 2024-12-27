@@ -25,7 +25,7 @@ public class VanishCommand implements Listener, CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        Player player = (Player)commandSender;
+        Player player = (Player) commandSender;
         if (player.hasPermission("somefeature.vanish")) {
             if (vanishedPlayers.contains(player.getUniqueId())) {
                 showPlayer(player);

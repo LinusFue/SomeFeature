@@ -1,17 +1,13 @@
 package at.leineees.someFeature.Commands;
 
-import at.leineees.someFeature.CustomItems.CustomItems;
 import at.leineees.someFeature.Economy.CustomItemShop;
 import at.leineees.someFeature.Tools.TabCompleteHelper;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 

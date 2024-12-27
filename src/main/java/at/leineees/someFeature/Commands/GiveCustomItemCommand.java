@@ -14,7 +14,8 @@ import java.util.function.Supplier;
 
 public class GiveCustomItemCommand implements CommandExecutor {
 
-    public GiveCustomItemCommand() {}
+    public GiveCustomItemCommand() {
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {

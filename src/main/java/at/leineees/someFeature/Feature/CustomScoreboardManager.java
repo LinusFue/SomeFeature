@@ -25,7 +25,7 @@ public class CustomScoreboardManager {
         Team coinsTeam = board.registerNewTeam("coins");
         coinsTeam.addEntry("§6Coins: ");
         objective.getScore("§6Coins: ").setScore(5);
-        
+
         String separator = new String(new char[("§6Coins: ").length()]).replace('\0', '_');
         objective.getScore(separator).setScore(4);
         objective.getScore("  ").setScore(3);
@@ -33,7 +33,7 @@ public class CustomScoreboardManager {
         Team biomeTeam = board.registerNewTeam("biome");
         biomeTeam.addEntry("§aBiome: ");
         objective.getScore("§aBiome: ").setScore(2);
-        
+
         player.setScoreboard(board);
     }
 

@@ -34,7 +34,7 @@ public class AnvilRecipe implements Recipe, Keyed, Listener {
         this.result = result;
         this.base = base == null ? RecipeChoice.empty() : base.validate(true).clone();
         this.addition = addition == null ? RecipeChoice.empty() : addition.validate(true).clone();
-        
+
         SomeFeature.getInstance().getServer().getPluginManager().registerEvents(this, SomeFeature.getInstance());
     }
 
@@ -98,7 +98,7 @@ public class AnvilRecipe implements Recipe, Keyed, Listener {
                     int repairCost = inventory.getRepairCost();
                     if (player.getLevel() >= repairCost) {
                         player.setLevel(player.getLevel() - repairCost);
-                        if(result.getType() != Material.AIR) {
+                        if (result.getType() != Material.AIR) {
                             event.setCursor(result);
                             inventory.setItem(0, null);
                             inventory.setItem(1, null);

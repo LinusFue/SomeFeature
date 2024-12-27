@@ -11,21 +11,28 @@ import java.util.List;
 
 public class CustomRecipes {
     private final JavaPlugin plugin;
-    public CustomRecipes(JavaPlugin plugin){
+
+    public CustomRecipes(JavaPlugin plugin) {
         this.plugin = plugin;
     }
+
     private static final List<Recipe> recipes = new ArrayList<>();
-    public static List<Recipe> getRecipes(){
+
+    public static List<Recipe> getRecipes() {
         return recipes;
     }
+
     private static final List<ItemStack> results = new ArrayList<>();
-    public static List<ItemStack> getResults(){
+
+    public static List<ItemStack> getResults() {
         return results;
     }
-    public static Recipe getRecipe(ItemStack result){
+
+    public static Recipe getRecipe(ItemStack result) {
         return recipes.get(results.indexOf(result));
     }
-    public void register(){
+
+    public void register() {
         //outputs
         ItemStack healingSpell1 = CustomItems.createHealingSpell(1);
         ItemStack healingSpell2 = CustomItems.createHealingSpell(2);
@@ -34,7 +41,7 @@ public class CustomRecipes {
         ItemStack multiToolBase = CustomItems.createMultiToolBase();
         ItemStack multiTool = CustomItems.createMultiTool();
         ItemStack backpack = CustomItems.createBackpack();
-        
+
         recipes.add(spellRecipe1(healingSpell1));
         recipes.add(spellRecipe2(healingSpell1, healingSpell2));
         recipes.add(spellRecipe3(healingSpell2, healingSpell3));
@@ -42,14 +49,14 @@ public class CustomRecipes {
         recipes.add(multiToolBaseRecipe(multiToolBase));
         recipes.add(multiToolRecipe(multiToolBase, multiTool));
         recipes.add(backpackRecipe(backpack));
-        
+
         for (Recipe recipe : recipes) {
             Bukkit.addRecipe(recipe);
             results.add(recipe.getResult());
-        }        
+        }
     }
-    
-    private ShapelessRecipe treeFellaRecipe(ItemStack output){
+
+    private ShapelessRecipe treeFellaRecipe(ItemStack output) {
         ShapelessRecipe recipeTreeFella = new ShapelessRecipe(new NamespacedKey("somefeature", "tree_fella_recipe"), output);
         recipeTreeFella.addIngredient(Material.NETHERITE_AXE);
         recipeTreeFella.addIngredient(Material.OAK_LOG)
@@ -62,8 +69,8 @@ public class CustomRecipes {
                 .addIngredient(Material.WARPED_STEM);
         return recipeTreeFella;
     }
-    
-    private ShapedRecipe spellRecipe1(ItemStack output){
+
+    private ShapedRecipe spellRecipe1(ItemStack output) {
         ShapedRecipe spellRecipe = new ShapedRecipe(new NamespacedKey("somefeature", "healing_spell1_recipe"), output);
         spellRecipe.shape("DED", "EGE", "DED");
         spellRecipe.setIngredient('G', Material.ENCHANTED_GOLDEN_APPLE);
@@ -71,7 +78,8 @@ public class CustomRecipes {
         spellRecipe.setIngredient('D', Material.DIAMOND_BLOCK);
         return spellRecipe;
     }
-    private ShapedRecipe spellRecipe2(ItemStack input, ItemStack output){
+
+    private ShapedRecipe spellRecipe2(ItemStack input, ItemStack output) {
         ShapedRecipe spellRecipe = new ShapedRecipe(new NamespacedKey("somefeature", "healing_spell2_recipe"), output);
         spellRecipe.shape("ENE", "NHN", "ENE");
         spellRecipe.setIngredient('H', input);
@@ -79,7 +87,8 @@ public class CustomRecipes {
         spellRecipe.setIngredient('E', Material.EMERALD_BLOCK);
         return spellRecipe;
     }
-    private ShapedRecipe spellRecipe3(ItemStack input, ItemStack output){
+
+    private ShapedRecipe spellRecipe3(ItemStack input, ItemStack output) {
         ShapedRecipe spellRecipe = new ShapedRecipe(new NamespacedKey("somefeature", "healing_spell3_recipe"), output);
         spellRecipe.shape("NSN", "SHS", "NSN");
         spellRecipe.setIngredient('H', input);
@@ -87,12 +96,14 @@ public class CustomRecipes {
         spellRecipe.setIngredient('N', Material.NETHERITE_INGOT);
         return spellRecipe;
     }
-    private AnvilRecipe elytraChestplateRecipe(ItemStack output){
+
+    private AnvilRecipe elytraChestplateRecipe(ItemStack output) {
         RecipeChoice base = new RecipeChoice.MaterialChoice(Material.NETHERITE_CHESTPLATE);
         RecipeChoice addition = new RecipeChoice.MaterialChoice(Material.ELYTRA);
         return new AnvilRecipe(new NamespacedKey("somefeature", "elytra_chestplate_recipe"), output, base, addition);
     }
-    private ShapedRecipe multiToolBaseRecipe(ItemStack output){
+
+    private ShapedRecipe multiToolBaseRecipe(ItemStack output) {
         ShapedRecipe multiToolBaseR = new ShapedRecipe(new NamespacedKey("somefeature", "multi-tool-base-recipe"), output);
         multiToolBaseR.shape(" L ", "LCL", " D ");
         multiToolBaseR.setIngredient('D', Material.DIAMOND);
@@ -100,6 +111,7 @@ public class CustomRecipes {
         multiToolBaseR.setIngredient('L', Material.LEAD);
         return multiToolBaseR;
     }
+
     private ShapelessRecipe multiToolRecipe(ItemStack input, ItemStack output) {
         ShapelessRecipe multiToolR = new ShapelessRecipe(new NamespacedKey("somefeature", "multi_tool_recipe"), output);
         multiToolR.addIngredient(input);
@@ -109,7 +121,7 @@ public class CustomRecipes {
         return multiToolR;
     }
 
-    private ShapedRecipe backpackRecipe(ItemStack output){
+    private ShapedRecipe backpackRecipe(ItemStack output) {
         ShapedRecipe backpackR = new ShapedRecipe(new NamespacedKey("somefeature", "backpack_recipe"), output);
         backpackR.shape("LCL", "LCL", "LLL");
         backpackR.setIngredient('C', Material.CHEST);
